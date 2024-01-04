@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "34408326689",
+    "project_id": "pronuntiapp-oreo-sms2324",
+    "storage_bucket": "pronuntiapp-oreo-sms2324.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34408326689:android:0ef74c5d032a0ae7d0a560",
+        "android_client_info": {
+          "package_name": "it.uniba.dib.sms2324_16"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBH4rPEszbadYwYJv9qUQW0N_BK8w_jKWM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
