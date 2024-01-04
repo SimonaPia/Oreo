@@ -11,24 +11,20 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class HomePageLogopedista extends AppCompatActivity {
-    private GridView gridview;
-    private int[] icons = {
-            R.drawable.ic_pazienti_foreground,
-            //R.drawable.icon2,
-            //R.drawable.icon3,
-            //R.drawable.icon4
-    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
+
         setContentView(R.layout.homepage_logopedista);
-        Toolbar toolbar = findViewById(R.id.MyToolbar);
-        setSupportActionBar(toolbar);
+        Toolbar myToolbar = findViewById(R.id.MyToolbar);
+        setSupportActionBar(myToolbar);
+
         getSupportActionBar().setTitle("Fabrizio Balducci");
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.homepage_logopedista_fragment, new HomePageLogopedistaFragment())
+                    .replace(R.id.frameLayout, new HomePageLogopedistaFragment())
                     .commit();
         }
 

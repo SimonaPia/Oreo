@@ -3,4 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="pesca">#FFCC99</color>
+    <color name="blu_scuro">#252850</color>
+    <color name="blu">#0000FF</color>
+    <color name="blu_medio">#0000CD</color>
+    <color name="blu_oltremare">#120A8F</color>
 </resources>

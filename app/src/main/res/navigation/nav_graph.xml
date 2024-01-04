@@ -9,6 +9,6 @@
         android:id="@+id/homepage_logopedista_fragment"
         android:name="it.uniba.dib.sms2324_16.HomePageLogopedistaFragment"
         android:label="Home Page"
-        tools:layout="@layout/homepage_logopedista_fragment"/>
+        tools:layout="@layout/fragment_home_page_logopedista"/>
 
 </navigation>
