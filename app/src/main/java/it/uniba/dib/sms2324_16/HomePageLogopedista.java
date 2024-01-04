@@ -23,8 +23,8 @@ public class HomePageLogopedista extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.homepage_logopedista);
-        Toolbar myToolbar = findViewById(R.id.MyToolbar);
-        setSupportActionBar(myToolbar);
+        Toolbar toolbar = findViewById(R.id.MyToolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Fabrizio Balducci");
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
