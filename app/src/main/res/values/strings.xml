@@ -6,6 +6,7 @@
     <string name="second_fragment_label">Secondo Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="hint_date">Data</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

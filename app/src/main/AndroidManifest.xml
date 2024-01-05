@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PronuntiApp_Oreo_sms2324"
-        tools:targetApi="27">
+        tools:targetApi="31">
         <activity
             android:name=".HomePageLogopedista"
             android:exported="true"
@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".NewAppointmentActivity" />
 
     </application>
 
