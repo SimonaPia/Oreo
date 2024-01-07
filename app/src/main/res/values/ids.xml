@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="spinnerLocation" type="id" />
+
+    <item name="id_exercise_name" type="id" />
+    <item name="id_details_button" type="id" />
+    <item name="id_assign_button" type="id" />
 </resources>

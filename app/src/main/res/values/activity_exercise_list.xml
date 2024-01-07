@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string name="exercise_list_title">Exercise List</string>
+        <string name="details_button_label">Details</string>
+        <string name="assign_button_label">Assign</string>
+    </resources>

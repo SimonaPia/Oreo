@@ -25,6 +25,14 @@
         </activity>
         <activity android:name=".NewAppointmentActivity" />
 
+        <activity android:name=".ExerciseListActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
