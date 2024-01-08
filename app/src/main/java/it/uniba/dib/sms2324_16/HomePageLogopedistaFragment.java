@@ -1,13 +1,15 @@
 package it.uniba.dib.sms2324_16;
 
-import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
-import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,27 +50,6 @@ public class HomePageLogopedistaFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home_page_logopedista, container, false);
-
-        // Trova il pulsante nel tuo fragment
-        Button btnOpenExerciseList = view.findViewById(R.id.btnOpenExerciseList);
-
-        // Imposta il click listener
-        btnOpenExerciseList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Avvia l'ExerciseListActivity quando il pulsante viene premuto
-                Intent intent = new Intent(getActivity(), ExerciseListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        return view;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -77,5 +58,23 @@ public class HomePageLogopedistaFragment extends Fragment {
         }
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home_page_logopedista, container, false);
+        CardView cardAppuntamenti = view.findViewById(R.id.cardAppuntamenti);
+        if (cardAppuntamenti != null) {
+            cardAppuntamenti.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Utilizza findNavController(view) per trovare il NavController associato al frammento
+                    NavController navController = Navigation.findNavController(v);
 
+                    // Naviga direttamente al frammento_appuntamenti utilizzando l'ID
+                    navController.navigate(R.id.fragment_appuntamenti_logopedista);
+                }
+            });
+        }
+        return view;
+    }
 }

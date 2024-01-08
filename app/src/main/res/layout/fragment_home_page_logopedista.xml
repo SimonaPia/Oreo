@@ -85,11 +85,13 @@
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
 
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_columnWeight="1"
@@ -136,6 +138,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardAppuntamenti"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_columnWeight="1"
@@ -156,13 +159,13 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/paziente"
+                    android:src="@drawable/ic_agenda_foreground"
                     android:layout_gravity="center_horizontal"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pazienti"
+                    android:text="Appuntamenti"
                     android:layout_gravity="center_horizontal"
                     android:textSize="18sp"
                     android:textStyle="bold"

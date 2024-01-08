@@ -9,9 +9,14 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 public class HomePageLogopedista extends AppCompatActivity {
-
+    private AppBarConfiguration appBarConfiguration;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +32,14 @@ public class HomePageLogopedista extends AppCompatActivity {
                     .replace(R.id.frameLayout, new HomePageLogopedistaFragment())
                     .commit();
         }
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_graph);
+        NavController navController = navHostFragment.getNavController();
+
+        // Imposta il NavController per la vista principale (LinearLayout).
+        Navigation.setViewNavController(findViewById(R.id.homepage_logopedista), navController);
+
+        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
     }
 
