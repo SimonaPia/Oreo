@@ -19,7 +19,15 @@
         android:id="@+id/fragment_appuntamenti_logopedista"
         android:name="it.uniba.dib.sms2324_16.AppuntamentiLogopedistaFragment"
         android:label="Appuntamenti"
-        tools:layout="@layout/fragment_appuntamenti_logopedista"/>
-
+        tools:layout="@layout/fragment_appuntamenti_logopedista">
+        <action
+            android:id="@+id/action_fragment_appuntamenti_logopedista_to_inserimento_appuntamenti"
+            app:destination="@id/inserimento_appuntamenti" />
+    </fragment>
+    <activity
+        android:id="@+id/inserimento_appuntamenti"
+        android:name="it.uniba.dib.sms2324_16.NewAppointmentActivity"
+        android:label="Nuovo Appuntamento"
+        tools:layout="@layout/inserimento_appuntamenti"/>
 
 </navigation>
