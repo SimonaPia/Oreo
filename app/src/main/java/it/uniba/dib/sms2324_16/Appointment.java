@@ -1,66 +1,68 @@
 package it.uniba.dib.sms2324_16;
-public class Appointment {
-    private String date;
-    private String time;
-    private String patient;
-    private String location;
 
-    public Appointment(String date, String time, String patient, String location) {
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Appointment {
+    private Date date;
+    private Date time;
+    private String patient;
+
+    public Appointment() {
+        // Costruttore vuoto richiesto per Firestore
+    }
+
+    public Appointment(Date date, Date time, String patient) {
         this.date = date;
         this.time = time;
         this.patient = patient;
-        this.location = location;
     }
 
-    // Getter e setter per 'date'
-    public String getDate() {
+    // Getter e setter per gli attributi
 
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    // Getter e setter per 'time'
-    public String getTime() {
-
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(String time) {
-
+    public void setTime(Date time) {
         this.time = time;
     }
 
-    // Getter e setter per 'patient'
     public String getPatient() {
-
         return patient;
     }
 
     public void setPatient(String patient) {
-
         this.patient = patient;
     }
 
-    // Getter e setter per 'location'
-    public String getLocation() {
-        return location;
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        // Converto le date in timestamp per salvarle in Firestore
+        if (date != null) map.put("date", date.getTime());
+        if (time != null) map.put("time", time.getTime());
+        map.put("patient", patient);
+        return map;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    @Override
-    public String toString() {
-        return "Appointment{" +
-                "date='" + date + '\'' +
-                ", time='" + time + '\'' +
-                ", patient='" + patient + '\'' +
-                ", location='" + location + '\'' +
-                '}';
+    // Rinominato da toObject a toAppointment
+    public static Appointment toAppointment(Map<String, Object> map) {
+        Appointment appointment = new Appointment();
+        appointment.setDate(new Date((long) map.get("date")));
+        appointment.setTime(new Date((long) map.get("time")));
+        appointment.setPatient((String) map.get("patient"));
+        return appointment;
     }
 }
+
+
+
