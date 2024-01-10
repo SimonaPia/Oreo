@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,6 +79,14 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         Exercise exercise = exerciseList.get(position);
         holder.bind(exercise, listener);
+
+        // Ottieni riferimenti ai bottoni dal layout item_exercise.xml
+        Button detailsButton = holder.itemView.findViewById(R.id.details_button_id);
+        Button assignButton = holder.itemView.findViewById(R.id.assign_button_id);
+
+        // Imposta il colore dei bottoni
+        detailsButton.setBackgroundColor(ContextCompat.getColor(context, R.color.blu_oltremare));
+        assignButton.setBackgroundColor(ContextCompat.getColor(context, R.color.blu_oltremare));
     }
 
     @Override
@@ -211,8 +220,14 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             public void onClick(DialogInterface dialog, int which) {
                 // Assegna l'esercizio al paziente selezionato
                 selectedPatient.addAssignedExercise(exercise);
+
                 // Notifica l'activity dell'assegnazione e della necessità di aggiornare l'adapter
-                listener.onAssignClick(exercise, selectedPatient, exercisePosition);
+                if (listener != null) {
+                    listener.onAssignClick(exercise, selectedPatient, exercisePosition);
+                }
+
+                // Aggiungi il toast qui
+                Toast.makeText(context, "Esercizio assegnato a " + selectedPatient.getName(), Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
