@@ -1,47 +1,77 @@
 package it.uniba.dib.sms2324_16;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-public class AppointmentManager {
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-    private final List<Appointment> appointments;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+public class AppointmentManager {
+    private CollectionReference appointmentsRef;
+    private String logopedistId;
 
     public AppointmentManager() {
+        // Inizializzazione degli attributi senza l'ID del logopedista
+        this.logopedistId = null;
+        this.appointmentsRef = null;
+    }
 
-        this.appointments = new ArrayList<>();
+    public void initialize(String logopedistId) {
+        // Inizializzazione degli attributi con l'ID del logopedista fornito
+        this.logopedistId = logopedistId;
+        this.appointmentsRef = FirebaseFirestore.getInstance()
+                .collection("appointments")
+                .document(logopedistId)
+                .collection("logopedistAppointments");
     }
 
     public void addOrUpdateAppointment(Appointment appointment) {
-        if (appointments.contains(appointment)) {
-            appointments.remove(appointment);  // Rimuovi l'appuntamento esistente
-        }
-        appointments.add(appointment);  // Aggiungi l'appuntamento aggiornato o nuovo
-    }
+        // Verifica che l'ID del logopedista sia stato inizializzato prima di aggiungere un appuntamento
+        if (logopedistId != null && appointmentsRef != null) {
+            // Converti l'oggetto Appointment in una mappa
+            Map<String, Object> appointmentMap = appointment.toMap();
 
-    public List<Appointment> getAppointments() {
-        // Ordina gli appuntamenti prima di restituirli (se necessario)
-        Collections.sort(appointments, new Comparator<Appointment>() {
-            @Override
-            public int compare(Appointment a1, Appointment a2) {
-                // Implementa la logica di confronto tra appuntamenti basata su data e ora
-                // Restituisci un numero negativo se a1 precede a2, positivo se a1 segue a2, 0 se sono uguali
-                // ...
-                return 0;
-            }
-        });
-
-        return appointments;
-    }
-
-    public boolean addAppointment(Appointment appointment) {
-        if (!appointments.contains(appointment)) {
-            appointments.add(appointment);
-            return true;
+            // Aggiungi o aggiorna l'appuntamento in Firestore
+            appointmentsRef.add(appointmentMap);
         } else {
-            // L'appuntamento è già presente
-            return false;
+            // Gestione dell'errore o log quando l'ID del logopedista non è stato inizializzato correttamente
+            // Potresti lanciare un'eccezione, stampare un messaggio di log, o gestire la situazione in altro modo.
         }
+    }
+
+    public void getAppointments(OnAppointmentsLoadedListener listener) {
+        // Verifica che l'ID del logopedista sia stato inizializzato prima di recuperare gli appuntamenti
+        if (logopedistId != null && appointmentsRef != null) {
+            // Recupera la lista degli appuntamenti da Firestore e notifica l'ascoltatore
+            appointmentsRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    List<Appointment> appointments = new ArrayList<>();
+                    for (DocumentSnapshot document : task.getResult()) {
+                        // Converti la mappa in un oggetto Appointment
+                        Appointment appointment = document.toObject(Appointment.class);
+                        appointments.add(appointment);
+                    }
+                    listener.onAppointmentsLoaded(appointments);
+                } else {
+                    listener.onAppointmentsLoadError(task.getException());
+                }
+            });
+        } else {
+            // Gestione dell'errore o log quando l'ID del logopedista non è stato inizializzato correttamente
+            // Potresti lanciare un'eccezione, stampare un messaggio di log, o gestire la situazione in altro modo.
+        }
+    }
+
+    // Aggiungi una funzione per impostare dinamicamente l'ID del logopedista
+    public void setLogopedistId(String logopedistId) {
+        this.logopedistId = logopedistId;
+        this.appointmentsRef = FirebaseFirestore.getInstance()
+                .collection("appointments")
+                .document(logopedistId)
+                .collection("logopedistAppointments");
     }
 }
+
+
+
 
