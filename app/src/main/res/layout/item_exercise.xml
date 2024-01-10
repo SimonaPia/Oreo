@@ -1,5 +1,4 @@
 <!-- item_exercise.xml -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,15 +12,53 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/details_button_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dettagli" />
+    <!-- Spaziatura tra il nome dell'esercizio e i bottoni -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="8dp" />
 
-    <Button
-        android:id="@+id/assign_button_id"
-        android:layout_width="wrap_content"
+    <!-- Layout orizzontale per i bottoni -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Assegna" />
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/details_button_id"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Dettagli"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@drawable/custom_button_background"
+            android:clickable="true"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/assign_button_id"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Assegna"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@drawable/custom_button_background"
+            android:clickable="true"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+
+    <!-- Spaziatura sotto i bottoni -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="8dp" />
+
+    <!-- Separatore -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
 </LinearLayout>

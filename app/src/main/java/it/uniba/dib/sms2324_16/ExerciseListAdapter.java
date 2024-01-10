@@ -1,14 +1,17 @@
 package it.uniba.dib.sms2324_16;
 
-// ExerciseListAdapter.java
-
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -16,16 +19,52 @@ import java.util.List;
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.ExerciseViewHolder> {
 
     private List<Exercise> exerciseList;
+    private List<Patient> patientList;
+    private Patient selectedPatient;
+    private Exercise selectedExercise;
     private OnItemClickListener listener;
+    private Context context;
 
     public interface OnItemClickListener {
-        void onDetailsClick(Exercise exercise);
+        void onDetailsClick(Exercise exercise, String details, String exerciseDetails);
+        void onAssignClick(Exercise exercise, Patient selectedPatient, int position);
         void onAssignClick(Exercise exercise);
+        void onPatientSelected(Patient patient);
     }
 
-    public ExerciseListAdapter(List<Exercise> exerciseList, OnItemClickListener listener) {
+    // Dichiarazione dell'oggetto dialog
+    private AlertDialog dialog;
+
+    //Costruttore
+    public ExerciseListAdapter(Context context, List<Exercise> exerciseList, List<Patient> patientList, OnItemClickListener listener) {
         this.exerciseList = exerciseList;
+        this.patientList = patientList;
         this.listener = listener;
+        this.context = context;
+
+        // Inizializza l'oggetto dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Seleziona un paziente");
+
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_patient_list, null);
+        RecyclerView recyclerViewPatients = view.findViewById(R.id.recyclerViewPatients);
+        recyclerViewPatients.setLayoutManager(new LinearLayoutManager(context));
+        recyclerViewPatients.setAdapter(new PatientListAdapter(context, patientList, new PatientListAdapter.OnItemClickListener() {
+            @Override
+            public void onAssignClick(Patient patient) {
+                // Assegna il paziente selezionato
+                selectedPatient = patient;
+                // Ottieni la posizione corrente
+                int exercisePosition = exerciseList.indexOf(selectedExercise);
+                // Richiama il listener per assegnare l'esercizio al paziente
+                listener.onAssignClick(exerciseList.get(exercisePosition), selectedPatient, exercisePosition);
+                // Chiudi il dialog dopo aver assegnato
+                dialog.dismiss();
+            }
+        }));
+
+        builder.setView(view);
+        dialog = builder.create();
     }
 
     @NonNull
@@ -46,7 +85,7 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         return exerciseList.size();
     }
 
-    public static class ExerciseViewHolder extends RecyclerView.ViewHolder {
+    public class ExerciseViewHolder extends RecyclerView.ViewHolder {
 
         private TextView exerciseNameTextView;
         private Button detailsButton;
@@ -65,16 +104,125 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             detailsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onDetailsClick(exercise);
+                    listener.onDetailsClick(exercise, exercise.getName(), exercise.getDetails());
                 }
             });
 
             assignButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onAssignClick(exercise);
+                    selectedExercise = exercise;
+                    // Mostra il dialog quando il pulsante "Assegna" viene premuto
+                    showAssignExerciseDialog(selectedExercise, getBindingAdapterPosition(), context);
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Richiama il listener solo quando il paziente è stato selezionato
+                    if (selectedPatient != null) {
+                        showAssignConfirmationDialog(exercise, selectedPatient, getBindingAdapterPosition());
+                    } else {
+                        // Mostriamo un messaggio se il paziente non è stato selezionato
+                        Toast.makeText(context, "Seleziona un paziente prima di assegnare l'esercizio", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+            detailsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Mostra un popup con i dettagli
+                    showDetailsPopup(exercise);
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Notify the listener when a patient is selected
+                    listener.onPatientSelected(selectedPatient);
                 }
             });
         }
+    }
+
+    private void showDetailsPopup(Exercise exercise) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Dettagli: " + exercise.getName());
+        builder.setMessage(exercise.getDetails());
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Chiudi il popup se necessario
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showAssignExerciseDialog(final Exercise exercise, final int exercisePosition, Context activityContext) {
+        // Verifica se ci sono pazienti disponibili
+        List<Patient> patientList = getPatientList();
+        if (patientList.isEmpty()) {
+            Toast.makeText(activityContext, "Nessun paziente disponibile. Aggiungi pazienti prima di assegnare gli esercizi.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Creazione della lista di nomi dei pazienti
+        CharSequence[] patientNames = new CharSequence[patientList.size()];
+        for (int i = 0; i < patientList.size(); i++) {
+            patientNames[i] = patientList.get(i).getName();
+        }
+
+        // Creazione del dialog per l'assegnazione dell'esercizio
+        AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
+        builder.setTitle("Seleziona un paziente");
+        builder.setItems(patientNames, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Assegna l'esercizio al paziente selezionato
+                Patient selectedPatient = getPatientList().get(which);
+                selectedPatient.addAssignedExercise(exercise);
+                // Notifica l'activity dell'assegnazione e della necessità di aggiornare l'adapter
+                listener.onAssignClick(exercise, selectedPatient, exercisePosition);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private List<Patient> getPatientList() {
+        // Aggiungi qui la tua implementazione per ottenere la lista dei pazienti
+        // In questo esempio, restituisco una lista vuota per dimostrazione
+        return patientList;
+    }
+
+    private void showAssignConfirmationDialog(final Exercise exercise, final Patient selectedPatient, final int exercisePosition) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Conferma assegnazione");
+        builder.setMessage("Vuoi assegnare l'esercizio a " + selectedPatient.getName() + "?");
+        builder.setPositiveButton("Sì", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Assegna l'esercizio al paziente selezionato
+                selectedPatient.addAssignedExercise(exercise);
+                // Notifica l'activity dell'assegnazione e della necessità di aggiornare l'adapter
+                listener.onAssignClick(exercise, selectedPatient, exercisePosition);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Handle negative button click if needed
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

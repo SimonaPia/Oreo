@@ -7,4 +7,5 @@
     <color name="blu">#0000FF</color>
     <color name="blu_medio">#0000CD</color>
     <color name="blu_oltremare">#120A8F</color>
+    <color name="blu_oltremare_pressed">#303F9F</color>
 </resources>

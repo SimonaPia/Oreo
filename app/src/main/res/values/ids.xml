@@ -5,4 +5,13 @@
     <item name="id_exercise_name" type="id" />
     <item name="id_details_button" type="id" />
     <item name="id_assign_button" type="id" />
+    <item name="toolbarTitle" type="id" />
+    <item name="toolbarSubtitle" type="id" />
+    <item name="recyclerView" type="id" />
+    <item name="exercise_name_id" type="id" />
+    <item name="details_button_id" type="id" />
+    <item name="assign_button_id" type="id" />
+    <item name="recyclerViewAssign" type="id" />
+    <item name="recyclerViewAssign2" type="id" />
+    <item name="assignButton" type="id" />
 </resources>

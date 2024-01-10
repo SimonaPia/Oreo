@@ -1,0 +1,49 @@
+package it.uniba.dib.sms2324_16;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Patient implements Serializable {
+    private long id;
+    private String name;
+    private List<Exercise> assignedExercises;
+
+    public Patient(String name) {
+        this.name = name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void addAssignedExercise(Exercise exercise) {
+        if (assignedExercises == null) {
+            assignedExercises = new ArrayList<>();
+        }
+
+        if (!assignedExercises.contains(exercise)) {
+            assignedExercises.add(exercise);
+        }
+    }
+
+    public List<Exercise> getAssignedExercises() {
+        return assignedExercises;
+    }
+
+    public void setAssignedExercises(List<Exercise> assignedExercises) {
+        this.assignedExercises = assignedExercises;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
