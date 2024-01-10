@@ -9,25 +9,30 @@
         android:name="it.uniba.dib.sms2324_16.HomePageLogopedistaFragment"
         android:label="Home Page"
         tools:layout="@layout/fragment_home_page_logopedista">
-        <action
-            android:id="@+id/action_homepage_to_appuntamenti"
-            app:destination="@id/fragment_appuntamenti_logopedista" />
 
+        <action
+            android:id="@+id/action_homepage_logopedista_fragment_to_fragment_appuntamenti_logopedista"
+            app:destination="@id/fragment_appuntamenti_logopedista" />
     </fragment>
 
     <fragment
         android:id="@+id/fragment_appuntamenti_logopedista"
         android:name="it.uniba.dib.sms2324_16.AppuntamentiLogopedistaFragment"
         android:label="Appuntamenti"
-        tools:layout="@layout/fragment_appuntamenti_logopedista">
+        tools:layout="@layout/fragment_appuntamenti_logopedista" >
+
         <action
-            android:id="@+id/action_fragment_appuntamenti_logopedista_to_inserimento_appuntamenti"
-            app:destination="@id/inserimento_appuntamenti" />
+            android:id="@+id/action_fragment_appuntamenti_logopedista_to_newAppointmentActivity"
+            app:destination="@id/newAppointment" />
+        <action
+            android:id="@+id/action_fragment_appuntamenti_logopedista_to_homepage_logopedista_fragment"
+            app:destination="@id/homepage_logopedista_fragment" />
     </fragment>
     <activity
-        android:id="@+id/inserimento_appuntamenti"
+        android:id="@+id/newAppointment"
         android:name="it.uniba.dib.sms2324_16.NewAppointmentActivity"
-        android:label="Nuovo Appuntamento"
-        tools:layout="@layout/inserimento_appuntamenti"/>
+        android:label="inserimento_appuntamenti"
+        tools:layout="@layout/inserimento_appuntamenti" />
+
 
 </navigation>

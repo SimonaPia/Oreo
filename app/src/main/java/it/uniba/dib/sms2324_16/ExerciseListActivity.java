@@ -50,4 +50,3 @@ public class ExerciseListActivity extends AppCompatActivity {
         return exercises;
     }
 }
-

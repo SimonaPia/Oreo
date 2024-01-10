@@ -5,7 +5,7 @@ import com.google.firebase.FirebaseApp;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Toast;
-
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,19 +28,15 @@ public class HomePageLogopedista extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Fabrizio Balducci");
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frameLayout, new HomePageLogopedistaFragment())
-                    .commit();
+            if (getSupportFragmentManager().findFragmentByTag("HomePageLogopedistaFragment") == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, new HomePageLogopedistaFragment(), "HomePageLogopedistaFragment")
+                        .commit();
+            }
         }
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_graph);
-        NavController navController = navHostFragment.getNavController();
 
-        // Imposta il NavController per la vista principale (LinearLayout).
-        Navigation.setViewNavController(findViewById(R.id.homepage_logopedista), navController);
-
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
     }
+
 
 }

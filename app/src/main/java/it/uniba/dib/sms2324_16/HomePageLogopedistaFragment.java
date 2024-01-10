@@ -1,15 +1,21 @@
 package it.uniba.dib.sms2324_16;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +55,54 @@ public class HomePageLogopedistaFragment extends Fragment {
         return fragment;
     }
 
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home_page_logopedista, container, false);
+        GridLayout gridLayout = view.findViewById(R.id.gridLayout);
+        CardView cardAppuntamenti = view.findViewById(R.id.cardAppuntamenti);
+        CardView cardEsercizi = view.findViewById(R.id.cardEsercizi);
+        CardView cardPazienti = view.findViewById(R.id.cardPazienti);
+
+        // Trova il pulsante nel tuo fragment
+        Button btnOpenExerciseList = view.findViewById(R.id.btnOpenExerciseList);
+
+        // Imposta il click listener
+        btnOpenExerciseList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Avvia l'ExerciseListActivity quando il pulsante viene premuto
+                Intent intent = new Intent(getActivity(), ExerciseListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+            cardAppuntamenti.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Utilizza Navigation.findNavController() passando l'activity e il tuo fragment
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+
+                    // Controlla se il fragment di destinazione è già presente
+                    if (navController.getCurrentDestination().getId() != R.id.fragment_appuntamenti_logopedista) {
+                        // Esegui la navigazione solo se non sei già nel fragment di destinazione
+                        navController.navigate(R.id.fragment_appuntamenti_logopedista);
+                    }
+                    gridLayout.removeViewAt(0); // Esempio: rimuove la prima CardView
+                    gridLayout.removeView(cardAppuntamenti);
+                    gridLayout.removeView(cardEsercizi);
+                    gridLayout.removeView(cardPazienti);
+                    gridLayout.invalidate();
+                    gridLayout.requestLayout();
+                }
+            });
+
+
+        return view;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,23 +112,4 @@ public class HomePageLogopedistaFragment extends Fragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home_page_logopedista, container, false);
-        CardView cardAppuntamenti = view.findViewById(R.id.cardAppuntamenti);
-        if (cardAppuntamenti != null) {
-            cardAppuntamenti.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Utilizza findNavController(view) per trovare il NavController associato al frammento
-                    NavController navController = Navigation.findNavController(v);
-
-                    // Naviga direttamente al frammento_appuntamenti utilizzando l'ID
-                    navController.navigate(R.id.fragment_appuntamenti_logopedista);
-                }
-            });
-        }
-        return view;
-    }
 }

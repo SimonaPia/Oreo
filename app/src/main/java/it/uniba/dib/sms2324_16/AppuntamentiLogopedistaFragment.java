@@ -1,18 +1,27 @@
 package it.uniba.dib.sms2324_16;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,15 +35,16 @@ public class AppuntamentiLogopedistaFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Ottieni le referenze alle viste dal layout
         CalendarView calendarView = view.findViewById(R.id.calendarView3);
 
+        // Imposta il listener per la selezione della data
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                // Imposta la data corretta nel CalendarView
-                view.setDate(view.getDate(), true, true);
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
+                // Chiamato quando un giorno è selezionato
 
-                // Mostriamo una finestra di dialogo con l'appuntamento per la data selezionata
+                // Visualizza la finestra di dialogo per l'appuntamento
                 showAppointmentDialog(year, month, dayOfMonth);
             }
         });
@@ -57,5 +67,44 @@ public class AppuntamentiLogopedistaFragment extends Fragment {
         alertDialog.show();
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_appuntamenti_logopedista, container, false);
+        Button bottoneModifica = rootView.findViewById(R.id.button3);
+        ImageView buttonWithIcon = rootView.findViewById(R.id.buttonWithIcon);
+        ImageView topLeftIcon = rootView.findViewById(R.id.topLeftIcon);
+        bottoneModifica.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Avvia l'ExerciseListActivity quando il pulsante viene premuto
+                Intent intent = new Intent(getActivity(), NewAppointmentActivity.class);
+                startActivity(intent);
+            }
+        });
+        buttonWithIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Avvia l'ExerciseListActivity quando il pulsante viene premuto
+                Intent intent = new Intent(getActivity(), NewAppointmentActivity.class);
+                startActivity(intent);
+            }
+        });
+        topLeftIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+
+
+                    // Esegui la navigazione solo se non sei già nel fragment di destinazione
+                    navController.navigate(R.id.homepage_logopedista_fragment);
+
+            }
+        });
+
+        Log.d("FragmentLifecycle", "onCreateView called");
+        Toast.makeText(requireContext(), "onCreateView called", Toast.LENGTH_SHORT).show();
+        return rootView;
+    }
 
 }
