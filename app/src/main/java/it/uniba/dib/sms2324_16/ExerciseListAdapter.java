@@ -3,6 +3,7 @@ package it.uniba.dib.sms2324_16;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,6 +153,7 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
                 public void onClick(View v) {
                     // Notify the listener when a patient is selected
                     listener.onPatientSelected(selectedPatient);
+                    Log.d("ExerciseListAdapter", "Patient selected: " + selectedPatient.getName());
                 }
             });
         }
@@ -198,10 +200,12 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
                 selectedPatient.addAssignedExercise(exercise);
                 // Notifica l'activity dell'assegnazione e della necessità di aggiornare l'adapter
                 listener.onAssignClick(exercise, selectedPatient, exercisePosition);
+                showAssignConfirmationDialog(exercise, selectedPatient, exercisePosition);
             }
         });
 
         AlertDialog dialog = builder.create();
+        Log.d("ExerciseListAdapter", "Showing assign exercise dialog");
         dialog.show();
     }
 
@@ -212,29 +216,25 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     }
 
     private void showAssignConfirmationDialog(final Exercise exercise, final Patient selectedPatient, final int exercisePosition) {
+        Log.d("ExerciseListAdapter", "showAssignConfirmationDialog called");
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Conferma assegnazione");
         builder.setMessage("Vuoi assegnare l'esercizio a " + selectedPatient.getName() + "?");
-        builder.setPositiveButton("Sì", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Assegna l'esercizio al paziente selezionato
-                selectedPatient.addAssignedExercise(exercise);
+        builder.setPositiveButton("Sì", (dialog, which) -> {
+            // Assegna l'esercizio al paziente selezionato
+            selectedPatient.addAssignedExercise(exercise);
 
-                // Notifica l'activity dell'assegnazione e della necessità di aggiornare l'adapter
-                if (listener != null) {
-                    listener.onAssignClick(exercise, selectedPatient, exercisePosition);
-                }
-
-                // Aggiungi il toast qui
-                Toast.makeText(context, "Esercizio assegnato a " + selectedPatient.getName(), Toast.LENGTH_SHORT).show();
+            // Notifica l'activity dell'assegnazione e della necessità di aggiornare l'adapter
+            if (listener != null) {
+                listener.onAssignClick(exercise, selectedPatient, exercisePosition);
+                Log.d("ExerciseListAdapter", "Exercise assigned to " + selectedPatient.getName());
             }
+
+            Toast.makeText(context, "Esercizio assegnato a " + selectedPatient.getName(), Toast.LENGTH_SHORT).show();
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Handle negative button click if needed
-            }
+        builder.setNegativeButton("No", (dialog, which) -> {
+            Log.d("ExerciseListAdapter", "Negative button clicked");
         });
 
         AlertDialog dialog = builder.create();
