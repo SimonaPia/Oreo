@@ -2,37 +2,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homepage_logopedista_fragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/homepage_logopedista_fragment"
-        android:name="it.uniba.dib.sms2324_16.HomePageLogopedistaFragment"
-        android:label="Home Page"
-        tools:layout="@layout/fragment_home_page_logopedista">
-
+        android:id="@+id/loginFragment"
+        android:name="it.uniba.dib.sms2324_16.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_homepage_logopedista_fragment_to_fragment_appuntamenti_logopedista"
-            app:destination="@id/fragment_appuntamenti_logopedista" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/fragment_appuntamenti_logopedista"
-        android:name="it.uniba.dib.sms2324_16.AppuntamentiLogopedistaFragment"
-        android:label="Appuntamenti"
-        tools:layout="@layout/fragment_appuntamenti_logopedista" >
-
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
         <action
-            android:id="@+id/action_fragment_appuntamenti_logopedista_to_NewAppointmentActivity"
-            app:destination="@id/NewAppointment" />
-        <action
-            android:id="@+id/action_fragment_appuntamenti_logopedista_to_homepage_logopedista_fragment"
+            android:id="@+id/action_loginFragment_to_homepage_logopedista_fragment"
             app:destination="@id/homepage_logopedista_fragment" />
     </fragment>
-    <activity
-        android:id="@+id/NewAppointment"
-        android:name="it.uniba.dib.sms2324_16.NewAppointmentActivity"
-        android:label="inserimento_appuntamenti"
-        tools:layout="@layout/inserimento_appuntamenti" />
+
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="it.uniba.dib.sms2324_16.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <include app:graph="@navigation/nav_graph_2" />
 
 
 </navigation>

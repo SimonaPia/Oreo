@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pesca">
+
+    <TextView
+        android:id="@+id/nome_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PronuntiApp"
+        android:textColor="@color/celeste"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:textAlignment="center"
+        android:layout_marginTop="260dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/benvenuto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Benvenuto/a"
+        android:textColor="@color/celeste"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/nome_app"/>
+
+    <TextView
+        android:id="@+id/nome_cognome_logopedista"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nome Cognome !"
+        android:textColor="@color/celeste"
+        android:textStyle="bold"
+        android:textSize="40dp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/benvenuto"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

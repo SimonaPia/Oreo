@@ -14,7 +14,7 @@
         tools:targetApi="27"
         android:enableOnBackInvokedCallback="true">
         <activity
-            android:name=".HomePageLogopedista"
+            android:name=".Welcome"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.PronuntiApp_Oreo_sms2324">
@@ -38,7 +38,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".HomePageLogopedista"></activity>
+        <activity android:name=".HomePage"></activity>
+        <activity android:name=".IntermediatePage"></activity>
     </application>
 
 </manifest>

@@ -84,12 +84,12 @@ public class HomePageLogopedistaFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     // Utilizza Navigation.findNavController() passando l'activity e il tuo fragment
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host);
 
                     // Controlla se il fragment di destinazione è già presente
                     if (navController.getCurrentDestination().getId() != R.id.fragment_appuntamenti_logopedista) {
                         // Esegui la navigazione solo se non sei già nel fragment di destinazione
-                        navController.navigate(R.id.fragment_appuntamenti_logopedista);
+                        navController.navigate(R.id.action_homepage_logopedista_fragment_to_fragment_appuntamenti_logopedista);
                     }
                     gridLayout.removeViewAt(0); // Esempio: rimuove la prima CardView
                     gridLayout.removeView(cardAppuntamenti);

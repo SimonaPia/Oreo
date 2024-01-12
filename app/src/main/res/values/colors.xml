@@ -7,5 +7,10 @@
     <color name="blu">#0000FF</color>
     <color name="blu_medio">#0000CD</color>
     <color name="blu_oltremare">#120A8F</color>
-    <color name="blu_oltremare_pressed">#303F9F</color>
+    <color name="magenta_sbiadito">#9D6381</color>
+    <color name="blu_scuro_sbiadito">#1C3144</color>
+    <color name="celeste">#3F88C5</color>
+    <color name="verdeacqua_sbiadito">#61A0AF</color>
+    <color name="gray">#9C9C9C</color>
+    <color name="red">#FF0000</color>
 </resources>

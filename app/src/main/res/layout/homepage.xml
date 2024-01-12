@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomePageLogopedista">
+    tools:context=".HomePage">
 
     <LinearLayout
-        android:id="@+id/homepage_logopedista"
+        android:id="@+id/homepage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -21,11 +21,11 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/nav_host"
+            android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:navGraph="@navigation/nav_graph_2" />
+            app:navGraph="@navigation/nav_graph" />
 
         <FrameLayout
             android:id="@+id/frameLayout"
