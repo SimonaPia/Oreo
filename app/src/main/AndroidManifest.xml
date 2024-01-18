@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -13,6 +12,7 @@
         android:theme="@style/Theme.PronuntiApp_Oreo_sms2324"
         tools:targetApi="27"
         android:enableOnBackInvokedCallback="true">
+
         <activity
             android:name=".Welcome"
             android:exported="true"
@@ -20,24 +20,18 @@
             android:theme="@style/Theme.PronuntiApp_Oreo_sms2324">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".ExerciseListActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+
         <activity android:name=".NewAppointmentActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+
         <activity android:name=".HomePageLogopedista"></activity>
         <activity android:name=".HomePage"></activity>
         <activity android:name=".IntermediatePage"></activity>

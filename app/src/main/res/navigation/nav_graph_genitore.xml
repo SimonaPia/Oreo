@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,5 +9,19 @@
         android:id="@+id/homePageGenitoreFragment"
         android:name="it.uniba.dib.sms2324_16.HomePageGenitoreFragment"
         android:label="Home Page Genitore"
-        tools:layout="@layout/fragment_homepage_genitore" />
+        tools:layout="@layout/fragment_homepage_genitore" >
+
+        <!-- Definisci l'azione all'interno del fragment -->
+        <action
+            android:id="@+id/action_homePageGenitoreFragment_to_activitySceltaScenario"
+            app:destination="@id/activity_scelta_scenario" />
+    </fragment>
+
+    <!-- Definisci la destinazione dell'activity_scelta_scenario -->
+    <activity
+        android:id="@+id/activity_scelta_scenario"
+        android:name="it.uniba.dib.sms2324_16.SceltaScenarioActivity" />
+
+
 </navigation>
+

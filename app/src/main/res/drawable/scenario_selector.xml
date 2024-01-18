@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Fiabesco -->
+    <item android:drawable="@drawable/fiabesco_immagine" android:state_checked="true" />
+
+    <!-- Savana -->
+    <item android:drawable="@drawable/savana_immagine" android:state_checked="false" android:state_pressed="true" />
+
+    <!-- Pirati -->
+    <item android:drawable="@drawable/pirata__immagine" android:state_checked="false" android:state_focused="true" />
+
+    <!-- Mondo Incantato -->
+    <item android:drawable="@drawable/mondo_incantato_immagine" android:state_checked="false" />
+</selector>
+
+
