@@ -62,7 +62,7 @@ public class Appointment {
         appointment.setPatient((String) map.get("patient"));
         return appointment;
     }
-}
 
+}
 
 
