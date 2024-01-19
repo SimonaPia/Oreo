@@ -10,5 +10,5 @@
         android:id="@+id/homePageGenitoreFragment"
         android:name="it.uniba.dib.sms2324_16.HomePageGenitoreFragment"
         android:label="Home Page Genitore"
-        tools:layout="@layout/fragment_homepage_genitore" />
+        tools:layout="@layout/fragment_home_page_genitore" />
 </navigation>

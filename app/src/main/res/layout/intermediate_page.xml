@@ -4,42 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pesca">
+    android:background="@color/pesca"
+    tools:context=".IntermediatePage">
 
-    <TextView
-        android:id="@+id/nome_app"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="PronuntiApp"
-        android:textColor="@color/celeste"
-        android:textStyle="bold"
-        android:textSize="30dp"
-        android:textAlignment="center"
-        android:layout_marginTop="260dp"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="370dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="240dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="12dp"
+        app:cardBackgroundColor="@color/white"
+        app:strokeColor="@color/marrone_arancio"
+        app:strokeWidth="6dp">
 
-    <TextView
-        android:id="@+id/benvenuto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Benvenuto/a"
-        android:textColor="@color/celeste"
-        android:textStyle="bold"
-        android:textSize="30dp"
-        android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@id/nome_app"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
-    <TextView
-        android:id="@+id/nome_cognome_logopedista"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Nome Cognome !"
-        android:textColor="@color/celeste"
-        android:textStyle="bold"
-        android:textSize="40dp"
-        android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@id/benvenuto"/>
+            <TextView
+                android:id="@+id/nome_app"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PronuntiApp"
+                android:textColor="@color/celeste"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/benvenuto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Benvenuto/a"
+                android:textColor="@color/celeste"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/nome_cognome_logopedista"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nome Cognome !"
+                android:textColor="@color/celeste"
+                android:textStyle="bold"
+                android:textSize="40dp"
+                android:textAlignment="center"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

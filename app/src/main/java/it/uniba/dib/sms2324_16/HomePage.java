@@ -1,5 +1,6 @@
 package it.uniba.dib.sms2324_16;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -29,11 +30,16 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.homepage);
         Toolbar myToolbar = findViewById(R.id.MyToolbar);
         setSupportActionBar(myToolbar);
+        Intent intent = getIntent();
+        String sottotitolo = intent.getStringExtra("tipoUtente");
 
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         getSupportActionBar().setTitle("PronuntiApp");
-        getSupportActionBar().setSubtitle("Logopedista");
+        if (sottotitolo.equals("logopedista"))
+            getSupportActionBar().setSubtitle("Logopedista");
+        else if (sottotitolo.equals("genitore"))
+            getSupportActionBar().setSubtitle("Genitore");
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
