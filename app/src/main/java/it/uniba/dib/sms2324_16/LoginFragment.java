@@ -105,6 +105,8 @@ public class LoginFragment extends Fragment {
         }
     }
 
+
+
     private void accesso(String email, String password) {
 
         mAuth.signInWithEmailAndPassword(email, password)

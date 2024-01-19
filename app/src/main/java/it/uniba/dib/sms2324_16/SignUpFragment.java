@@ -167,18 +167,9 @@ public class SignUpFragment extends Fragment {
                             nomeString = nome.getText().toString();
                             cognomeString = cognome.getText().toString();
 
-                            Intent intent = getActivity().getIntent();
-                            String tipoUtente = intent.getStringExtra("tipoUtente");
-
                             if(!nomeString.isEmpty() && !cognomeString.isEmpty())
                             {
-                                Users user = null;
-
-                                if (tipoUtente.equals("logopedista"))
-                                    user = new Users(nomeString, cognomeString, tipoUtente);
-                                else if (tipoUtente.equals("genitore"))
-                                    user = new Users(nomeString, cognomeString, tipoUtente);
-
+                                Users user = new Users(nomeString, cognomeString, "logopedista");
                                 controlloUtente(firebaseUser, user);
                             }
                             else

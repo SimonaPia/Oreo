@@ -35,7 +35,6 @@
         <activity android:name=".HomePageLogopedista"></activity>
         <activity android:name=".HomePage"></activity>
         <activity android:name=".IntermediatePage"></activity>
-        <activity android:name=".HomePageGenitore"></activity>
     </application>
 
 </manifest>

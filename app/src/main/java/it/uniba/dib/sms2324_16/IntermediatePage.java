@@ -47,18 +47,9 @@ public class IntermediatePage extends AppCompatActivity {
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (user.getTipoUtente().equals("logopedista"))
-                                    {
-                                        Intent intent1 = new Intent(IntermediatePage.this, HomePageLogopedista.class);
-                                        intent1.putExtra("nomeCognome", nome + cognome);
-                                        startActivity(intent1);
-                                    } else if (user.getTipoUtente().equals("genitore"))
-                                    {
-                                        Intent intent1 = new Intent(IntermediatePage.this, HomePageGenitore.class);
-                                        intent1.putExtra("nomeCognome", nome + cognome);
-                                        startActivity(intent1);
-                                    }
-
+                                    Intent intent1 = new Intent(IntermediatePage.this, HomePageLogopedista.class);
+                                    intent1.putExtra("nomeCognome", nome + cognome);
+                                    startActivity(intent1);
                                 }
                             }, 3000);  // Delay di 3000 millisecondi (3 secondi)
                         } else {
