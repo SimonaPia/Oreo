@@ -21,6 +21,7 @@ public class NewAppointmentActivity extends AppCompatActivity {
     private EditText editTextDate;
     private EditText editTextTime;
     private EditText editTextPatient;
+    private EditText editTextGenitore;
 
     private AppointmentManager appointmentManager;
 
@@ -35,6 +36,7 @@ public class NewAppointmentActivity extends AppCompatActivity {
         editTextDate = findViewById(R.id.editTextDate);
         editTextTime = findViewById(R.id.editTextTime);
         editTextPatient = findViewById(R.id.editTextPatient);
+        editTextGenitore = findViewById(R.id.editTextGenitore);
         Button buttonSave = findViewById(R.id.buttonSave);
 
         // Inizializza il gestore degli appuntamenti
@@ -56,13 +58,14 @@ public class NewAppointmentActivity extends AppCompatActivity {
         String dateString = editTextDate.getText().toString();
         String timeString = editTextTime.getText().toString();  // Stringa di tempo nel formato "HH:mm"
         String patient = editTextPatient.getText().toString();
+        String genitore = editTextGenitore.getText().toString();
 
         // Converti le stringhe di data e tempo in oggetti Date
         Date date = convertStringToDate(dateString);
         Date time = convertStringToTime(timeString);
 
         // Crea un nuovo oggetto appuntamento senza il campo "location"
-        Appointment appointment = new Appointment(date, time, patient);
+        Appointment appointment = new Appointment(date, time, patient,genitore);
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {

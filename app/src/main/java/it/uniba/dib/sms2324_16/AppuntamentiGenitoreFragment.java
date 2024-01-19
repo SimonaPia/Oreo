@@ -40,7 +40,7 @@ public class AppuntamentiGenitoreFragment extends Fragment {
 
     private void showAppointmentDialog(int year, int month, int dayOfMonth) {
         // Puoi personalizzare il layout della finestra di dialogo come preferisci
-        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dettagli_appuntamenti, null);
+        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.appuntamenti_genitore_dettagli, null);
 
         // Inizializza e mostra la finestra di dialogo
         AlertDialog alertDialog = new AlertDialog.Builder(requireContext())

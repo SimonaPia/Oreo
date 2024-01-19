@@ -98,9 +98,9 @@ NewAppointmentActivity newAppointmentActivity = new NewAppointmentActivity();
         Log.d("ShowAppointmentDialog", "UserId: " + userId + "data selezionata" + timestampMillis);
 
         db.collection("appointments")
-                .document(userId)  // Assumendo che userId sia l'ID del documento nella raccolta "appointments"
+                .document(userId)
                 .collection("logopedistAppointments")
-                .whereEqualTo("date", new Timestamp(new Date(selectedCalendar.getTimeInMillis())))
+                .whereEqualTo("date", timestampMillis)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -108,6 +108,7 @@ NewAppointmentActivity newAppointmentActivity = new NewAppointmentActivity();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             // Resto del codice per ottenere i dati dell'appuntamento
                             String paziente = document.getString("patient");
+                            String genitore = document.getString("genitore");
                             long timeNumber = document.getLong("time");
 
                             Date time = new Date(timeNumber);
@@ -117,7 +118,7 @@ NewAppointmentActivity newAppointmentActivity = new NewAppointmentActivity();
 
                             Log.d("Firestore", "Paziente: " + paziente + ", Formatted Time: " + formattedTime);
 
-                            showDialog(paziente, formattedTime, selectedCalendar);
+                            showDialog(paziente, formattedTime, selectedCalendar,genitore);
                         }
                     } else {
                         Log.e("Firestore", "Error getting documents: ", task.getException());
@@ -126,17 +127,19 @@ NewAppointmentActivity newAppointmentActivity = new NewAppointmentActivity();
                 });
     }
 
-    private void showDialog(String paziente, String ora, Calendar selectedCalendar) {
+    private void showDialog(String paziente, String ora, Calendar selectedCalendar,String genitore) {
         // Puoi personalizzare il layout della finestra di dialogo come preferisci
         View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dettagli_appuntamenti, null);
 
         // Trova le viste nel layout della finestra di dialogo
         TextView pazienteTextView = dialogView.findViewById(R.id.pazienteTextView);
         TextView oraTextView = dialogView.findViewById(R.id.oraTextView);
-
+        TextView genitoreTextView = dialogView.findViewById(R.id.genitoreTextView);
         // Imposta i dati nei campi appropriati
+        genitoreTextView.setText("Genitore: " + genitore);
         pazienteTextView.setText("Paziente: " + paziente);
         oraTextView.setText("Ora: " + ora);
+
 
         // Inizializza e mostra la finestra di dialogo
         AlertDialog alertDialog = new AlertDialog.Builder(requireContext())
