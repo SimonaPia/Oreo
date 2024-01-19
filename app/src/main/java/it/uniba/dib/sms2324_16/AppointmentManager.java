@@ -20,7 +20,7 @@ public class AppointmentManager {
         // Inizializzazione degli attributi con l'ID del logopedista fornito
         this.logopedistId = logopedistId;
         this.appointmentsRef = FirebaseFirestore.getInstance()
-                .collection("InserimentoAppuntamento")
+                .collection("appointments")
                 .document(logopedistId)
                 .collection("logopedistAppointments");
     }

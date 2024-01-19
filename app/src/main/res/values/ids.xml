@@ -14,12 +14,4 @@
     <item name="recyclerViewAssign" type="id" />
     <item name="recyclerViewAssign2" type="id" />
     <item name="assignButton" type="id" />
-    <item name="spinner_scenario" type="id" />
-    <item name="immagine_ambientazione" type="id" />
-    <item name="your_button_id" type="id" />
-    <item name="action_homePageGenitoreFragment_to_activity_scelta_scenario" type="id" />
-    <item name="action_homePageGenitoreFragment_to_activity_scelta_scenario_fiabesco" type="id" />
-    <item name="action_homePageGenitoreFragment_to_activity_scelta_scenario_savana" type="id" />
-    <item name="action_homePageGenitoreFragment_to_activity_scelta_scenario_mondo_incantato" type="id" />
-    <item name="action_homePageGenitoreFragment_to_activity_scelta_scenario_pirata" type="id" />
 </resources>

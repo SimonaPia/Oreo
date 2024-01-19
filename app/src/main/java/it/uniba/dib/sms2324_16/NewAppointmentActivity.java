@@ -37,7 +37,7 @@ public class NewAppointmentActivity extends AppCompatActivity {
 
         // Inizializza il gestore degli appuntamenti
         appointmentManager = new AppointmentManager();
-        appointmentManager.setLogopedistId("BKXMJytd5wKJQEIF6IbP");  // Sostituisci con l'ID effettivo
+        appointmentManager.setLogopedistId("il_tuo_id_del_logopedista");  // Sostituisci con l'ID effettivo
 
         // Aggiungi un listener al pulsante Salva
         buttonSave.setOnClickListener(new View.OnClickListener() {

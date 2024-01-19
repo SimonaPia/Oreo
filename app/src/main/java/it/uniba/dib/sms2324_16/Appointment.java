@@ -60,12 +60,7 @@ public class Appointment {
         appointment.setDate(new Date((long) map.get("date")));
         appointment.setTime(new Date((long) map.get("time")));
         appointment.setPatient((String) map.get("patient"));
-        appointment.setGenitore((String)map.get("genitore"));
         return appointment;
-    }
-
-    private String setGenitore(String genitore) {
-        return genitore;
     }
 }
 

@@ -8,12 +8,6 @@
     <string name="previous">Previous</string>
     <string name="hint_date">Data</string>
     <string name="title_assign_patient">Assegna un Paziente</string>
-    <string-array name="opzioni_scenario">
-        <item>Fiabesco</item>
-        <item>Savana</item>
-        <item>Pirati</item>
-        <item>Mondo Incantato</item>
-    </string-array>
 
 
     <string name="lorem_ipsum">
