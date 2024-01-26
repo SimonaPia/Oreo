@@ -9,6 +9,7 @@ public class Appointment {
     private Date time;
     private String patient;
     private String genitore;
+    private String genitoreId;
 
     public Appointment() {
         // Costruttore vuoto richiesto per Firestore
@@ -19,6 +20,7 @@ public class Appointment {
         this.time = time;
         this.patient = patient;
         this.genitore = genitore;
+
     }
 
     // Getter e setter per gli attributi
@@ -56,6 +58,7 @@ public class Appointment {
         if (time != null) map.put("time", time.getTime());
         map.put("patient", patient);
         map.put("genitore",genitore);
+
         return map;
     }
 
@@ -66,6 +69,7 @@ public class Appointment {
         appointment.setTime(new Date((long) map.get("time")));
         appointment.setPatient((String) map.get("patient"));
         appointment.setGenitore((String) map.get("genitore"));
+
         return appointment;
     }
 

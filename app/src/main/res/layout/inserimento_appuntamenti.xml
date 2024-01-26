@@ -50,13 +50,14 @@
             android:layout_height="56dp"
             android:hint="Paziente"
             android:inputType="textPersonName" />
-
         <EditText
             android:id="@+id/editTextGenitore"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:hint="Genitore"
             android:inputType="textPersonName" />
+
+
 
         <Button
             android:id="@+id/buttonSave"

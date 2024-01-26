@@ -45,32 +45,7 @@ public class AppointmentManager {
         }
     }
 
-    public void getAppointments(OnAppointmentsLoadedListener listener) {
-        // Verifica che l'utente sia autenticato prima di recuperare gli appuntamenti
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null && appointmentsRef != null) {
-            // Recupera la lista degli appuntamenti da Firestore e notifica l'ascoltatore
-            appointmentsRef
-                    .document(currentUser.getUid())
-                    .collection("logopedistAppointments")  // Usa il nome corretto della sottoraccolta
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            List<Appointment> appointments = new ArrayList<>();
-                            for (DocumentSnapshot document : task.getResult()) {
-                                // Converti la mappa in un oggetto Appointment
-                                Appointment appointment = document.toObject(Appointment.class);
-                                appointments.add(appointment);
-                            }
-                            listener.onAppointmentsLoaded(appointments);
-                        } else {
-                            listener.onAppointmentsLoadError(task.getException());
-                        }
-                    });
-        } else {
-            // Gestione dell'errore o log quando l'utente non è autenticato
-        }
-    }
+
 }
 
 
