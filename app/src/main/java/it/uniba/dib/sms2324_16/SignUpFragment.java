@@ -174,10 +174,13 @@ public class SignUpFragment extends Fragment {
                             {
                                 Users user = null;
 
-                                if (tipoUtente.equals("logopedista"))
+                                if (tipoUtente.equals("logopedista")) {
                                     user = new Users(nomeString, cognomeString, tipoUtente);
-                                else if (tipoUtente.equals("genitore"))
+                                } else if (tipoUtente.equals("genitore")) {
                                     user = new Users(nomeString, cognomeString, tipoUtente);
+                                } else if ("bambino".equals(tipoUtente)) {
+                                    user = new Users(nomeString, cognomeString, tipoUtente);
+                                }
 
                                 controlloUtente(firebaseUser, user);
                             }

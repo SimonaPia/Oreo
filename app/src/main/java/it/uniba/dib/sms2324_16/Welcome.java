@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Welcome extends AppCompatActivity {
     private Button buttonLogopedista;
     private Button buttonGenitore;
+    private Button buttonBambino;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -34,6 +35,17 @@ public class Welcome extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Welcome.this, HomePage.class);
                 intent.putExtra("tipoUtente", "genitore");
+                startActivity(intent);
+            }
+        });
+
+        buttonBambino = findViewById(R.id.buttonBambino);
+
+        buttonBambino.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Welcome.this, HomePage.class);
+                intent.putExtra("tipoUtente", "bambino");
                 startActivity(intent);
             }
         });
