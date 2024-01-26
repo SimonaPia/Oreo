@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AppuntamentiGenitoreFragment"
+    android:background="@color/pesca">
+
+    <CalendarView
+        android:id="@+id/calendarView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#1C3144"/>
+
+    <!-- LinearLayout per l'icona "Turn Left" -->
+    <LinearLayout
+        android:id="@+id/topLeftLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp">
+
+        <ImageView
+            android:id="@+id/topLeftIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="Icona in alto a sinistra"
+            android:src="@mipmap/ic_turn_left" />
+    </LinearLayout>
+
+    <!-- LinearLayout per il pulsante "Modifica" e l'icona "Add" -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@id/topLeftLayout"
+        android:layout_alignBottom="@id/topLeftLayout"
+        android:layout_marginEnd="16dp">
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+
+            android:background="@color/magenta_sbiadito"
+            android:text="Modifica" />
+
+        <ImageView
+            android:id="@+id/buttonWithIcon"
+            android:layout_width="49dp"
+            android:layout_height="49dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:contentDescription="tasto per aggiunta"
+            android:src="@mipmap/ic_add" />
+    </LinearLayout>
+</RelativeLayout>

@@ -52,7 +52,8 @@ public class IntermediatePage extends AppCompatActivity {
                                         Intent intent1 = new Intent(IntermediatePage.this, HomePageLogopedista.class);
                                         intent1.putExtra("nomeCognome", nome + cognome);
                                         startActivity(intent1);
-                                    } else if (user.getTipoUtente().equals("genitore"))
+                                    }
+                                    else if (user.getTipoUtente().equals("genitore"))
                                     {
                                         Intent intent1 = new Intent(IntermediatePage.this, HomePageGenitore.class);
                                         intent1.putExtra("nomeCognome", nome + cognome);

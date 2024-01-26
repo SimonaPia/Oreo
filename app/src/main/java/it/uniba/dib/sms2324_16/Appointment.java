@@ -8,15 +8,17 @@ public class Appointment {
     private Date date;
     private Date time;
     private String patient;
+    private String genitore;
 
     public Appointment() {
         // Costruttore vuoto richiesto per Firestore
     }
 
-    public Appointment(Date date, Date time, String patient) {
+    public Appointment(Date date, Date time, String patient,String genitore) {
         this.date = date;
         this.time = time;
         this.patient = patient;
+        this.genitore = genitore;
     }
 
     // Getter e setter per gli attributi
@@ -44,6 +46,8 @@ public class Appointment {
     public void setPatient(String patient) {
         this.patient = patient;
     }
+    public void setGenitore(String genitore){this.genitore = genitore;}
+    public String getGenitore(){return genitore;}
 
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
@@ -51,6 +55,7 @@ public class Appointment {
         if (date != null) map.put("date", date.getTime());
         if (time != null) map.put("time", time.getTime());
         map.put("patient", patient);
+        map.put("genitore",genitore);
         return map;
     }
 
@@ -60,9 +65,10 @@ public class Appointment {
         appointment.setDate(new Date((long) map.get("date")));
         appointment.setTime(new Date((long) map.get("time")));
         appointment.setPatient((String) map.get("patient"));
+        appointment.setGenitore((String) map.get("genitore"));
         return appointment;
     }
-}
 
+}
 
 

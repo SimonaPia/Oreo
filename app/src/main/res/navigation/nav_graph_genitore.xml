@@ -10,5 +10,14 @@
         android:id="@+id/homePageGenitoreFragment"
         android:name="it.uniba.dib.sms2324_16.HomePageGenitoreFragment"
         android:label="Home Page Genitore"
-        tools:layout="@layout/fragment_homepage_genitore" />
+        tools:layout="@layout/fragment_home_page_genitore" >
+        <action
+            android:id="@+id/action_homePageGenitoreFragment_to_appuntamentiGenitoreFragment"
+            app:destination="@id/appuntamentiGenitoreFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/appuntamentiGenitoreFragment"
+        android:name="it.uniba.dib.sms2324_16.AppuntamentiGenitoreFragment"
+        android:label="appuntamenti_genitore"
+        tools:layout="@layout/appuntamenti_genitore" />
 </navigation>
