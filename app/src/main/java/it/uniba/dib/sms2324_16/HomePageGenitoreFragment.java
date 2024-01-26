@@ -1,6 +1,7 @@
 package it.uniba.dib.sms2324_16;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,8 @@ public class HomePageGenitoreFragment extends Fragment {
         GridLayout gridLayout = view.findViewById(R.id.gridLayout);
         CardView cardAppuntamenti = view.findViewById(R.id.cardAppuntamenti);
         CardView cardEsercizi = view.findViewById(R.id.cardEsercizi);
-        CardView cardPazienti = view.findViewById(R.id.cardPazienti);
+        CardView cardScenario = view.findViewById(R.id.cardScenario);
+
         cardAppuntamenti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,12 +44,25 @@ public class HomePageGenitoreFragment extends Fragment {
                 gridLayout.removeViewAt(0); // Esempio: rimuove la prima CardView
                 gridLayout.removeView(cardAppuntamenti);
                 gridLayout.removeView(cardEsercizi);
-                gridLayout.removeView(cardPazienti);
                 gridLayout.invalidate();
                 gridLayout.requestLayout();
             }
         });
+        cardScenario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Crea un Intent per avviare l'activity di destinazione
+                Intent intent = new Intent(requireContext(), SceltaScenarioActivity.class);
 
+                // Avvia l'activity
+                startActivity(intent);
+
+                // Puoi rimuovere la CardView se necessario
+                gridLayout.removeView(cardScenario);
+                gridLayout.invalidate();
+                gridLayout.requestLayout();
+            }
+        });
 
         return view;
     }

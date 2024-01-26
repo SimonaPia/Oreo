@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#1C3144"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <!-- Aggiungi il tuo nuovo elemento per la freccia indietro -->
+        <ImageButton
+        android:id="@+id/topLeftIcon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="start"
+        android:contentDescription="Icona in alto a sinistra"
+        android:src="@mipmap/ic_turn_left" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/titolo_scenario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Seleziona l'ambientazione di gioco"
+        android:textSize="18sp"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <Spinner
+        android:id="@+id/spinner_ambientazione"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titolo_scenario"
+        android:layout_marginTop="52dp"
+        android:entries="@array/opzioni_scenario" />
+
+    <LinearLayout
+        android:id="@+id/linearlayout_scelte_alto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/spinner_ambientazione"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/btnFiabesco"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="#1C3144"
+            android:text="Fiabesco"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnSavana"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Savana"
+            android:backgroundTint="#1C3144"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_scelte_basso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/linearlayout_scelte_alto"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/btnPirata"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Pirati"
+            android:backgroundTint="#1C3144"
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/btnMondoIncantato"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Mondo Incantato"
+            android:backgroundTint="#1C3144"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/immagine_fiabesco"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/bottone_conferma"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/fiabesco_immagine"
+        android:visibility="gone"
+        android:onClick="onImmagineClick" />
+    <ImageView
+        android:id="@+id/immagine_savana"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/bottone_conferma"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/savana_immagine"
+        android:visibility="gone"
+        android:onClick="onImmagineClick" />
+
+    <ImageView
+        android:id="@+id/immagine_mondo_incantato"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/bottone_conferma"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/mondo_incantato_immagine"
+        android:visibility="gone"
+        android:onClick="onImmagineClick" />
+
+    <ImageView
+        android:id="@+id/immagine_pirati"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/bottone_conferma"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/pirata_immagine"
+        android:visibility="gone"
+        android:onClick="onImmagineClick" />
+
+</RelativeLayout>

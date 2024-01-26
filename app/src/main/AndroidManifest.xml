@@ -38,7 +38,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListaGenitori"/>
+        <activity android:name=".SceltaScenarioActivity" />
+        <activity android:name=".ScenarioFiabescoActivity" />
+        <activity android:name=".ScenarioSavanaActivity" />
+        <activity android:name=".ScenarioMondoIncantatoActivity" />
+        <activity android:name=".ScenarioPirataActivity" />
         <activity android:name=".HomePageLogopedista"></activity>
         <activity android:name=".HomePage"></activity>
         <activity android:name=".IntermediatePage"></activity>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_scenario_fiabesco.xml -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#1C3144"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <!-- Freccia indietro -->
+        <ImageButton
+            android:id="@+id/topLeftIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="start"
+            android:contentDescription="Icona in alto a sinistra"
+            android:src="@mipmap/ic_turn_left" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- Resto del layout sotto la Toolbar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <!-- Titolo dello scenario -->
+        <TextView
+            android:id="@+id/tvScenarioTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scenario Fiabesco"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <!-- Immagine rappresentativa dello scenario -->
+        <ImageView
+            android:id="@+id/ivScenarioImage"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/fiabesco_immagine" />
+
+        <Button
+            android:id="@+id/bottone_conferma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linearlayout_scelte_basso"
+            android:layout_marginTop="54dp"
+            android:backgroundTint="#1C3144"
+            android:onClick="onConfermaClick"
+            android:text="Conferma"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+</RelativeLayout>

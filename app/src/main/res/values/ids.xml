@@ -14,5 +14,14 @@
     <item name="recyclerViewAssign" type="id" />
     <item name="recyclerViewAssign2" type="id" />
     <item name="assignButton" type="id" />
-    <item name="figlioTextView" type="id" />
+    <item name="cardScenario" type="id" />
+    <item name="recycler_view" type="id" />
+    <item name="action_homePageGenitoreFragment_to_activity_scelta_scenario_pirata" type="id" />
+    <item name="action_homePageGenitoreFragment_to_activity_scelta_scenario_mondo_incantato" type="id" />
+    <item name="action_homePageGenitoreFragment_to_activity_scelta_scenario_fiabesco" type="id" />
+    <item name="action_homePageGenitoreFragment_to_activity_scelta_scenario_savana" type="id" />
+    <item name="fragment_fiabesco" type="id" />
+    <item name="fragment_mondo_incantato" type="id" />
+    <item name="fragment_pirata" type="id" />
+    <item name="fragment_savana" type="id" />
 </resources>
