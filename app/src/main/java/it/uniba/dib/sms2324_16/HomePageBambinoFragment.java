@@ -33,7 +33,7 @@ public class HomePageBambinoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Crea un Intent per avviare l'activity di destinazione
-                Intent intent = new Intent(requireContext(), SceltaScenarioActivity.class);
+                Intent intent = new Intent(requireContext(), VisualizzaScenario.class);
 
                 // Avvia l'activity
                 startActivity(intent);

@@ -48,6 +48,8 @@
         <activity android:name=".IntermediatePage"></activity>
         <activity android:name=".HomePageGenitore"></activity>
         <activity android:name=".HomePageBambino"/>
+        <activity android:name=".VisualizzaScenario"/>
+        <activity android:name=".SceltaPersonaggioPiratesco"/>
 
     </application>
 
