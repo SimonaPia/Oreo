@@ -59,6 +59,12 @@ public class IntermediatePage extends AppCompatActivity {
                                         intent1.putExtra("nomeCognome", nome + cognome);
                                         startActivity(intent1);
                                     }
+                                    else if (user.getTipoUtente().equals("bambino"))
+                                    {
+                                        Intent intent1 = new Intent(IntermediatePage.this, HomePageBambino.class);
+                                        intent1.putExtra("nomeCognome", nome + cognome);
+                                        startActivity(intent1);
+                                    }
 
                                 }
                             }, 3000);  // Delay di 3000 millisecondi (3 secondi)

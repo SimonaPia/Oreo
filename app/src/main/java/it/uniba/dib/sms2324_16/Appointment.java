@@ -20,7 +20,6 @@ public class Appointment {
         this.time = time;
         this.patient = patient;
         this.genitore = genitore;
-
     }
 
     // Getter e setter per gli attributi

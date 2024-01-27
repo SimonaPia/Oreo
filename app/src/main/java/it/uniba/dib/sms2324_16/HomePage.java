@@ -40,6 +40,8 @@ public class HomePage extends AppCompatActivity {
             getSupportActionBar().setSubtitle("Logopedista");
         else if (sottotitolo.equals("genitore"))
             getSupportActionBar().setSubtitle("Genitore");
+        else if(sottotitolo.equals("bambino"))
+            getSupportActionBar().setSubtitle("Bambino");
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
