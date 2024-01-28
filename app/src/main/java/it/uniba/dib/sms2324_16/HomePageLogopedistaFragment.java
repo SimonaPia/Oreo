@@ -66,11 +66,8 @@ public class HomePageLogopedistaFragment extends Fragment {
         CardView cardEsercizi = view.findViewById(R.id.cardEsercizi);
         CardView cardPazienti = view.findViewById(R.id.cardPazienti);
 
-        // Trova il pulsante nel tuo fragment
-        Button btnOpenExerciseList = view.findViewById(R.id.btnOpenExerciseList);
-
         // Imposta il click listener
-        btnOpenExerciseList.setOnClickListener(new View.OnClickListener() {
+        cardEsercizi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Avvia l'ExerciseListActivity quando il pulsante viene premuto

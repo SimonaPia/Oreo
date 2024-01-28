@@ -13,6 +13,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 public class HomePageBambinoFragment extends Fragment {
+    private NavController navController;
     public HomePageBambinoFragment() {
         // Costruttore vuoto richiesto
     }
@@ -25,23 +26,15 @@ public class HomePageBambinoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_homepage_bambino, container, false);
         GridLayout gridLayout = view.findViewById(R.id.gridLayout);
         CardView cardAppuntamenti = view.findViewById(R.id.cardAppuntamenti);
-        CardView cardEsercizi = view.findViewById(R.id.cardEsercizi);
+        CardView cardPercorso = view.findViewById(R.id.cardPercorso);
         CardView cardScenario = view.findViewById(R.id.cardScenario);
 
 
-        cardScenario.setOnClickListener(new View.OnClickListener() {
+        cardPercorso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Crea un Intent per avviare l'activity di destinazione
-                Intent intent = new Intent(requireContext(), VisualizzaScenario.class);
-
-                // Avvia l'activity
-                startActivity(intent);
-
-                // Puoi rimuovere la CardView se necessario
-                gridLayout.removeView(cardScenario);
-                gridLayout.invalidate();
-                gridLayout.requestLayout();
+                navController = Navigation.findNavController(requireActivity(), R.id.nav_host_bambino);
+                navController.navigate(R.id.action_homePageBambino_to_percorsoFragment);
             }
         });
 

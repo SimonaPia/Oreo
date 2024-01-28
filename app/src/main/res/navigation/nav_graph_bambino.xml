@@ -11,6 +11,18 @@
         android:label="Home Page Genitore"
         tools:layout="@layout/fragment_homepage_bambino" >
 
+        <action
+            android:id="@+id/action_homePageBambino_to_percorsoFragment"
+            app:destination="@id/percorsoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/percorsoFragment"
+        android:name="it.uniba.dib.sms2324_16.PercorsoFragment"
+        android:label="fragment_percorso"
+        tools:layout="@layout/fragment_percorso" >
+        <action
+            android:id="@+id/action_percorsoFragment_to_homePageBambino"
+            app:destination="@id/homePageBambino" />
     </fragment>
 
 </navigation>
