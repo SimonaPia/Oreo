@@ -24,4 +24,7 @@
     <item name="fragment_mondo_incantato" type="id" />
     <item name="fragment_pirata" type="id" />
     <item name="fragment_savana" type="id" />
+    <item name="imageView5" type="id" />
+    <item name="fragment_scelta_personaggio" type="id" />
+    <item name="action_homePageBambino_fragmentpercorso" type="id" />
 </resources>

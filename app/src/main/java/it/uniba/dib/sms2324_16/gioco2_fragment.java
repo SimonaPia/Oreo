@@ -1,6 +1,5 @@
 package it.uniba.dib.sms2324_16;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
@@ -9,17 +8,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
+import android.media.MediaPlayer;
 
 import androidx.fragment.app.Fragment;
 
-
 import java.util.Locale;
+
 public class gioco2_fragment extends Fragment {
 
     private TextToSpeech textToSpeech;
-        public gioco2_fragment() {
+    private MediaPlayer applausiMediaPlayer;  // Aggiungi la dichiarazione di MediaPlayer per gli applausi
+
+    public gioco2_fragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,6 +51,8 @@ public class gioco2_fragment extends Fragment {
             }
         });
 
+        // Inizializza il MediaPlayer per gli applausi
+        applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
 
         buttonAudio.setOnClickListener(v -> {
             // Converti la stringa in output vocale utilizzando TextToSpeech
@@ -58,7 +63,7 @@ public class gioco2_fragment extends Fragment {
             // Verifica quale RadioButton è selezionato
             if (radioButtonosso.isChecked()) {
                 // L'utente ha selezionato l'immagine con l'ID radioButton_sordo
-                inviaRisposta("Hai scelto l'immagine osso");
+                inviaRisposta("Hai scelto l'immagine osso", true);
                 gioco3_fragment gioco3Fragment = new gioco3_fragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.gioco2_fragment, gioco3Fragment)
@@ -67,7 +72,7 @@ public class gioco2_fragment extends Fragment {
 
             } else if (radioButtonorso.isChecked()) {
                 // L'utente ha selezionato l'immagine con l'ID radioButton_soldo
-                inviaRisposta("Hai scelto l'immagine orso");
+                inviaRisposta("Hai scelto l'immagine orso", false);
                 gioco3_fragment gioco3Fragment = new gioco3_fragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.gioco2_fragment, gioco3Fragment)
@@ -84,20 +89,50 @@ public class gioco2_fragment extends Fragment {
         return view;
     }
 
-    private void inviaRisposta(String messaggio) {
-        // Implementa la logica per inviare la risposta al logopedista
-        // Esempio: ApiService.inviaRisposta(messaggio);
+    private void inviaRisposta(String messaggio, boolean isRispostaCorretta) {
+        // Invia il feedback vocale e gestisci gli applausi se la risposta è corretta
+        inviaFeedback(isRispostaCorretta);
 
         // Mostra un messaggio all'utente
         Toast.makeText(getActivity(), "Abbiamo inviato la tua risposta al tuo logopedista", Toast.LENGTH_SHORT).show();
     }
 
+    private void inviaFeedback(boolean isRispostaCorretta) {
+        // Output vocale in base alla correttezza della risposta
+        String feedbackVocale;
+        if (isRispostaCorretta) {
+            feedbackVocale = "Ben fatto! Risposta corretta.";
+            // Riproduci gli applausi quando la risposta è corretta
+            playApplausi();
+        } else {
+            feedbackVocale = "Riceverai la correzione dal Logopedista.";
+        }
+
+        // Converti la stringa in output vocale utilizzando TextToSpeech
+        textToSpeech.speak(feedbackVocale, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+
+    private void playApplausi() {
+        if (applausiMediaPlayer != null) {
+            applausiMediaPlayer.start();
+        } else {
+            // Inizializza il MediaPlayer per gli applausi solo se è null
+            applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
+            applausiMediaPlayer.start();
+        }
+    }
+
     @Override
     public void onDestroy() {
-        // Rilascia le risorse di TextToSpeech quando il fragment viene distrutto
+        // Rilascia le risorse quando il fragment viene distrutto
         if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
+        }
+
+        // Rilascia le risorse del MediaPlayer degli applausi
+        if (applausiMediaPlayer != null) {
+            applausiMediaPlayer.release();
         }
 
         super.onDestroy();

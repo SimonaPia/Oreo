@@ -1,6 +1,5 @@
 package it.uniba.dib.sms2324_16;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
@@ -9,16 +8,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
+import android.media.MediaPlayer;  // Importa la classe MediaPlayer per gestire gli applausi
 
 import androidx.fragment.app.Fragment;
-
 
 import java.util.Locale;
 
 public class gioco1_fragment extends Fragment {
 
     private TextToSpeech textToSpeech;
-
+    private MediaPlayer applausiMediaPlayer;  // Aggiungi la dichiarazione di MediaPlayer per gli applausi
 
     public gioco1_fragment() {
         // Required empty public constructor
@@ -51,14 +50,13 @@ public class gioco1_fragment extends Fragment {
             }
         });
 
-        // Inizializza il MediaPlayer
-
+        // Inizializza il MediaPlayer per gli applausi
+        applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
 
         buttonAudio.setOnClickListener(v -> {
             // Converti la stringa in output vocale utilizzando TextToSpeech
             textToSpeech.speak("soldo", TextToSpeech.QUEUE_FLUSH, null, null);
         });
-
 
         buttonInvioRisposta.setOnClickListener(v -> {
             // Verifica quale RadioButton è selezionato
@@ -79,36 +77,75 @@ public class gioco1_fragment extends Fragment {
                         .replace(R.id.gioco1_fragment, gioco2Fragment)
                         .addToBackStack(null)
                         .commit();
-            }
-
-            else {
+            } else {
                 // Nessun RadioButton selezionato, gestisci l'errore
                 Toast.makeText(getActivity(), "Seleziona un'immagine", Toast.LENGTH_SHORT).show();
             }
-
         });
 
         return view;
     }
 
     private void inviaRisposta(String messaggio) {
-        // Implementa la logica per inviare la risposta al logopedista
-        // Esempio: ApiService.inviaRisposta(messaggio);
+        // Implementa la logica per verificare la correttezza della risposta
+        boolean isRispostaCorretta = verificaCorrettezzaRisposta(messaggio);
+
+        // Invia il feedback vocale e gestisci gli applausi se la risposta è corretta
+        inviaFeedback(isRispostaCorretta);
 
         // Mostra un messaggio all'utente
-        Toast.makeText(getActivity(), "Abbiamo inviato la tua risposta al tuo logopedista", Toast.LENGTH_SHORT).show();
+        if (isRispostaCorretta) {
+            Toast.makeText(getActivity(), "Ben fatto! Risposta corretta.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "Riceverai la correzione dal Logopedista.", Toast.LENGTH_SHORT).show();
+        }
     }
+
+    private boolean verificaCorrettezzaRisposta(String rispostaUtente) {
+        // Implementa la tua logica per verificare se la risposta dell'utente è corretta
+        // Restituisce true se la risposta è corretta, altrimenti false
+        // Esempio: return rispostaUtente.equalsIgnoreCase("risposta_corretta");
+        return rispostaUtente.equalsIgnoreCase("Hai scelto l'immagine con la mano soldo");
+    }
+
+    private void inviaFeedback(boolean isRispostaCorretta) {
+        // Output vocale in base alla correttezza della risposta
+        String feedbackVocale;
+        if (isRispostaCorretta) {
+            feedbackVocale = "Ben fatto! Risposta corretta.";
+            // Riproduci gli applausi quando la risposta è corretta
+            playApplausi();
+        } else {
+            feedbackVocale = "Riceverai la correzione dal Logopedista.";
+        }
+
+        // Converti la stringa in output vocale utilizzando TextToSpeech
+        textToSpeech.speak(feedbackVocale, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+
+    private void playApplausi() {
+        if (applausiMediaPlayer != null) {
+            applausiMediaPlayer.start();
+        } else {
+            // Inizializza il MediaPlayer per gli applausi solo se è null
+            applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
+            applausiMediaPlayer.start();
+        }
+    }
+
     @Override
     public void onDestroy() {
-        // Rilascia le risorse di TextToSpeech quando il fragment viene distrutto
+        // Rilascia le risorse quando il fragment viene distrutto
         if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
         }
 
+        // Rilascia le risorse del MediaPlayer degli applausi
+        if (applausiMediaPlayer != null) {
+            applausiMediaPlayer.release();
+        }
+
         super.onDestroy();
     }
-
-
-
 }

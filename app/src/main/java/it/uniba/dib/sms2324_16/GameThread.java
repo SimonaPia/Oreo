@@ -3,7 +3,6 @@ package it.uniba.dib.sms2324_16;
 import static android.content.ContentValues.TAG;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -88,7 +87,7 @@ public class GameThread extends Thread {
                                         sfondo = BitmapFactory.decodeResource(context.getResources(), R.drawable.scenario_savana);
 
                                     if (scenario.equals("Mondo incantato"))
-                                        sfondo = BitmapFactory.decodeResource(context.getResources(), R.drawable.scenario_fatato);
+                                        sfondo = BitmapFactory.decodeResource(context.getResources(), R.drawable.scenario_mondo_incantato);
 
                                     if (scenario.equals("Pirata"))
                                         sfondo = BitmapFactory.decodeResource(context.getResources(), R.drawable.scenario_piratesco);

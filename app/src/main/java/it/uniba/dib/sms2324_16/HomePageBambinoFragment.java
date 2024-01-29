@@ -1,6 +1,5 @@
 package it.uniba.dib.sms2324_16;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +33,7 @@ public class HomePageBambinoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 navController = Navigation.findNavController(requireActivity(), R.id.nav_host_bambino);
-                navController.navigate(R.id.action_homePageBambino_to_percorsoFragment);
+                navController.navigate(R.id.action_homePageBambino_fragmentpercorso);
             }
         });
 
