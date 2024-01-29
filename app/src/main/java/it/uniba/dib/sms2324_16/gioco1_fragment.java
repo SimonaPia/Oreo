@@ -18,7 +18,7 @@ import java.util.Locale;
 public class gioco1_fragment extends Fragment {
 
     private TextToSpeech textToSpeech;
-    private MediaPlayer mediaPlayer;
+
 
     public gioco1_fragment() {
         // Required empty public constructor
@@ -52,12 +52,13 @@ public class gioco1_fragment extends Fragment {
         });
 
         // Inizializza il MediaPlayer
-        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.soldo);
+
 
         buttonAudio.setOnClickListener(v -> {
-            // Riproduci l'audio quando il pulsante viene cliccato
-            playAudio();
+            // Converti la stringa in output vocale utilizzando TextToSpeech
+            textToSpeech.speak("soldo", TextToSpeech.QUEUE_FLUSH, null, null);
         });
+
 
         buttonInvioRisposta.setOnClickListener(v -> {
             // Verifica quale RadioButton è selezionato
@@ -90,19 +91,6 @@ public class gioco1_fragment extends Fragment {
         return view;
     }
 
-
-    private void playAudio() {
-        if (mediaPlayer != null) {
-            mediaPlayer.start();
-        } else {
-            // Inizializza mediaPlayer solo se è null
-            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.soldo);
-            mediaPlayer.start();
-        }
-    }
-
-
-
     private void inviaRisposta(String messaggio) {
         // Implementa la logica per inviare la risposta al logopedista
         // Esempio: ApiService.inviaRisposta(messaggio);
@@ -110,15 +98,17 @@ public class gioco1_fragment extends Fragment {
         // Mostra un messaggio all'utente
         Toast.makeText(getActivity(), "Abbiamo inviato la tua risposta al tuo logopedista", Toast.LENGTH_SHORT).show();
     }
-
     @Override
     public void onDestroy() {
-        // Rilascia le risorse quando il fragment viene distrutto
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
+        // Rilascia le risorse di TextToSpeech quando il fragment viene distrutto
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
         }
 
         super.onDestroy();
     }
+
+
 
 }

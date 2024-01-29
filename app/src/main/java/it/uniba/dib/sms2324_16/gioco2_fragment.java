@@ -17,8 +17,7 @@ import java.util.Locale;
 public class gioco2_fragment extends Fragment {
 
     private TextToSpeech textToSpeech;
-    private MediaPlayer mediaPlayer;
-    public gioco2_fragment() {
+        public gioco2_fragment() {
         // Required empty public constructor
     }
     @Override
@@ -49,12 +48,10 @@ public class gioco2_fragment extends Fragment {
             }
         });
 
-        // Inizializza il MediaPlayer
-        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.osso);
 
         buttonAudio.setOnClickListener(v -> {
-            // Riproduci l'audio quando il pulsante viene cliccato
-            playAudio();
+            // Converti la stringa in output vocale utilizzando TextToSpeech
+            textToSpeech.speak("osso", TextToSpeech.QUEUE_FLUSH, null, null);
         });
 
         buttonInvioRisposta.setOnClickListener(v -> {
@@ -87,16 +84,6 @@ public class gioco2_fragment extends Fragment {
         return view;
     }
 
-
-    private void playAudio() {
-        // Implementa la logica per riprodurre l'audio desiderato
-        mediaPlayer.start();
-
-        // Esempio di test con un messaggio vocale
-       // String testMessage = "osso";
-       // textToSpeech.speak(testMessage, TextToSpeech.QUEUE_FLUSH, null, null);
-    }
-
     private void inviaRisposta(String messaggio) {
         // Implementa la logica per inviare la risposta al logopedista
         // Esempio: ApiService.inviaRisposta(messaggio);
@@ -105,16 +92,12 @@ public class gioco2_fragment extends Fragment {
         Toast.makeText(getActivity(), "Abbiamo inviato la tua risposta al tuo logopedista", Toast.LENGTH_SHORT).show();
     }
 
-     @Override
-   public void onDestroy() {
-        // Rilascia le risorse quando il fragment viene distrutto
+    @Override
+    public void onDestroy() {
+        // Rilascia le risorse di TextToSpeech quando il fragment viene distrutto
         if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
-        }
-
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
         }
 
         super.onDestroy();

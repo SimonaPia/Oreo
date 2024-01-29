@@ -17,7 +17,6 @@ import java.util.Locale;
 public class gioco3_fragment extends Fragment {
 
     private TextToSpeech textToSpeech;
-    private MediaPlayer mediaPlayer;
     public gioco3_fragment() {
         // Required empty public constructor
     }
@@ -49,12 +48,9 @@ public class gioco3_fragment extends Fragment {
             }
         });
 
-        // Inizializza il MediaPlayer
-        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.pacco);
-
         buttonAudio.setOnClickListener(v -> {
-            // Riproduci l'audio quando il pulsante viene cliccato
-            playAudio();
+            // Converti la stringa in output vocale utilizzando TextToSpeech
+            textToSpeech.speak("pacco", TextToSpeech.QUEUE_FLUSH, null, null);
         });
 
         buttonInvioRisposta.setOnClickListener(v -> {
@@ -87,16 +83,6 @@ public class gioco3_fragment extends Fragment {
         return view;
     }
 
-
-    private void playAudio() {
-        // Implementa la logica per riprodurre l'audio desiderato
-        mediaPlayer.start();
-
-        // Esempio di test con un messaggio vocale
-        //String testMessage = "soldo";
-        // textToSpeech.speak(testMessage, TextToSpeech.QUEUE_FLUSH, null, null);
-    }
-
     private void inviaRisposta(String messaggio) {
         // Implementa la logica per inviare la risposta al logopedista
         // Esempio: ApiService.inviaRisposta(messaggio);
@@ -107,14 +93,10 @@ public class gioco3_fragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        // Rilascia le risorse quando il fragment viene distrutto
+        // Rilascia le risorse di TextToSpeech quando il fragment viene distrutto
         if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
-        }
-
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
         }
 
         super.onDestroy();
