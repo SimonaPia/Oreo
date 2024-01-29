@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AppuntamentiGenitoreFragment"
-    android:background="@color/pesca">
+    android:background="@color/white">
 
     <CalendarView
         android:id="@+id/calendarView3"
@@ -58,7 +58,7 @@
             android:layout_marginEnd="8dp"
 
             android:background="@color/magenta_sbiadito"
-            android:text="Modifica" />
+            android:text="@string/modifica" />
 
         <ImageView
             android:id="@+id/buttonWithIcon"

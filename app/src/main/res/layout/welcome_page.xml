@@ -20,19 +20,21 @@
         app:cardElevation="12dp"
         app:cardBackgroundColor="@color/white"
         app:strokeColor="@color/marrone_arancio"
-        app:strokeWidth="6dp">
+        app:strokeWidth="6dp"
+        android:id = "@+id/MaterialGirl">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <TextView
                 android:id="@+id/textViewWelcome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BENVENUTO/A !"
+                android:text="@string/welcome_message"
                 android:textSize="30dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -64,7 +66,7 @@
                 android:id="@+id/textViewChiSei"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chi sei ?"
+                android:text="@string/who_are_you"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -80,7 +82,7 @@
                 android:id="@+id/buttonLogopedista"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Logopedista"
+                android:text="@string/logopedist"
                 android:layout_gravity="center_horizontal"
                 android:backgroundTint="@color/celeste"
                 app:layout_constraintTop_toBottomOf="@+id/textViewChiSei"
@@ -92,7 +94,7 @@
                 android:id="@+id/buttonGenitore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Genitore"
+                android:text="@string/parent"
                 android:layout_gravity="center_horizontal"
                 android:backgroundTint="@color/celeste"
                 app:layout_constraintTop_toBottomOf="@+id/buttonLogopedista"
@@ -104,7 +106,7 @@
                 android:id="@+id/buttonBambino"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bambino/a"
+                android:text="@string/child"
                 android:layout_gravity="center_horizontal"
                 android:backgroundTint="@color/celeste"
                 app:layout_constraintTop_toBottomOf="@+id/buttonGenitore"
@@ -117,5 +119,17 @@
     </com.google.android.material.card.MaterialCardView>
 
 
+    <Button
+        android:id="@+id/buttonChooseLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/celeste"
+        android:text="@string/scegli_lingua"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MaterialGirl"
+        tools:layout_editor_absoluteY="560dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

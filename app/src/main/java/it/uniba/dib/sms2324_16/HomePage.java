@@ -33,6 +33,7 @@ public class HomePage extends AppCompatActivity {
         Intent intent = getIntent();
         String sottotitolo = intent.getStringExtra("tipoUtente");
 
+
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         getSupportActionBar().setTitle("PronuntiApp");

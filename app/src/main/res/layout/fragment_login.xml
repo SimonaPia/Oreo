@@ -22,7 +22,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="30dp"
-            android:text="Benvenuta/o in PronuntiApp"
+            android:text="@string/welcome_message_italian"
             android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="30dp"
@@ -41,7 +41,7 @@
             android:background="@drawable/sfondo_input"
             android:drawableStart="@drawable/email_selezionata"
             android:drawablePadding="10dp"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:textSize="14sp" />
 
@@ -58,7 +58,7 @@
             android:background="@drawable/sfondo_input"
             android:drawableStart="@drawable/password_selezionata"
             android:drawablePadding="10dp"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:textSize="14sp"/>
 
@@ -84,7 +84,7 @@
             android:id="@+id/accesso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Accedi"
+            android:text="@string/login"
             android:textColor="@color/white"
             android:layout_marginTop="350dp"
             android:layout_marginLeft="300dp"
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="480dp"
             android:layout_marginLeft="60dp"
-            android:text="Se non hai ancora un account allora"
+            android:text="@string/message_registrazione"
             android:autoLink="all"
             android:textColor="@color/black"/>
 
@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="480dp"
             android:layout_marginLeft="290dp"
-            android:text="Registrati"
+            android:text="@string/registrazione"
             android:textColor="@color/magenta_sbiadito"/>
 
 

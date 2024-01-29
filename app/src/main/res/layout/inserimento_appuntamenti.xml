@@ -30,31 +30,31 @@
             app:layout_collapseMode="pin"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="Nuovo Appuntamento" />
+            app:title="@string/nuovo_appuntamento" />
 
         <EditText
             android:id="@+id/editTextDate"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:hint="@string/hint_date" />
+            android:hint="@string/Data" />
 
         <EditText
             android:id="@+id/editTextTime"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:hint="Orario" />
+            android:hint="@string/Ora" />
 
         <EditText
             android:id="@+id/editTextPatient"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:hint="Paziente"
+            android:hint="@string/Paziente"
             android:inputType="textPersonName" />
         <EditText
             android:id="@+id/editTextGenitore"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:hint="Genitore"
+            android:hint="@string/Genitore"
             android:inputType="textPersonName" />
 
 
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:minHeight="48dp"
-            android:text="Salva" />
+            android:text="@string/Salva" />
 
     </LinearLayout>
 

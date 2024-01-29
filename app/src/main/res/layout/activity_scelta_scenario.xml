@@ -57,7 +57,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="#1C3144"
-            android:text="Fiabesco"
+            android:text="@string/fiabesco"
             android:textColor="#FFFFFF" />
 
         <Button
@@ -65,7 +65,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Savana"
+            android:text="@string/savana"
             android:backgroundTint="#1C3144"
             android:textColor="#FFFFFF"/>
     </LinearLayout>
@@ -83,7 +83,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Pirati"
+            android:text="@string/pirati"
             android:backgroundTint="#1C3144"
             android:textColor="#FFFFFF"/>
 
@@ -92,7 +92,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Mondo Incantato"
+            android:text="@string/mondo_incantato"
             android:backgroundTint="#1C3144"
             android:textColor="#FFFFFF"/>
     </LinearLayout>

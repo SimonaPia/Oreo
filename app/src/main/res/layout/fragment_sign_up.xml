@@ -28,7 +28,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="30dp"
                 android:gravity="center"
-                android:text="Benvenuta/o in PronuntiApp"
+                android:text="@string/welcome_message_italian"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
@@ -44,7 +44,7 @@
                 android:drawableStart="@drawable/nome_cognome_selezionati"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Nome"
+                android:hint="@string/nome_registrazione"
                 android:inputType="textPersonName"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
@@ -61,7 +61,7 @@
                 android:drawableStart="@drawable/nome_cognome_selezionati"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Cognome"
+                android:hint="@string/cognome_registrazione"
                 android:inputType="textPersonName"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
@@ -78,7 +78,7 @@
                 android:drawableStart="@drawable/email_selezionata"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
@@ -95,7 +95,7 @@
                 android:drawableStart="@drawable/password_selezionata"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
@@ -126,7 +126,7 @@
                 android:layout_marginLeft="270dp"
                 android:layout_marginTop="370dp"
                 android:backgroundTint="@color/celeste"
-                android:text="Registrati"
+                android:text="@string/registrazione"
                 android:textColor="@color/white" />
 
             <TextView
@@ -136,7 +136,7 @@
                 android:layout_marginLeft="60dp"
                 android:layout_marginTop="440dp"
                 android:autoLink="all"
-                android:text="Se non hai ancora un account allora"
+                android:text="@string/message_registrazione"
                 android:textColor="@color/black" />
 
             <TextView
@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="290dp"
                 android:layout_marginTop="440dp"
-                android:text="Accedi"
+                android:text="@string/login"
                 android:textColor="@color/magenta_sbiadito" />
 
 

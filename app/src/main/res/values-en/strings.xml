@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">PronuntiApp_Oreo_sms2324</string>
     <string name="action_settings">Settings</string>
@@ -8,61 +9,56 @@
     <string name="previous">Previous</string>
     <string name="hint_date">Data</string>
     <string name="title_assign_patient">Assegna un Paziente</string>
-    <string name="welcome_message">BENVENUTO/A !</string>
-    <string name="who_are_you">Chi sei ?</string>
-    <string name="logopedist">Logopedista</string>
-    <string name="parent">Genitore</string>
-    <string name="child">Bambino/a</string>
-    <string name="welcome_message_italian">Benvenuta/o in PronuntiApp</string>
+    <string name="welcome_message">WELCOME !</string>
+    <string name="who_are_you">Who are you ?</string>
+    <string name="logopedist">Speech therapist</string>
+    <string name="parent">Parent</string>
+    <string name="child">Child</string>
+    <string name="welcome_message_italian">Welcome to PronuntiApp</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="login">Accedi</string>
-    <string name="message_registrazione">Se non hai ancora un account allora</string>
-    <string name="registrazione">Registrati</string>
-    <string name="nome_registrazione">Nome</string>
-    <string name="cognome_registrazione">Cognome</string>
-    <string name="pazienti">Pazienti</string>
-    <string name="esercizi">Esercizi</string>
-    <string name="appuntamenti">Appuntamenti</string>
-    <string name="modifica">Modifica</string>
-    <string name="nuovo_appuntamento">Nuovo Appuntamento</string>
-    <string name="Ora">Ora</string>
-    <string name="Data">Data</string>
-    <string name="Paziente">Paziente</string>
-    <string name="Genitore">Genitore</string>
-    <string name="Salva">Salva</string>
-    <string name="dettagli_appuntamento">Dettagli Appuntamento</string>
-    <string name="paziente_appuntamento">Paziente: </string>
-    <string name="ora_appuntamento">Ora: </string>
-    <string name="genitore_appuntamento">Genitore: </string>
-    <string name="dettagli">Dettagli</string>
-    <string name="assegna">Assegna</string>
-    <string name="il_mio_profilo">Il mio profilo</string>
-    <string name="scenario">Scenario</string>
-    <string name="correzione">Correzione</string>
-    <string name="nome_figlio">Nome Figlio: </string>
-    <string name="seleziona_ambientazione">Seleziona l ambientazione di gioco</string>
-    <string name="fiabesco">Fiabesco</string>
-    <string name="savana">Savana</string>
-    <string name="pirati">Pirati</string>
-    <string name="mondo_incantato">Mondo Incantato</string>
-    <string name="scenario_fiabesco">Scenario Fiabesco</string>
-    <string name="conferma">Conferma</string>
-    <string name="scenario_mondo_incantato">Scenario Mondo Incantato</string>
-    <string name="scenario_pirata">Scenario Pirata</string>
-    <string name="scenario_savana">Scenario Savana</string>
-    <string name="classifica">Classifica</string>
-    <string name="scegli_personaggio">Scelta personaggio</string>
-    <string name="visualizza_percorso">Visualizza percorso</string>
-    <string name="riscuoti_premi">Riscuoti premi</string>
-    <string name="scegli_lingua">Scegli lingua</string>
+    <string name="login">Login</string>
+    <string name="message_registrazione">If you don t have an account yet then</string>
+    <string name="registrazione">Sign in</string>
+    <string name="nome_registrazione">Name</string>
+    <string name="cognome_registrazione">Surname</string>
+    <string name="pazienti">Patients</string>
+    <string name="esercizi">Exercises</string>
+    <string name="appuntamenti">Appointments</string>
+    <string name="modifica">Edit</string>
+    <string name="nuovo_appuntamento">New Appointments</string>
+    <string name="Ora">Hours</string>
+    <string name="Data">Date</string>
+    <string name="Paziente">Patient</string>
+    <string name="Genitore">Parent</string>
+    <string name="Salva">Save</string>
+    <string name="dettagli_appuntamento">Appointment Details</string>
+    <string name="paziente_appuntamento">Patient: </string>
+    <string name="ora_appuntamento">Hours: </string>
+    <string name="genitore_appuntamento">Parent: </string>
+    <string name="dettagli">Details</string>
+    <string name="assegna">Assign</string>
+    <string name="il_mio_profilo">My profile</string>
+    <string name="scenario">Landscape </string>
+    <string name="correzione">Correction</string>
+    <string name="nome_figlio">Child Name: </string>
+    <string name="seleziona_ambientazione">Select the game setting</string>
+    <string name="fiabesco">Fairytale</string>
+    <string name="savana">Savannah</string>
+    <string name="pirati">Pirates</string>
+    <string name="mondo_incantato">Enchanted World</string>
+    <string name="scenario_fiabesco">Fairytale Landscape</string>
+    <string name="conferma">Confirm</string>
+    <string name="scenario_mondo_incantato">Enchanted World Landscape</string>
+    <string name="scenario_pirata">Pirates Landscape</string>
+    <string name="scenario_savana">Savannah Landscape</string>
+    <string name="classifica">Classification</string>
+    <string name="scegli_personaggio">Character choice</string>
+    <string name="visualizza_percorso">View route</string>
+    <string name="riscuoti_premi">Collect rewards</string>
+    <string name="scegli_lingua">Choose language</string>
     <string name="pronunti_app">PronuntiApp</string>
-    <string name="benvenuto">Benvenuto/a</string>
-
-
-
-
-
+    <string name="benvenuto">Welcome</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -102,7 +98,6 @@
     </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
 
 </resources>
