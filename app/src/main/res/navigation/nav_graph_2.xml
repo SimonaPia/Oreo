@@ -15,6 +15,11 @@
         <action
             android:id="@+id/action_homepage_logopedista_fragment_to_fragment_appuntamenti_logopedista"
             app:destination="@id/fragment_appuntamenti_logopedista" />
+
+        <action
+            android:id="@+id/action_homepage_logopedista_fragment_to_gioco1_fragment"
+            app:destination="@id/gioco1_fragment" />
+
     </fragment>
 
     <fragment
@@ -36,4 +41,14 @@
         android:name="it.uniba.dib.sms2324_16.NewAppointmentActivity"
         android:label="inserimento_appuntamenti"
         tools:layout="@layout/inserimento_appuntamenti" />
+
+    <fragment
+        android:id="@+id/gioco1_fragment"
+        android:name="it.uniba.dib.sms2324_16.gioco1_fragment"
+        android:label="gioco"
+        tools:layout="@layout/fragment_gioco1_fragment" >
+
+    </fragment>
+
+
 </navigation>

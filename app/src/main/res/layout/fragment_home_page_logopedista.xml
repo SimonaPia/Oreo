@@ -18,6 +18,7 @@
         android:layout_below="@+id/testo">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardProva"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_columnWeight="1"
@@ -36,6 +37,7 @@
                 android:gravity="center">
 
                 <ImageView
+                    android:id="@+id/tastopaziente"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/paziente"
@@ -78,7 +80,10 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/paziente"
-                    android:layout_gravity="center_horizontal"/>
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/IconaPaziente"
+                    />
+
 
                 <TextView
                     android:layout_width="wrap_content"

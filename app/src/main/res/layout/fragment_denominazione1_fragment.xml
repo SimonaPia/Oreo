@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/denominazione_gioco1_fragment"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Denominazione1_fragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blu"
+        >
+
+        <ImageView
+            android:id="@+id/icona_quiz"
+            android:layout_width="212dp"
+            android:layout_height="132dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="80dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/quiz_bambino" />
+
+        <Button
+            android:id="@+id/buttonAudio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/chooseTopic"
+            android:layout_marginStart="140dp"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/audio_nota"
+            android:text="AIUTO" />
+
+        <TextView
+            android:id="@+id/chooseTopic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/icona_quiz"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="#99FFFFFF"
+            android:text="Riconosci la parola associata all’immagine. Se hai bisogno d'aiuto puoi cliccare su AIUTO. ATTENZIONE: puoi chiedere aiuto per un massimo di 3 volte!"
+            />
+
+        <ImageView
+            android:id="@+id/icona_quiz1"
+            android:layout_width="190dp"
+            android:layout_height="170dp"
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="320dp"
+            android:layout_marginEnd="80dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/mulino" />
+
+        <Button
+            android:id="@+id/buttonRegistraAudio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/icona_quiz1"
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/microfono"
+            android:text="REGISTRA" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonInvioRisposta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="INVIA RISPOSTA"
+            android:layout_below="@+id/icona_quiz1"
+            android:layout_marginTop="80dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:background="@drawable/round_back_green20"
+            />
+    </RelativeLayout>
+
+</FrameLayout>
