@@ -18,9 +18,11 @@ import android.util.Log;
 public class Adapter_Pazienti extends RecyclerView.Adapter<Adapter_Pazienti.ViewHolder> {
 
     private ArrayList<Paziente> PazientiList;
+    private OnItemClickListener listener;
 
-    public Adapter_Pazienti(ArrayList<Paziente> PazientiList) {
+    public Adapter_Pazienti(ArrayList<Paziente> PazientiList, OnItemClickListener listener) {
         this.PazientiList = PazientiList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -35,35 +37,14 @@ public class Adapter_Pazienti extends RecyclerView.Adapter<Adapter_Pazienti.View
         Paziente paziente = PazientiList.get(position);
         holder.bind(paziente);
 
-        // Aggiungi un OnClickListener al bottone "Vedi Profilo"
         holder.buttonVediProfilo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("ButtonClick", "Vedi Profilo button clicked");
-
-                // Otteni il contesto dal genitore di itemView
-                Context context = v.getContext();
-
-                // Aggiungi un log per verificare l'ID del paziente
-                Log.d("IntentData", "Paziente ID: " + paziente.getId());
-                Log.d("ButtonClick", "Vedi Profilo button clicked");
-                Intent intent = new Intent(context, profilo_utente.class);
-
-                // Aggiungi l'ID del paziente come extra all'Intent
-                intent.putExtra("pazienteId", paziente.getId());
-
-                // Aggiungi un log per verificare l'ID del paziente nell'Intent
-                Log.d("IntentData", "Paziente ID nell'Intent: " + intent.getStringExtra("pazienteId"));
-
-                // Avvia l'activity del profilo
-                context.startActivity(intent);
-
-
-
+                if (listener != null) {
+                    listener.onItemClick(paziente);
+                }
             }
         });
-
-
     }
 
     @Override
@@ -76,21 +57,22 @@ public class Adapter_Pazienti extends RecyclerView.Adapter<Adapter_Pazienti.View
         private TextView cognomeTextView;
         private Button buttonVediProfilo;
 
-
         public ViewHolder(View itemView) {
             super(itemView);
             nomeTextView = itemView.findViewById(R.id.nomeTextView);
             cognomeTextView = itemView.findViewById(R.id.cognomeTextView);
             buttonVediProfilo = itemView.findViewById(R.id.buttonVediProfilo);  // Inizializza il pulsante
-
         }
 
-        public void bind(Paziente Paziente) {
-            // Aggiorna dinamicamente le viste con i dati del genitore
-            nomeTextView.setText("Nome: " + Paziente.getNome());
-            cognomeTextView.setText("Cognome: " + Paziente.getCognome());
-
+        public void bind(Paziente paziente) {
+            // Aggiorna dinamicamente le viste con i dati del paziente
+            nomeTextView.setText("Nome: " + paziente.getNome());
+            cognomeTextView.setText("Cognome: " + paziente.getCognome());
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Paziente paziente);
     }
 
     public void setPazientiList(ArrayList<Paziente> PazientiList) {

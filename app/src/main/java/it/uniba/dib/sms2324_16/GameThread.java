@@ -87,7 +87,7 @@ public class GameThread extends Thread {
                                         sfondo = BitmapFactory.decodeResource(context.getResources(), R.drawable.scenario_savana);
 
                                     if (scenario.equals("Mondo incantato"))
-                                        sfondo = BitmapFactory.decodeResource(context.getResources(), R.drawable.scenario_mondo_incantato);
+                                        sfondo = BitmapFactory.decodeResource(context.getResources(), R.drawable.scenario_fatato);
 
                                     if (scenario.equals("Pirata"))
                                         sfondo = BitmapFactory.decodeResource(context.getResources(), R.drawable.scenario_piratesco);

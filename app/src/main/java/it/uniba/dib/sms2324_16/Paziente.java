@@ -9,6 +9,9 @@ public class Paziente {
     private String id;
 
     // Costruttore vuoto necessario per Firebase
+    public Paziente() {
+        // Costruttore vuoto
+    }
     public Paziente(String nome, String cognome) {
         this.nome = nome;
         this.cognome = cognome;

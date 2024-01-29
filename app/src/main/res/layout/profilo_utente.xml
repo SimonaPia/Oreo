@@ -46,11 +46,13 @@
             android:layout_height="wrap_content"/>
 
         <include
+            android:id = "@+id/progressiErroriTextView"
             layout="@layout/progressi_paziente_errori"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <include
+            android:id="@+id/posizioneClassificaTextView"
             layout="@layout/posizioneclassifica_paziente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

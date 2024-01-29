@@ -27,6 +27,7 @@ public class HomePageBambinoFragment extends Fragment {
         CardView cardAppuntamenti = view.findViewById(R.id.cardAppuntamenti);
         CardView cardPercorso = view.findViewById(R.id.cardPercorso);
         CardView cardScenario = view.findViewById(R.id.cardScenario);
+        CardView cardClassifica = view.findViewById(R.id.cardClassifica);
 
 
         cardPercorso.setOnClickListener(new View.OnClickListener() {
@@ -36,6 +37,15 @@ public class HomePageBambinoFragment extends Fragment {
                 navController.navigate(R.id.action_homePageBambino_fragmentpercorso);
             }
         });
+        cardClassifica.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController = Navigation.findNavController(requireActivity(), R.id.nav_host_bambino);
+                navController.navigate(R.id.action_homePageBambino_to_leaderboardActivity);
+            }
+        });
+
+
 
         return view;
     }

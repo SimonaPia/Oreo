@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 import androidx.appcompat.widget.Toolbar;
 
-public class Lista_Pazienti extends AppCompatActivity {
+public class Lista_Pazienti extends AppCompatActivity implements Adapter_Pazienti.OnItemClickListener{
+    private static final String TAG = "Lista_Pazienti";
     private RecyclerView recyclerView;
     private Adapter_Pazienti adapterPazienti;
 
@@ -36,7 +37,8 @@ public class Lista_Pazienti extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewPazienti);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapterPazienti = new Adapter_Pazienti(new ArrayList<>());
+        // Passa un'istanza di questa classe come listener per gestire i clic degli elementi della lista
+        adapterPazienti = new Adapter_Pazienti(new ArrayList<>(), this);
         recyclerView.setAdapter(adapterPazienti);
 
         getPazientiFromFirestore();
@@ -54,7 +56,6 @@ public class Lista_Pazienti extends AppCompatActivity {
                     String nome = document.getString("nome");
                     String cognome = document.getString("cognome");
 
-                    // Utilizza il costruttore corretto della classe Paziente
                     Paziente paziente = new Paziente(nome, cognome);
                     pazientiList.add(paziente);
                 }
@@ -64,5 +65,14 @@ public class Lista_Pazienti extends AppCompatActivity {
                 Log.w(TAG, "Errore durante il recupero dei documenti", task.getException());
             }
         });
+    }
+
+    // Implementa il metodo onItemClick per gestire il clic sugli elementi della lista
+    @Override
+    public void onItemClick(Paziente paziente) {
+        Intent intent = new Intent(this, profilo_utente.class);
+        intent.putExtra("nomePaziente", paziente.getNome());
+        intent.putExtra("cognomePaziente", paziente.getCognome());
+        startActivity(intent);
     }
 }
