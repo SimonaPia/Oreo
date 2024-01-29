@@ -65,6 +65,7 @@ public class HomePageLogopedistaFragment extends Fragment {
         CardView cardAppuntamenti = view.findViewById(R.id.cardAppuntamenti);
         CardView cardEsercizi = view.findViewById(R.id.cardEsercizi);
         CardView cardPazienti = view.findViewById(R.id.cardPazienti);
+        CardView cardProva = view.findViewById(R.id.cardProva);
 
         // Imposta il click listener
         cardEsercizi.setOnClickListener(new View.OnClickListener() {
@@ -77,26 +78,55 @@ public class HomePageLogopedistaFragment extends Fragment {
         });
 
 
-            cardAppuntamenti.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Utilizza Navigation.findNavController() passando l'activity e il tuo fragment
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host);
+        cardAppuntamenti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Utilizza Navigation.findNavController() passando l'activity e il tuo fragment
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host);
 
-                    // Controlla se il fragment di destinazione è già presente
-                    if (navController.getCurrentDestination().getId() != R.id.fragment_appuntamenti_logopedista) {
-                        // Esegui la navigazione solo se non sei già nel fragment di destinazione
-                        navController.navigate(R.id.action_homepage_logopedista_fragment_to_fragment_appuntamenti_logopedista);
-                    }
-                    gridLayout.removeViewAt(0); // Esempio: rimuove la prima CardView
-                    gridLayout.removeView(cardAppuntamenti);
-                    gridLayout.removeView(cardEsercizi);
-                    gridLayout.removeView(cardPazienti);
-                    gridLayout.invalidate();
-                    gridLayout.requestLayout();
+                // Controlla se il fragment di destinazione è già presente
+                if (navController.getCurrentDestination().getId() != R.id.fragment_appuntamenti_logopedista) {
+                    // Esegui la navigazione solo se non sei già nel fragment di destinazione
+                    navController.navigate(R.id.action_homepage_logopedista_fragment_to_fragment_appuntamenti_logopedista);
                 }
-            });
+                gridLayout.removeViewAt(0); // Esempio: rimuove la prima CardView
+                gridLayout.removeView(cardAppuntamenti);
+                gridLayout.removeView(cardEsercizi);
+                gridLayout.removeView(cardPazienti);
+                gridLayout.invalidate();
+                gridLayout.requestLayout();
+            }
+        });
 
+
+
+
+
+
+
+        cardProva.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Utilizza Navigation.findNavController() passando l'activity e il tuo fragment
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host);
+
+                // Controlla se il fragment di destinazione è già presente
+                if (navController.getCurrentDestination().getId() != R.id.gioco1_fragment) {
+                    // Esegui la navigazione solo se non sei già nel fragment di destinazione
+                    navController.navigate(R.id.action_homepage_logopedista_fragment_to_gioco1_fragment);
+                }
+            }
+        });
+
+
+
+        cardPazienti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), Lista_Pazienti.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
