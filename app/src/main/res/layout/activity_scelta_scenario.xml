@@ -17,12 +17,12 @@
 
         <!-- Aggiungi il tuo nuovo elemento per la freccia indietro -->
         <ImageButton
-        android:id="@+id/topLeftIcon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="start"
-        android:contentDescription="Icona in alto a sinistra"
-        android:src="@mipmap/ic_turn_left" />
+            android:id="@+id/topLeftIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="start"
+            android:contentDescription="Icona in alto a sinistra"
+            android:src="@mipmap/ic_turn_left" />
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
@@ -101,7 +101,6 @@
         android:id="@+id/immagine_fiabesco"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_below="@id/bottone_conferma"
         android:layout_marginTop="16dp"
         android:background="@drawable/fiabesco_immagine"
         android:visibility="gone"
@@ -110,7 +109,6 @@
         android:id="@+id/immagine_savana"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_below="@id/bottone_conferma"
         android:layout_marginTop="16dp"
         android:background="@drawable/savana_immagine"
         android:visibility="gone"
@@ -120,20 +118,10 @@
         android:id="@+id/immagine_mondo_incantato"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_below="@id/bottone_conferma"
         android:layout_marginTop="16dp"
         android:src="@drawable/mondo_incantato_immagine"
         android:visibility="gone"
         android:onClick="onImmagineClick" />
 
-    <ImageView
-        android:id="@+id/immagine_pirati"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_below="@id/bottone_conferma"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/pirata_immagine"
-        android:visibility="gone"
-        android:onClick="onImmagineClick" />
 
 </RelativeLayout>

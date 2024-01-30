@@ -6,14 +6,32 @@
     android:layout_height="match_parent"
     android:background="#08f26e"
     tools:context=".SceltaPersonaggioFiabesco">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/MyToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#08f26e"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title=""
+        tools:ignore="MissingConstraints" />
+    <ImageButton
+        android:id="@+id/topLeftIcon"
+        android:layout_width="48dp"
+        android:layout_height="49dp"
+        android:layout_gravity="start"
+        android:contentDescription="Icona in alto a sinistra"
+        android:src="@mipmap/ic_turn_left"
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="410dp"
         android:layout_height="265dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="88dp"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/scenario_fiabesco"

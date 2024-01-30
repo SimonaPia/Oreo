@@ -6,6 +6,23 @@
     android:layout_height="match_parent"
     android:background="#b5e2ff"
     tools:context=".SceltaPersonaggioMondoIncantato">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/MyToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#1C3144"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title=""
+        tools:ignore="MissingConstraints" />
+    <ImageButton
+        android:id="@+id/topLeftIcon"
+        android:layout_width="48dp"
+        android:layout_height="49dp"
+        android:layout_gravity="start"
+        android:contentDescription="Icona in alto a sinistra"
+        android:src="@mipmap/ic_turn_left"
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -16,7 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/scenario_fatato"
+        app:srcCompat="@drawable/scenario_mondo_incantato"
         tools:ignore="MissingConstraints" />
 
     <ImageView

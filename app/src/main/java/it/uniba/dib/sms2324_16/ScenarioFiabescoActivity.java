@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ScenarioFiabescoActivity extends AppCompatActivity {
-
     private CollectionReference scenarioCollection;
 
     @Override
@@ -31,6 +30,7 @@ public class ScenarioFiabescoActivity extends AppCompatActivity {
         this.scenarioCollection = FirebaseFirestore.getInstance().collection("SceltaScenario");
 
         Button confermaButton = findViewById(R.id.bottone_conferma);
+
         ImageView indietroButton = findViewById(R.id.topLeftIcon);
 
         confermaButton.setOnClickListener(new View.OnClickListener() {
@@ -42,7 +42,6 @@ public class ScenarioFiabescoActivity extends AppCompatActivity {
                 readScenarioChoice(); // Chiamata per leggere i dati da Firestore
             }
         });
-
         indietroButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,17 +57,12 @@ public class ScenarioFiabescoActivity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        // Torna all'Activity SceltaScenarioActivity dopo la conferma
-        Intent intent = new Intent(this, SceltaScenarioActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     private void showConfirmationMessage() {
         Toast.makeText(this, "Ben fatto! Scenario scelto!", Toast.LENGTH_SHORT).show();
+        // Torna all'Activity di scelta scenario invece di avviare un nuovo fragment o un'altra attività
+        Intent intent = new Intent(this, SceltaScenarioActivity.class);
+        startActivity(intent);
+        finish(); // Opzionale, a seconda della tua logica di navigazione
     }
 
     private void saveScenarioChoice(String idGenitore, String idBambino, String sceltaScenario) {

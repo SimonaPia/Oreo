@@ -20,8 +20,14 @@ public class SceltaPersonaggioFiabesco extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sceta_personaggio_fiabesco);
-
+        setContentView(R.layout.scelta_personaggio_fiabesco);
+        ImageView indietroButton = findViewById(R.id.topLeftIcon);
+        indietroButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         // Inizializza Firestore
         db = FirebaseFirestore.getInstance();
 

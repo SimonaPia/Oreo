@@ -10,7 +10,7 @@
         android:id="@+id/MyToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/pesca"
+        android:background="#1C3144"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="">
@@ -19,6 +19,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/topLeftIcon"
+                android:layout_width="48dp"
+                android:layout_height="49dp"
+                android:layout_gravity="start"
+                android:contentDescription="Icona in alto a sinistra"
+                android:src="@mipmap/ic_turn_left" />
 
             <TextView
                 android:id="@+id/toolbarTitle"

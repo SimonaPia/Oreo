@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,9 +38,16 @@ public class ExerciseListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_list);
+        ImageView indietroButton = findViewById(R.id.topLeftIcon);
 
         Toolbar toolbar = findViewById(R.id.MyToolbar);
         setSupportActionBar(toolbar);
+        indietroButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         // Rimuovi il titolo predefinito
         if (getSupportActionBar() != null) {

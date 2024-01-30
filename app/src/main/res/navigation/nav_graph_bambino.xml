@@ -14,9 +14,6 @@
         <action
             android:id="@+id/action_homePageBambino_to_percorsoFragment"
             app:destination="@id/percorsoFragment" />
-        <action
-            android:id="@+id/action_homePageBambino_to_leaderboardActivity"
-            app:destination="@id/leaderboardActivity" />
     </fragment>
     <fragment
         android:id="@+id/percorsoFragment"
@@ -27,9 +24,5 @@
             android:id="@+id/action_percorsoFragment_to_homePageBambino"
             app:destination="@id/homePageBambino" />
     </fragment>
-    <activity
-        android:id="@+id/leaderboardActivity"
-        android:name="it.uniba.dib.sms2324_16.LeaderboardActivity"
-        android:label="LeaderboardActivity" />
 
 </navigation>
