@@ -1,5 +1,6 @@
 package it.uniba.dib.sms2324_16;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -23,6 +23,13 @@ public class SceltaPersonaggioPiratesco extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scelta_personaggio_piratesco);
 
+        ImageView indietroButton= findViewById(R.id.topLeftIcon);
+        indietroButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         // Inizializza Firestore
         db = FirebaseFirestore.getInstance();
 

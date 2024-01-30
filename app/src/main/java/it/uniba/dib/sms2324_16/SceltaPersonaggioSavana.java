@@ -21,7 +21,13 @@ public class SceltaPersonaggioSavana extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scelta_personaggio_savana);
-
+        ImageView indietroButton= findViewById(R.id.topLeftIcon);
+        indietroButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         // Inizializza Firestore
         db = FirebaseFirestore.getInstance();
 

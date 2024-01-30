@@ -27,4 +27,6 @@
     <item name="imageView5" type="id" />
     <item name="fragment_scelta_personaggio" type="id" />
     <item name="action_homePageBambino_fragmentpercorso" type="id" />
+    <item name="fragment_percorso" type="id" />
+    <item name="action_homePageBambino_to_leaderboardActivity" type="id" />
 </resources>

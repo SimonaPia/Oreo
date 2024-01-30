@@ -1,7 +1,5 @@
 package it.uniba.dib.sms2324_16;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,20 +7,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.function.Consumer;
-import androidx.appcompat.widget.Toolbar;
 
 public class Lista_Pazienti extends AppCompatActivity implements Adapter_Pazienti.OnItemClickListener{
     private static final String TAG = "Lista_Pazienti";
@@ -34,6 +27,7 @@ public class Lista_Pazienti extends AppCompatActivity implements Adapter_Pazient
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lista_pazienti);
 
+        ImageView indietroButton = findViewById(R.id.topLeftIcon);
         recyclerView = findViewById(R.id.recyclerViewPazienti);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -42,6 +36,12 @@ public class Lista_Pazienti extends AppCompatActivity implements Adapter_Pazient
         recyclerView.setAdapter(adapterPazienti);
 
         getPazientiFromFirestore();
+        indietroButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @SuppressLint("RestrictedApi")

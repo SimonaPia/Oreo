@@ -36,7 +36,7 @@
         android:id="@+id/tvScenarioTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/scenario_mondo_incantato"
+        android:text="Scenario Mondo Incantato"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -56,7 +56,7 @@
         android:layout_marginTop="54dp"
         android:backgroundTint="#1C3144"
         android:onClick="onConfermaClick"
-        android:text="@string/conferma"
+        android:text="Conferma"
         android:textColor="#FFFFFF" />
 
 </LinearLayout>

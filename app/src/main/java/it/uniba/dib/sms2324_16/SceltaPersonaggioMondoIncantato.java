@@ -20,8 +20,8 @@ public class SceltaPersonaggioMondoIncantato extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.scelta_personaggio_fatato);
-
+        setContentView(R.layout.scelta_personaggio_mondo_incantato);
+        ImageView indietroButton = findViewById(R.id.topLeftIcon);
         // Inizializza Firestore
         db = FirebaseFirestore.getInstance();
 
@@ -65,6 +65,12 @@ public class SceltaPersonaggioMondoIncantato extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     salvaPersonaggio("Fatina", "Mondo Incantato");
+                }
+            });
+            indietroButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
                 }
             });
         }
