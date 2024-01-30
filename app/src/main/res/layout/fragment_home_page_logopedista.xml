@@ -40,13 +40,13 @@
                     android:id="@+id/tastopaziente"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/paziente"
+                    android:src="@mipmap/ic_classifica_bambino"
                     android:layout_gravity="center_horizontal"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/pazienti"
+                    android:text="@string/classifica"
                     android:layout_gravity="center_horizontal"
                     android:textSize="18sp"
                     android:textStyle="bold"

@@ -24,7 +24,7 @@ public class HomePageBambinoFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_home_page_genitore, container, false);
         View view = inflater.inflate(R.layout.fragment_homepage_bambino, container, false);
         GridLayout gridLayout = view.findViewById(R.id.gridLayout);
-        CardView cardAppuntamenti = view.findViewById(R.id.cardAppuntamenti);
+        CardView cardPremio = view.findViewById(R.id.riscuotiPremi);
         CardView cardPercorso = view.findViewById(R.id.cardPercorso);
         CardView cardScenario = view.findViewById(R.id.cardScenario);
         CardView cardClassifica = view.findViewById(R.id.cardClassifica);
@@ -41,11 +41,16 @@ public class HomePageBambinoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 navController = Navigation.findNavController(requireActivity(), R.id.nav_host_bambino);
-                navController.navigate(R.id.action_homePageBambino_to_leaderboardActivity);
+                navController.navigate(R.id.action_homePageBambino_to_leaderboardActivity2);
             }
         });
-
-
+        cardPremio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController = Navigation.findNavController(requireActivity(), R.id.nav_host_bambino);
+                navController.navigate(R.id.action_homePageBambino_to_recuperoPremio);
+            }
+        });
 
         return view;
     }

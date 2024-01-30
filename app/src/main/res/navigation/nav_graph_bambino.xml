@@ -14,6 +14,12 @@
         <action
             android:id="@+id/action_homePageBambino_to_percorsoFragment"
             app:destination="@id/percorsoFragment" />
+        <action
+            android:id="@+id/action_homePageBambino_to_leaderboardActivity2"
+            app:destination="@id/leaderboardActivity" />
+        <action
+            android:id="@+id/action_homePageBambino_to_recuperoPremio"
+            app:destination="@id/recuperoPremio" />
     </fragment>
     <fragment
         android:id="@+id/percorsoFragment"
@@ -24,5 +30,13 @@
             android:id="@+id/action_percorsoFragment_to_homePageBambino"
             app:destination="@id/homePageBambino" />
     </fragment>
+    <activity
+        android:id="@+id/leaderboardActivity"
+        android:name="it.uniba.dib.sms2324_16.LeaderboardActivity"
+        android:label="LeaderboardActivity" />
+    <activity
+        android:id="@+id/recuperoPremio"
+        android:name="it.uniba.dib.sms2324_16.RecuperoPremio"
+        android:label="RecuperoPremio" />
 
 </navigation>

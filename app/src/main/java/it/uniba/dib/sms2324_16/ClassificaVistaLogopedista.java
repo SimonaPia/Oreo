@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,16 +22,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LeaderboardActivity extends AppCompatActivity {
+public class ClassificaVistaLogopedista extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private LeaderboardAdapter leaderboardAdapter;
+    private ClassificaAdapterLog leaderboardAdapter;
     private List<Bambino> bambinoList;
     private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leaderboard);
+        setContentView(R.layout.classifica_vista_logopedista);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -40,7 +39,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
 
         bambinoList = new ArrayList<>();
-        leaderboardAdapter = new LeaderboardAdapter(bambinoList);
+        leaderboardAdapter = new ClassificaAdapterLog(bambinoList);
         recyclerView.setAdapter(leaderboardAdapter);
 
         db = FirebaseFirestore.getInstance();
@@ -53,7 +52,7 @@ public class LeaderboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Avvia l'intent per navigare alla HomePageBambinoFragment
-                Intent intent = new Intent(LeaderboardActivity.this, HomePageBambino.class);
+                Intent intent = new Intent(ClassificaVistaLogopedista.this, HomePageLogopedista.class);
                 startActivity(intent);
             }
         });
@@ -76,7 +75,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                             }
                             leaderboardAdapter.notifyDataSetChanged();
                         } else {
-                            Toast.makeText(LeaderboardActivity.this, "Nessun dato trovato", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ClassificaVistaLogopedista.this, "Nessun dato trovato", Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
@@ -84,7 +83,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e("LeaderboardActivity", "Errore nel recupero dei dati", e);
-                        Toast.makeText(LeaderboardActivity.this, "Errore nel recupero dei dati", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ClassificaVistaLogopedista.this, "Errore nel recupero dei dati", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

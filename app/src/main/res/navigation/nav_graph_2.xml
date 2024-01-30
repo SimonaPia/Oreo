@@ -15,10 +15,10 @@
         <action
             android:id="@+id/action_homepage_logopedista_fragment_to_fragment_appuntamenti_logopedista"
             app:destination="@id/fragment_appuntamenti_logopedista" />
-
         <action
-            android:id="@+id/action_homepage_logopedista_fragment_to_gioco1_fragment"
-            app:destination="@id/gioco1_fragment" />
+            android:id="@+id/action_homepage_logopedista_fragment_to_classificaVistaLogopedista"
+            app:destination="@id/classificaVistaLogopedista" />
+
 
     </fragment>
 
@@ -49,6 +49,11 @@
         tools:layout="@layout/fragment_gioco1_fragment" >
 
     </fragment>
+    <activity
+        android:id="@+id/classificaVistaLogopedista"
+        android:name="it.uniba.dib.sms2324_16.ClassificaVistaLogopedista"
+        android:label="classifica_vista_logopedista"
+        tools:layout="@layout/classifica_vista_logopedista" />
 
 
 </navigation>
