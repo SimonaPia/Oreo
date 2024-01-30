@@ -4,14 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Patient implements Serializable {
     private long id;
     private String name;
     private List<Exercise> assignedExercises;
+    public Patient() {
+        // Vuoto per compatibilità con Firestore
+    }
 
     public Patient(String name) {
         this.name = name;
