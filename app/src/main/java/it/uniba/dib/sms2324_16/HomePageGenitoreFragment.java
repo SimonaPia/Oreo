@@ -41,11 +41,6 @@ public class HomePageGenitoreFragment extends Fragment {
                     // Esegui la navigazione solo se non sei già nel fragment di destinazione
                     navController.navigate(R.id.action_homePageGenitoreFragment_to_appuntamentiGenitoreFragment);
                 }
-                gridLayout.removeViewAt(0); // Esempio: rimuove la prima CardView
-                gridLayout.removeView(cardAppuntamenti);
-                gridLayout.removeView(cardEsercizi);
-                gridLayout.invalidate();
-                gridLayout.requestLayout();
             }
         });
         cardScenario.setOnClickListener(new View.OnClickListener() {
@@ -56,11 +51,6 @@ public class HomePageGenitoreFragment extends Fragment {
 
                 // Avvia l'activity
                 startActivity(intent);
-
-                // Puoi rimuovere la CardView se necessario
-                gridLayout.removeView(cardScenario);
-                gridLayout.invalidate();
-                gridLayout.requestLayout();
             }
         });
 

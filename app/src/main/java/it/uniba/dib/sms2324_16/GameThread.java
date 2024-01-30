@@ -8,9 +8,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -30,35 +34,30 @@ import java.util.List;
 public class GameThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private boolean running;
-
     // Immagini o oggetti per rappresentare i livelli del percorso
-    private Bitmap layer1Image;
-    private Bitmap layer2Image;
-    private Bitmap sfondo;
-
-    // Posizioni dei livelli
-    private int layer1X, layer2X;
+    private Bitmap sfondo, draggedImage;
     private Paint paint;
     private List<Point> zigzagPath;
+    private Path zigzagPath1;
     private int zigzagHeight = 200;
     private int canvasWidth;
     private int canvasHeight;
     private Context context;
+    private float draggedX, draggedY;
+    private Bitmap personaggio1;
+    private boolean movimento;
 
     public GameThread(SurfaceHolder holder, Context context) {
         surfaceHolder = holder;
         this.context = context;
-        // Initialize your game variables here
 
         // Carica le immagini o inizializza gli oggetti dei livelli
         sfondo = BitmapFactory.decodeResource(context.getResources(), R.drawable.sfondo_input);
-        setSfondo();
-        layer1Image = BitmapFactory.decodeResource(context.getResources(), R.drawable.personaggio_fiabesco_2);
-        layer2Image = BitmapFactory.decodeResource(context.getResources(), R.drawable.personaggio_fiabesco_2);
 
-        // Inizializza le posizioni dei livelli
-        layer1X = 0;
-        layer2X = 0;
+        // viene settato lo sfondo in base a ciò che è stato scelto dal genitore per il bambino (controllato con una query al db)
+        setSfondo();
+
+        // Inizializza l'elemento paint ed il vettore che conterrà il percorso
         paint = new Paint();
         zigzagPath = new ArrayList<>();
         setRunning(true);
@@ -97,6 +96,9 @@ public class GameThread extends Thread {
                                 }
                             } else {
                                 Log.e(TAG, "Error getting documents: ", task.getException());
+                                PercorsoFragment percorsoFragment = new PercorsoFragment();
+                                percorsoFragment.messaggio("Il tuo genitore non ha ancora scelto lo scenario per te!");
+                                setRunning(false);
                             }
                         }
                     });
@@ -136,6 +138,7 @@ public class GameThread extends Thread {
         }
     }
 
+
     public void setRunning(boolean run) {
         running = run;
     }
@@ -161,11 +164,11 @@ public class GameThread extends Thread {
                 }
             }
 
-            try {
+            /*try {
                 sleep(16); // Approssimativamente 60 frame al secondo
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
 
         }
     }
@@ -259,10 +262,31 @@ public class GameThread extends Thread {
             float startTextY = startPoint.y + 10; // Altezza del testo sopra l'ovale
             canvas.drawText(startNumber, startTextX, startTextY, paint);
         }
+
+        // Disegna l'immagine trascinata, se presente...
+        if (draggedImage != null) {
+            canvas.drawBitmap(draggedImage, draggedX, draggedY, null);
+        }
     }
 
     public List<Point> getZigzagPath() {
         return zigzagPath;
+    }
+
+    public void setDraggedImage(ImageView imageView, float x, float y) {
+        draggedImage = getBitmapFromImageView(imageView);
+        draggedX = x;
+        draggedY = y;
+    }
+
+    private Bitmap getBitmapFromImageView(ImageView imageView) {
+        // Converte l'ImageView in un'immagine Bitmap
+        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        if (drawable != null) {
+            return drawable.getBitmap();
+        } else {
+            return null;
+        }
     }
 }
 

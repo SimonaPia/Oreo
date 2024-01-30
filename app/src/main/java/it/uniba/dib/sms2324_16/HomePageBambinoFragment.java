@@ -34,7 +34,7 @@ public class HomePageBambinoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 navController = Navigation.findNavController(requireActivity(), R.id.nav_host_bambino);
-                navController.navigate(R.id.action_homePageBambino_fragmentpercorso);
+                navController.navigate(R.id.action_homePageBambino_to_percorsoFragment);
             }
         });
         cardClassifica.setOnClickListener(new View.OnClickListener() {
