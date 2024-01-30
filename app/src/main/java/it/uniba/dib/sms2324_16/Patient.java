@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Patient implements Serializable {
     private long id;
     private String name;

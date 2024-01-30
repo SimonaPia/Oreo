@@ -1,5 +1,6 @@
 package it.uniba.dib.sms2324_16;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
@@ -11,21 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.ExerciseViewHolder> {
@@ -50,9 +40,9 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     //Costruttore
     public ExerciseListAdapter(Context context, List<Exercise> exerciseList, List<Patient> patientList, OnItemClickListener listener) {
         this.exerciseList = exerciseList;
+        this.patientList = patientList;
         this.listener = listener;
         this.context = context;
-        this.patientList = new ArrayList<>();
 
         // Inizializza l'oggetto dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -206,14 +196,13 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Assegna l'esercizio al paziente selezionato
-                Patient selectedPatient = patientList.get(which);
+                Patient selectedPatient = getPatientList().get(which);
                 selectedPatient.addAssignedExercise(exercise);
                 // Notifica l'activity dell'assegnazione e della necessità di aggiornare l'adapter
                 listener.onAssignClick(exercise, selectedPatient, exercisePosition);
                 showAssignConfirmationDialog(exercise, selectedPatient, exercisePosition);
             }
         });
-
 
         AlertDialog dialog = builder.create();
         Log.d("ExerciseListAdapter", "Showing assign exercise dialog");
@@ -251,10 +240,4 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-    public void setPatientList(List<Patient> patients) {
-        this.patientList.clear();
-        this.patientList.addAll(patients);
-        notifyDataSetChanged(); // Notifica l'adapter dei cambiamenti
-    }
-
 }
