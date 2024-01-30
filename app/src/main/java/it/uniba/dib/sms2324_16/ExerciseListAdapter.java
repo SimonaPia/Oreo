@@ -27,6 +27,12 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     private Exercise selectedExercise;
     private OnItemClickListener listener;
     private Context context;
+    private List<Patient> patients;
+
+    public void setPatients(List<Patient> patients) {
+        this.patients = patients;
+        notifyDataSetChanged();
+    }
 
     public interface OnItemClickListener {
         void onDetailsClick(Exercise exercise, String details, String exerciseDetails);
