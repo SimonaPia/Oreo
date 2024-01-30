@@ -12,6 +12,9 @@ public class Patient implements Serializable {
     private long id;
     private String name;
     private List<Exercise> assignedExercises;
+    public Patient() {
+        // Vuoto per compatibilità con Firestore
+    }
 
     public Patient(String name) {
         this.name = name;

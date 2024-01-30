@@ -1,5 +1,7 @@
 package it.uniba.dib.sms2324_16;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -7,10 +9,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +52,7 @@ public class ExerciseListActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ExerciseListAdapter(this, getExerciseList(), getPatientList(), new ExerciseListAdapter.OnItemClickListener() {
+        adapter = new ExerciseListAdapter(this, getExerciseList(), loadPatientsFromFirestore(), new ExerciseListAdapter.OnItemClickListener() {
             @Override
             public void onDetailsClick(Exercise exercise, String details, String exerciseDetails) {
                 // Implementa l'azione quando il pulsante "Dettagli" viene premuto
@@ -72,16 +84,39 @@ public class ExerciseListActivity extends AppCompatActivity {
         Log.d("ExerciseListActivity", "Number of patients in adapter: " + adapter.getItemCount());
     }
 
-    private List<Patient> getPatientList() {
-        List<Patient> patients = new ArrayList<>();
-        // Aggiungi pazienti alla lista
-        patients.add(new Patient("Maria"));
-        patients.add(new Patient("Pia"));
-        patients.add(new Patient("Mario"));
+    private List<Patient> loadPatientsFromFirestore() {
+        // Ottenere un'istanza del database Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        Log.d("ExerciseListActivity", "Number of patients: " + patients.size());
+        // Ottenere un riferimento alla raccolta "Classifica" nel database Firestore
+        CollectionReference patientsRef = db.collection("Classifica");
+
+        List<Patient> patients = new ArrayList<>();
+
+        // Effettua la query per ottenere tutti i documenti nella raccolta "Classifica"
+        patientsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Leggi il nome del paziente dal documento e aggiungilo alla lista
+                        String patientName = document.getString("nome");
+                        if (patientName != null) {
+                            patients.add(new Patient(patientName));
+                        }
+                    }
+                    // Aggiorna l'adapter con i pazienti caricati da Firestore
+                    adapter.setPatientList(patients);
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
         return patients;
     }
+
+
 
     private List<Exercise> getExerciseList() {
         // Simulazione di una lista di esercizi (puoi ottenere dati da un server o altro)

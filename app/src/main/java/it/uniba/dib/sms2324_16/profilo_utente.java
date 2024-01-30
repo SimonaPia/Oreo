@@ -36,9 +36,6 @@ public class profilo_utente extends AppCompatActivity {
         String nome = getIntent().getStringExtra("nomePaziente");
         String cognome = getIntent().getStringExtra("cognomePaziente");
 
-
-
-
         if (nome != null && cognome != null) {
             Log.d(TAG, "Nome Paziente: " + nome);
             Log.d(TAG, "Cognome Paziente: " + cognome);
