@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,14 +33,20 @@ public class profilo_utente extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profilo_utente);
-
+        Button bottoneAssegna = findViewById(R.id.assegnaButton);
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
         String nome = getIntent().getStringExtra("nomePaziente");
         String cognome = getIntent().getStringExtra("cognomePaziente");
 
-
+       bottoneAssegna.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent intent = new Intent(profilo_utente.this, AssegnazionePremiActivity.class);
+               startActivity(intent);
+           }
+       });
 
 
         if (nome != null && cognome != null) {
@@ -101,6 +111,15 @@ public class profilo_utente extends AppCompatActivity {
             Log.e(TAG, "Nome o cognome del paziente nullo.");
             // Gestisci l'errore, ad esempio mostrando un messaggio all'utente o ritornando indietro.
         }
+        ImageView imageView = findViewById(R.id.topLeftIcon);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Avvia l'intent per navigare alla HomePageBambinoFragment
+                Intent intent = new Intent(profilo_utente.this, Lista_Pazienti.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }

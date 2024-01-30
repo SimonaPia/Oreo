@@ -2,4 +2,5 @@
 <resources>
     <string name="guest_user" />
     <string name="guest_navigate" translatable="false">Ospite </string>
+
 </resources>

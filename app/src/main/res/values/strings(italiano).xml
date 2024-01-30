@@ -58,6 +58,16 @@
     <string name="scegli_lingua">Scegli lingua</string>
     <string name="pronunti_app">PronuntiApp</string>
     <string name="benvenuto">Benvenuto/a</string>
+    <string name="assegna_premio">Assegna un premio</string>
+    <string name="dolce">dolce</string>
+    <string name="medaglia">medaglia</string>
+    <string name="giornalino">giornalino</string>
+    <string name="pacchetto_figurine">pacchetto figurine</string>
+    <string name="recupera_premio">Recupera il premio!</string>
+    <string name="ritira">Ritira</string>
+    <string name="dialog_title">Premio ritirato</string>
+    <string name="dialog_message">PREMIO RITIRATO! TORNA LA PROSSIMA VOLTA PER RITIRARNE ALTRI!</string>
+
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

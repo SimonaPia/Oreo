@@ -59,6 +59,15 @@
     <string name="scegli_lingua">Choose language</string>
     <string name="pronunti_app">PronuntiApp</string>
     <string name="benvenuto">Welcome</string>
+    <string name="assegna_premio">Give a prize</string>
+    <string name="dolce">sweet</string>
+    <string name="medaglia">medal</string>
+    <string name="giornalino">newspaper</string>
+    <string name="pacchetto_figurine">sticker pack</string>
+    <string name="recupera_premio">Collect the prize!</string>
+    <string name="ritira">Collect</string>
+    <string name="dialog_title">Prize withdrawn</string>
+    <string name="dialog_message">PRIZE WITHDRAWN! COME BACK NEXT TIME TO WITHDRAW MORE!</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

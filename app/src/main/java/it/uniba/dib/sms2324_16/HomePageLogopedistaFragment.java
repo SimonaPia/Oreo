@@ -113,7 +113,7 @@ public class HomePageLogopedistaFragment extends Fragment {
                 // Controlla se il fragment di destinazione è già presente
                 if (navController.getCurrentDestination().getId() != R.id.gioco1_fragment) {
                     // Esegui la navigazione solo se non sei già nel fragment di destinazione
-                    navController.navigate(R.id.action_homepage_logopedista_fragment_to_gioco1_fragment);
+                    navController.navigate(R.id.action_homepage_logopedista_fragment_to_classificaVistaLogopedista);
                 }
             }
         });

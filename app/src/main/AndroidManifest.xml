@@ -66,6 +66,10 @@
         <activity android:name=".IntermediatePage"></activity>
         <activity android:name=".HomePageGenitore"></activity>
         <activity android:name=".LeaderboardActivity"></activity>
+        <activity android:name=".AssegnazionePremiActivity"/>
+        <activity android:name=".RecuperoPremio"/>
+        <activity android:name=".ClassificaVistaLogopedista"/>
+
     </application>
 
 </manifest>

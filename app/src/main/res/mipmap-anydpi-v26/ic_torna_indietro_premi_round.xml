@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_torna_indietro_premi_background"/>
+    <foreground android:drawable="@drawable/ic_torna_indietro_premi_foreground"/>
+</adaptive-icon>

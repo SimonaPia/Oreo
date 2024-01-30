@@ -65,6 +65,17 @@ public class Lista_Pazienti extends AppCompatActivity implements Adapter_Pazient
                 Log.w(TAG, "Errore durante il recupero dei documenti", task.getException());
             }
         });
+        ImageView imageView = findViewById(R.id.topLeftIcon);
+
+        // Aggiungi un listener per il click sull'ImageView
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Avvia l'intent per navigare alla HomePageBambinoFragment
+                Intent intent = new Intent(Lista_Pazienti.this, HomePageBambino.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // Implementa il metodo onItemClick per gestire il clic sugli elementi della lista
