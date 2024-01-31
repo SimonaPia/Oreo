@@ -37,6 +37,11 @@ public class AssegnazionePremiActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.assegnazione_premi);
 
+
+        // Recupera i dati dal Intent che ha avviato questa attività
+        Intent intent = getIntent();
+        String nome = intent.getStringExtra("nomePaziente");
+        String cognome = intent.getStringExtra("cognomePaziente");
         db = FirebaseFirestore.getInstance();
         Log.d("AssegnazionePremiActivity", "onCreate() called");
         // Inizializza le view
@@ -84,9 +89,12 @@ public class AssegnazionePremiActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Avvia l'intent per navigare alla HomePageBambinoFragment
+                // Torna all'attività profilo_utente con i dati aggiornati
                 Intent intent = new Intent(AssegnazionePremiActivity.this, profilo_utente.class);
+                intent.putExtra("nomePaziente", nome);
+                intent.putExtra("cognomePaziente", cognome);
                 startActivity(intent);
+
             }
         });
     }
