@@ -29,6 +29,21 @@ public class HomePageGenitoreFragment extends Fragment {
         CardView cardAppuntamenti = view.findViewById(R.id.cardAppuntamenti);
         CardView cardEsercizi = view.findViewById(R.id.cardEsercizi);
         CardView cardScenario = view.findViewById(R.id.cardScenario);
+        CardView cardProfilo = view.findViewById(R.id.cardProfilo);
+        cardProfilo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Utilizza Navigation.findNavController() passando l'activity e il tuo fragment
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_genitore);
+
+                // Controlla se il fragment di destinazione è già presente
+                if (navController.getCurrentDestination().getId() != R.id.appuntamentiGenitoreFragment) {
+                    // Esegui la navigazione solo se non sei già nel fragment di destinazione
+                    navController.navigate(R.id.action_homePageGenitoreFragment_to_profiloBambinoGenitore3);
+                }
+
+            }
+        });
 
         cardAppuntamenti.setOnClickListener(new View.OnClickListener() {
             @Override

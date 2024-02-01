@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_homePageGenitoreFragment_to_listaEserciziSvoltiFragment"
             app:destination="@id/listaEserciziSvoltiFragment" />
+        <action
+            android:id="@+id/action_homePageGenitoreFragment_to_profiloBambinoGenitore3"
+            app:destination="@id/profiloBambinoGenitore3" />
     </fragment>
     <fragment
         android:id="@+id/appuntamentiGenitoreFragment"
@@ -32,4 +35,9 @@
             android:id="@+id/action_listaEserciziSvoltiFragment_to_homePageGenitoreFragment"
             app:destination="@id/homePageGenitoreFragment" />
     </fragment>
+    <activity
+        android:id="@+id/profiloBambinoGenitore3"
+        android:name="it.uniba.dib.sms2324_16.ProfiloBambinoGenitore"
+        android:label="profilo_bambino_genitore"
+        tools:layout="@layout/profilo_bambino_genitore" />
 </navigation>

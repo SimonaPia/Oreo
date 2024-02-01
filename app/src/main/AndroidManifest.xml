@@ -72,7 +72,7 @@
         <activity android:name=".AssegnazionePremiActivity"/>
         <activity android:name=".RecuperoPremio"/>
         <activity android:name=".ClassificaVistaLogopedista"/>
-
+<activity android:name=".ProfiloBambinoGenitore"/>
     </application>
 
 </manifest>

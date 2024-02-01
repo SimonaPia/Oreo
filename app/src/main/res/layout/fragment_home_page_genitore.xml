@@ -19,6 +19,7 @@
         android:layout_below="@+id/testo">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardProfilo"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_columnWeight="1"

@@ -116,20 +116,10 @@ public class ListaEserciziSvoltiFragment extends Fragment {
                                 exerciseItemList = new ArrayList<>();
 
                                 for (DocumentSnapshot document : task.getResult()) {
-                                    boolean controllo;
                                     idBambino = document.getString("id_bambino");
-                                    Log.d("TAG", idBambino);
                                     tipoEsercizio = document.getString("tipoEsercizio");
                                     risposta = document.getString("risposta");
-                                    getNomeBambino();
-                                    //Log.d("TAG", nomeBambino);
-
-                                    if (risposta.isEmpty())
-                                        controllo = false;
-                                    else
-                                        controllo = true;
-
-                                    exerciseItemList.add(new ExerciseItem(nomeBambino, tipoEsercizio, controllo, risposta, idBambino));
+                                    getNomeBambino(document);
                                 }
 
                                 ExerciseAdapter adapter = new ExerciseAdapter(exerciseItemList);
@@ -145,27 +135,34 @@ public class ListaEserciziSvoltiFragment extends Fragment {
         }
     }
 
-    private void getNomeBambino() {
+    private void getNomeBambino(DocumentSnapshot document) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference documentReference = db.collection("Utente").document(idBambino);
 
-        // Esegui una query filtrata per ottenere i documenti associati all'utente attualmente loggato
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    // Ottieni il documento risultante
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        // Il documento esiste, quindi puoi accedere ai suoi campi
-                        nomeBambino = document.getString("nome");
+                    DocumentSnapshot doc = task.getResult();
+                    if (doc.exists()) {
+                        String nomeBambino = doc.getString("nome");
+                        boolean controllo;
+                        if (risposta.isEmpty())
+                            controllo = false;
+                        else
+                            controllo = true;
+
+                        exerciseItemList.add(new ExerciseItem(nomeBambino, tipoEsercizio, controllo, risposta, idBambino));
+
+                        ExerciseAdapter adapter = new ExerciseAdapter(exerciseItemList);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     } else {
-                        // Il documento non esiste
                         Log.d("Firestore", "Il documento non esiste");
                         Toast.makeText(getContext(), "Il documento non esiste", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // Gestisci eventuali errori durante la query
                     Log.e("Firestore", "Errore durante la query: " + task.getException().getMessage());
                     Toast.makeText(requireContext(), "La query non è andata a buon fine", Toast.LENGTH_SHORT).show();
                 }
