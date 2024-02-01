@@ -14,13 +14,22 @@
         <action
             android:id="@+id/action_homePageGenitoreFragment_to_appuntamentiGenitoreFragment"
             app:destination="@id/appuntamentiGenitoreFragment" />
-
+        <action
+            android:id="@+id/action_homePageGenitoreFragment_to_listaEserciziSvoltiFragment"
+            app:destination="@id/listaEserciziSvoltiFragment" />
     </fragment>
     <fragment
         android:id="@+id/appuntamentiGenitoreFragment"
         android:name="it.uniba.dib.sms2324_16.AppuntamentiGenitoreFragment"
         android:label="appuntamenti_genitore"
         tools:layout="@layout/appuntamenti_genitore" />
-
-
+    <fragment
+        android:id="@+id/listaEserciziSvoltiFragment"
+        android:name="it.uniba.dib.sms2324_16.ListaEserciziSvoltiFragment"
+        android:label="fragment_lista_esercizi_svolti"
+        tools:layout="@layout/fragment_lista_esercizi_svolti" >
+        <action
+            android:id="@+id/action_listaEserciziSvoltiFragment_to_homePageGenitoreFragment"
+            app:destination="@id/homePageGenitoreFragment" />
+    </fragment>
 </navigation>

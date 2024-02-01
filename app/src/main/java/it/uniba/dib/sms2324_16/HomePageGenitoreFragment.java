@@ -55,6 +55,14 @@ public class HomePageGenitoreFragment extends Fragment {
         });
 
 
+        cardEsercizi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_genitore);
+                navController.navigate(R.id.action_homePageGenitoreFragment_to_listaEserciziSvoltiFragment);
+            }
+        });
+
         return view;
     }
 
