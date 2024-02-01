@@ -8,16 +8,26 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
-import android.media.MediaPlayer;  // Importa la classe MediaPlayer per gestire gli applausi
 
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Locale;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 public class gioco1_fragment extends Fragment {
 
     private TextToSpeech textToSpeech;
-    private MediaPlayer applausiMediaPlayer;  // Aggiungi la dichiarazione di MediaPlayer per gli applausi
+    private int monete = 0;
+
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private FirebaseUser currentUser = auth.getCurrentUser();
+    private DatabaseReference pazientiRef = FirebaseDatabase.getInstance().getReference().child("Pazienti");
 
     public gioco1_fragment() {
         // Required empty public constructor
@@ -50,35 +60,22 @@ public class gioco1_fragment extends Fragment {
             }
         });
 
-        // Inizializza il MediaPlayer per gli applausi
-        applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
-
+        // Imposta il listener per il pulsante Ascolta Vocale
         buttonAudio.setOnClickListener(v -> {
-            // Converti la stringa in output vocale utilizzando TextToSpeech
             textToSpeech.speak("soldo", TextToSpeech.QUEUE_FLUSH, null, null);
         });
 
+        // Imposta il listener per il pulsante Invia Risposta
         buttonInvioRisposta.setOnClickListener(v -> {
-            // Verifica quale RadioButton è selezionato
             if (radioButtonSordo.isChecked()) {
-                // L'utente ha selezionato l'immagine con l'ID radioButton_sordo
                 inviaRisposta("Hai scelto l'immagine con la mano sorda");
-                gioco2_fragment gioco2Fragment = new gioco2_fragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.gioco1_fragment, gioco2Fragment)
-                        .addToBackStack(null)
-                        .commit();
+                aggiornaMonete(0);
 
             } else if (radioButtonSoldo.isChecked()) {
-                // L'utente ha selezionato l'immagine con l'ID radioButton_soldo
                 inviaRisposta("Hai scelto l'immagine con la mano soldo");
-                gioco2_fragment gioco2Fragment = new gioco2_fragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.gioco1_fragment, gioco2Fragment)
-                        .addToBackStack(null)
-                        .commit();
+                aggiornaMonete(2);
+
             } else {
-                // Nessun RadioButton selezionato, gestisci l'errore
                 Toast.makeText(getActivity(), "Seleziona un'immagine", Toast.LENGTH_SHORT).show();
             }
         });
@@ -87,63 +84,61 @@ public class gioco1_fragment extends Fragment {
     }
 
     private void inviaRisposta(String messaggio) {
-        // Implementa la logica per verificare la correttezza della risposta
-        boolean isRispostaCorretta = verificaCorrettezzaRisposta(messaggio);
+        Toast.makeText(getActivity(), "Abbiamo inviato la tua risposta al tuo logopedista", Toast.LENGTH_SHORT).show();
+        mostraDialog("Complimenti!", "Hai guadagnato 2 monkeys monete. Continua a giocare per guadagnare altri monkeys!");
+        aggiornaMonete(2);
+    }
 
-        // Invia il feedback vocale e gestisci gli applausi se la risposta è corretta
-        inviaFeedback(isRispostaCorretta);
+    private void mostraDialog(String titolo, String messaggio) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(titolo)
+                .setMessage(messaggio)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Chiudi la finestra di dialogo se necessario
+                        dialog.dismiss();
+                    }
+                });
+        // Crea e mostra la finestra di dialogo
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
-        // Mostra un messaggio all'utente
-        if (isRispostaCorretta) {
-            Toast.makeText(getActivity(), "Ben fatto! Risposta corretta.", Toast.LENGTH_SHORT).show();
+    private void aggiornaMonete(int incremento) {
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+
+            // Recupera il valore attuale delle monete dal database
+            pazientiRef.child(userId).child("monete").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    // Verifica se il valore delle monete è nullo
+                    Integer moneteAttuali = task.getResult().getValue(Integer.class);
+
+                    if (moneteAttuali == null) {
+                        moneteAttuali = 0; // Imposta il valore predefinito se è nullo
+                    }
+
+                    // Incrementa le monete e salva nel database
+                    moneteAttuali += incremento;
+                    pazientiRef.child(userId).child("monete").setValue(moneteAttuali);
+                } else {
+                    // Gestisci eventuali errori nella lettura dei dati dal database
+                    Toast.makeText(requireContext(), "Errore nel recupero delle monete.", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
-            Toast.makeText(getActivity(), "Riceverai la correzione dal Logopedista.", Toast.LENGTH_SHORT).show();
+            // L'utente non è loggato, gestisci l'errore o richiedi il login
+            Toast.makeText(requireContext(), "Utente non autenticato.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private boolean verificaCorrettezzaRisposta(String rispostaUtente) {
-        // Implementa la tua logica per verificare se la risposta dell'utente è corretta
-        // Restituisce true se la risposta è corretta, altrimenti false
-        // Esempio: return rispostaUtente.equalsIgnoreCase("risposta_corretta");
-        return rispostaUtente.equalsIgnoreCase("Hai scelto l'immagine con la mano soldo");
-    }
-
-    private void inviaFeedback(boolean isRispostaCorretta) {
-        // Output vocale in base alla correttezza della risposta
-        String feedbackVocale;
-        if (isRispostaCorretta) {
-            feedbackVocale = "Ben fatto! Risposta corretta.";
-            // Riproduci gli applausi quando la risposta è corretta
-            playApplausi();
-        } else {
-            feedbackVocale = "Riceverai la correzione dal Logopedista.";
-        }
-
-        // Converti la stringa in output vocale utilizzando TextToSpeech
-        textToSpeech.speak(feedbackVocale, TextToSpeech.QUEUE_FLUSH, null, null);
-    }
-
-    private void playApplausi() {
-        if (applausiMediaPlayer != null) {
-            applausiMediaPlayer.start();
-        } else {
-            // Inizializza il MediaPlayer per gli applausi solo se è null
-            applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
-            applausiMediaPlayer.start();
-        }
-    }
 
     @Override
     public void onDestroy() {
-        // Rilascia le risorse quando il fragment viene distrutto
+        // Rilascia le risorse di TextToSpeech quando il fragment viene distrutto
         if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
-        }
-
-        // Rilascia le risorse del MediaPlayer degli applausi
-        if (applausiMediaPlayer != null) {
-            applausiMediaPlayer.release();
         }
 
         super.onDestroy();

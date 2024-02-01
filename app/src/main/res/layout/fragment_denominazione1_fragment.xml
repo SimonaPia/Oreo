@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/icona_quiz"
-            android:layout_width="212dp"
-            android:layout_height="132dp"
+            android:layout_width="201dp"
+            android:layout_height="120dp"
             android:layout_marginStart="100dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="80dp"
@@ -49,20 +49,40 @@
             android:layout_width="190dp"
             android:layout_height="170dp"
             android:layout_marginStart="110dp"
-            android:layout_marginTop="320dp"
+            android:layout_marginTop="300dp"
             android:layout_marginEnd="80dp"
             android:adjustViewBounds="true"
             android:src="@drawable/mulino" />
 
         <Button
             android:id="@+id/buttonRegistraAudio"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/icona_quiz1"
-            android:layout_marginStart="130dp"
-            android:layout_marginTop="10dp"
-            android:drawableLeft="@drawable/microfono"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="20dp"
+            android:onClick="buttonRegistraAudioPressed"
             android:text="REGISTRA" />
+
+        <Button
+            android:id="@+id/buttonStopAudio"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/icona_quiz1"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="20dp"
+            android:onClick="buttonStopAudioPressed"
+            android:text="STOP" />
+
+        <Button
+            android:id="@+id/buttonPlayAudio"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/icona_quiz1"
+            android:layout_marginStart="280dp"
+            android:layout_marginTop="20dp"
+            android:onClick="buttonPlayAudioPressed"
+            android:text="PLAY" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonInvioRisposta"
@@ -70,7 +90,7 @@
             android:layout_height="wrap_content"
             android:text="INVIA RISPOSTA"
             android:layout_below="@+id/icona_quiz1"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="90dp"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:textColor="#FFFFFF"

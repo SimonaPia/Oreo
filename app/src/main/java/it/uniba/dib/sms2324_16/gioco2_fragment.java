@@ -8,21 +8,29 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
-import android.media.MediaPlayer;
 
 import androidx.fragment.app.Fragment;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Locale;
-
 public class gioco2_fragment extends Fragment {
 
     private TextToSpeech textToSpeech;
-    private MediaPlayer applausiMediaPlayer;  // Aggiungi la dichiarazione di MediaPlayer per gli applausi
+    private int monete = 0;
+
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private FirebaseUser currentUser = auth.getCurrentUser();
+    private DatabaseReference pazientiRef = FirebaseDatabase.getInstance().getReference().child("Pazienti");
 
     public gioco2_fragment() {
         // Required empty public constructor
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,8 +59,6 @@ public class gioco2_fragment extends Fragment {
             }
         });
 
-        // Inizializza il MediaPlayer per gli applausi
-        applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
 
         buttonAudio.setOnClickListener(v -> {
             // Converti la stringa in output vocale utilizzando TextToSpeech
@@ -63,21 +69,15 @@ public class gioco2_fragment extends Fragment {
             // Verifica quale RadioButton è selezionato
             if (radioButtonosso.isChecked()) {
                 // L'utente ha selezionato l'immagine con l'ID radioButton_sordo
-                inviaRisposta("Hai scelto l'immagine osso", true);
-                gioco3_fragment gioco3Fragment = new gioco3_fragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.gioco2_fragment, gioco3Fragment)
-                        .addToBackStack(null)
-                        .commit();
+                inviaRisposta("Hai scelto l'immagine osso");
+                aggiornaMonete(2);
+
 
             } else if (radioButtonorso.isChecked()) {
                 // L'utente ha selezionato l'immagine con l'ID radioButton_soldo
-                inviaRisposta("Hai scelto l'immagine orso", false);
-                gioco3_fragment gioco3Fragment = new gioco3_fragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.gioco2_fragment, gioco3Fragment)
-                        .addToBackStack(null)
-                        .commit();
+                inviaRisposta("Hai scelto l'immagine orso");
+                aggiornaMonete(2);
+
 
             } else {
                 // Nessun RadioButton selezionato, gestisci l'errore
@@ -89,50 +89,62 @@ public class gioco2_fragment extends Fragment {
         return view;
     }
 
-    private void inviaRisposta(String messaggio, boolean isRispostaCorretta) {
-        // Invia il feedback vocale e gestisci gli applausi se la risposta è corretta
-        inviaFeedback(isRispostaCorretta);
-
-        // Mostra un messaggio all'utente
+    private void inviaRisposta(String messaggio) {
         Toast.makeText(getActivity(), "Abbiamo inviato la tua risposta al tuo logopedista", Toast.LENGTH_SHORT).show();
+        mostraDialog("Complimenti!", "Hai guadagnato 2 monkeys monete. Continua a giocare per guadagnare altri monkeys!");
+        aggiornaMonete(2);
     }
 
-    private void inviaFeedback(boolean isRispostaCorretta) {
-        // Output vocale in base alla correttezza della risposta
-        String feedbackVocale;
-        if (isRispostaCorretta) {
-            feedbackVocale = "Ben fatto! Risposta corretta.";
-            // Riproduci gli applausi quando la risposta è corretta
-            playApplausi();
+    private void mostraDialog(String titolo, String messaggio) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(titolo)
+                .setMessage(messaggio)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Chiudi la finestra di dialogo se necessario
+                        dialog.dismiss();
+                    }
+                });
+        // Crea e mostra la finestra di dialogo
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void aggiornaMonete(int incremento) {
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+
+            // Recupera il valore attuale delle monete dal database
+            pazientiRef.child(userId).child("monete").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    // Verifica se il valore delle monete è nullo
+                    Integer moneteAttuali = task.getResult().getValue(Integer.class);
+
+                    if (moneteAttuali == null) {
+                        moneteAttuali = 0; // Imposta il valore predefinito se è nullo
+                    }
+
+                    // Incrementa le monete e salva nel database
+                    moneteAttuali += incremento;
+                    pazientiRef.child(userId).child("monete").setValue(moneteAttuali);
+                } else {
+                    // Gestisci eventuali errori nella lettura dei dati dal database
+                    Toast.makeText(requireContext(), "Errore nel recupero delle monete.", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
-            feedbackVocale = "Riceverai la correzione dal Logopedista.";
-        }
-
-        // Converti la stringa in output vocale utilizzando TextToSpeech
-        textToSpeech.speak(feedbackVocale, TextToSpeech.QUEUE_FLUSH, null, null);
-    }
-
-    private void playApplausi() {
-        if (applausiMediaPlayer != null) {
-            applausiMediaPlayer.start();
-        } else {
-            // Inizializza il MediaPlayer per gli applausi solo se è null
-            applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
-            applausiMediaPlayer.start();
+            // L'utente non è loggato, gestisci l'errore o richiedi il login
+            Toast.makeText(requireContext(), "Utente non autenticato.", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     @Override
     public void onDestroy() {
-        // Rilascia le risorse quando il fragment viene distrutto
+        // Rilascia le risorse di TextToSpeech quando il fragment viene distrutto
         if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
-        }
-
-        // Rilascia le risorse del MediaPlayer degli applausi
-        if (applausiMediaPlayer != null) {
-            applausiMediaPlayer.release();
         }
 
         super.onDestroy();

@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -54,6 +55,7 @@ public class PercorsoFragment extends Fragment {
     private ImageView personaggio2;
     private ImageView personaggio3;
     private ImageView personaggio4;
+    private TextView numeroMonete;
 
     public PercorsoFragment() {
         // Required empty public constructor
@@ -103,6 +105,9 @@ public class PercorsoFragment extends Fragment {
 
         setPersonaggi();
         movimentoPersonaggi();
+        //visualizzare il numero delle  monete per ogni paziente
+        numeroMonete = view.findViewById(R.id.numeroMonete);
+        caricaNumeroMonete();
 
         gameThread = new GameThread(surfaceHolder, requireContext());
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
@@ -157,6 +162,42 @@ public class PercorsoFragment extends Fragment {
         // Il tocco non è avvenuto all'interno di nessun ovale
         return false;
     }*/
+
+    //prende il numero di monete dal db e le fa visualizzae in questa schermata
+    private void caricaNumeroMonete() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference collectionReference = db.collection("Pazienti");
+
+            // Esegui una query filtrata per ottenere i documenti associati all'utente attualmente loggato
+            collectionReference.document(userId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    // Ottieni il valore del campo "monete"
+                                    Long monete = document.getLong("monete");
+
+                                    // Aggiorna la TextView con il numero di monete
+                                    numeroMonete.setText(String.valueOf(monete));
+
+                                } else {
+                                    Log.d(TAG, "No such document");
+                                }
+                            } else {
+                                Log.e(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+        }
+    }
 
     protected void messaggio(String msg) {
         if (getActivity() != null) {
