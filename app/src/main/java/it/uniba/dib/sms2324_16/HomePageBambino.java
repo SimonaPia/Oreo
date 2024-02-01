@@ -3,6 +3,8 @@ package it.uniba.dib.sms2324_16;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +50,18 @@ public class HomePageBambino extends AppCompatActivity {
 
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        ImageButton btnSwitchToParentArea = findViewById(R.id.btnSwitchToParentArea);
+
+        // Aggiungi un listener per l'evento di clic
+        btnSwitchToParentArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Avvia un'attività per passare all'area bambino
+                Intent intent = new Intent(HomePageBambino.this, HomePageGenitore.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

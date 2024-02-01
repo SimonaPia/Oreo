@@ -19,7 +19,18 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/pesca"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <ImageButton
+                android:id="@+id/btnSwitchToParentArea"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/baseline_co_present_24"
+                android:contentDescription="@string/switch_to_parent_area_button"
+                android:layout_gravity="end"
+                android:padding="8dp" />
+
+        </androidx.appcompat.widget.Toolbar>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_bambino"

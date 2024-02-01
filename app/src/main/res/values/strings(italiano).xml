@@ -67,7 +67,8 @@
     <string name="ritira">Ritira</string>
     <string name="dialog_title">Premio ritirato</string>
     <string name="dialog_message">PREMIO RITIRATO! TORNA LA PROSSIMA VOLTA PER RITIRARNE ALTRI!</string>
-
+    <string name="switch_to_child_area_button" translatable="false">Passa all\'area bambino</string>
+    <string name="switch_to_parent_area_button" translatable="false">Passa all\'area bambino</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
