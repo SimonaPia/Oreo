@@ -44,7 +44,6 @@ public class HomePageGenitoreFragment extends Fragment {
 
             }
         });
-
         cardAppuntamenti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,5 +81,3 @@ public class HomePageGenitoreFragment extends Fragment {
     }
 
 }
-
-

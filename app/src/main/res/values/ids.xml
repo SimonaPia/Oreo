@@ -29,4 +29,7 @@
     <item name="action_homePageBambino_fragmentpercorso" type="id" />
     <item name="fragment_percorso" type="id" />
     <item name="action_homePageBambino_to_leaderboardActivity" type="id" />
+    <item name="cardIlMioProfilo" type="id" />
+    <item name="assegnaButton" type="id" />
+    <item name="cardProfilo" type="id" />
 </resources>

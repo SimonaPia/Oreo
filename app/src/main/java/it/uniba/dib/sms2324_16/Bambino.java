@@ -34,4 +34,6 @@ public class Bambino {
     public void setValuta(int valuta) {
         this.valuta = valuta;
     }
+
+
 }
