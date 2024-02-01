@@ -60,7 +60,7 @@ public class ExerciseListActivity extends AppCompatActivity {
         }
 
         // Imposta il titolo e il sottotitolo personalizzati
-        toolbar.setTitle("Mario Rossi");
+        toolbar.setTitle("Esercizi");
         toolbar.setSubtitle("Logopedista");
 
         recyclerView = findViewById(R.id.recyclerView);
