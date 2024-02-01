@@ -19,7 +19,6 @@
             android:id="@+id/action_homepage_logopedista_fragment_to_classificaVistaLogopedista"
             app:destination="@id/classificaVistaLogopedista" />
 
-
     </fragment>
 
     <fragment

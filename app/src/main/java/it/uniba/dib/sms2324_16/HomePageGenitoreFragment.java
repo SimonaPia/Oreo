@@ -54,6 +54,7 @@ public class HomePageGenitoreFragment extends Fragment {
             }
         });
 
+
         return view;
     }
 

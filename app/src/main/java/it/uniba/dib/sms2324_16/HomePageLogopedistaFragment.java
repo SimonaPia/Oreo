@@ -93,11 +93,6 @@ public class HomePageLogopedistaFragment extends Fragment {
         });
 
 
-
-
-
-
-
         cardProva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,8 +106,6 @@ public class HomePageLogopedistaFragment extends Fragment {
                 }
             }
         });
-
-
 
         cardPazienti.setOnClickListener(new View.OnClickListener() {
             @Override

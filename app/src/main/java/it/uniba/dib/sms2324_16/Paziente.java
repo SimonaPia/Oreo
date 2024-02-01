@@ -8,7 +8,7 @@ public class Paziente {
     private int posizioneclassifica;
     private String id;
 
-    // Costruttore vuoto necessario per Firebase
+
     public Paziente() {
         // Costruttore vuoto
     }

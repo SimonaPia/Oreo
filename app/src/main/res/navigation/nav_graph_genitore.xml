@@ -14,10 +14,13 @@
         <action
             android:id="@+id/action_homePageGenitoreFragment_to_appuntamentiGenitoreFragment"
             app:destination="@id/appuntamentiGenitoreFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/appuntamentiGenitoreFragment"
         android:name="it.uniba.dib.sms2324_16.AppuntamentiGenitoreFragment"
         android:label="appuntamenti_genitore"
         tools:layout="@layout/appuntamenti_genitore" />
+
+
 </navigation>
