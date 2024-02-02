@@ -193,6 +193,25 @@ public class gioco1B_fragment extends Fragment {
 
         // Invia il file audio a Firebase Firestore
         inviaFileAudioAFirestore(filePath);
+        inviaFileAudio(filePath);
+    }
+
+    private void inviaFileAudio(String filePath) {
+        // Ottieni l'istanza di FirebaseFirestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Creare una nuova raccolta chiamata "registrazioni" (puoi cambiarla a seconda delle tue esigenze)
+        // con un documento univoco per ogni registrazione
+        db.collection("EserciziSvolti")
+                .add(new Registrazione(filePath))
+                .addOnSuccessListener(documentReference -> {
+                    // Operazione di invio riuscita
+                    Toast.makeText(requireContext(), "Registrazione inviata con successo a Firestore", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    // Gestisci l'errore se l'invio fallisce
+                    Toast.makeText(requireContext(), "Errore durante l'invio della registrazione a Firestore", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void inviaFileAudioAFirestore(String filePath) {

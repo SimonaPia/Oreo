@@ -60,6 +60,7 @@
             layout="@layout/posizioneclassifica_paziente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
         <Button
             android:id="@+id/assegnaButton"
             android:layout_width="wrap_content"
@@ -72,11 +73,22 @@
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="Correzione esercizi"
+            app:layout_constraintStart_toEndOf="@id/assegnaButton"/>
 
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/lista_esercizi_svolti"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

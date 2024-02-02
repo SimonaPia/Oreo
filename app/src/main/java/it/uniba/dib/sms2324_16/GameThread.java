@@ -46,6 +46,7 @@ public class GameThread extends Thread {
     private float draggedX, draggedY;
     private Bitmap personaggio1;
     private boolean movimento;
+    private int eserciziAssegnati;
 
     public GameThread(SurfaceHolder holder, Context context) {
         surfaceHolder = holder;
@@ -112,6 +113,26 @@ public class GameThread extends Thread {
         this.canvasHeight = height;
     }
 
+    private void getEserciziAssegnati() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference collectionReference = db.collection("EserciziAssegnati");
+
+            collectionReference.whereEqualTo("id_bambino", userId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            eserciziAssegnati = task.getResult().size();
+                        }
+                    });
+        }
+    }
+
     private void createZigzagPath() {
         // Usa le variabili canvasWidth e canvasHeight per calcolare il percorso zigzag
         int zigzagWidth = 500;  // Larghezza dello zigzag, adatta se necessario
@@ -123,7 +144,7 @@ public class GameThread extends Thread {
         int endY = startY;
 
         //il 10 della condizione dipende dal numero di esercizi assegnati al bambino
-        int eserciziAssegnati = 10;
+        getEserciziAssegnati();
 
         for (int i=0; startY <= canvasHeight && i < eserciziAssegnati; i++) {
             zigzagPath.add(new Point(startX, startY));
@@ -163,13 +184,6 @@ public class GameThread extends Thread {
                     surfaceHolder.unlockCanvasAndPost(canvas);
                 }
             }
-
-            /*try {
-                sleep(16); // Approssimativamente 60 frame al secondo
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
-
         }
     }
 

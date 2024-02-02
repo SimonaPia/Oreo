@@ -56,7 +56,7 @@ public class SceltaPersonaggioFiabesco extends AppCompatActivity {
             button2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    salvaPersonaggio("Principessa", "Fiabesco");
+                    salvaPersonaggio("Principessa Ginevra", "Fiabesco");
                 }
             });
 
@@ -70,7 +70,7 @@ public class SceltaPersonaggioFiabesco extends AppCompatActivity {
             button4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    salvaPersonaggio("Fatina", "Fiabesco");
+                    salvaPersonaggio("Fatina Lilla", "Fiabesco");
                 }
             });
         }

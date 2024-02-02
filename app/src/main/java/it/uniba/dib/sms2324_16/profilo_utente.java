@@ -31,6 +31,7 @@ public class profilo_utente extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profilo_utente);
         Button bottoneAssegna = findViewById(R.id.assegnaButton);
+        Button bottoneCorrezione = findViewById(R.id.button4);
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
@@ -48,7 +49,12 @@ public class profilo_utente extends AppCompatActivity {
             }
         });
 
-
+        bottoneCorrezione.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(profilo_utente.this, Correzione.class));
+            }
+        });
 
         if (nome != null && cognome != null) {
             Log.d(TAG, "Nome Paziente: " + nome);

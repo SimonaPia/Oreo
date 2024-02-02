@@ -2,21 +2,37 @@ package it.uniba.dib.sms2324_16;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,10 +47,19 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +86,14 @@ public class SignUpFragment extends Fragment {
     private NavController navController;
     private ProgressBar progressBar;
     private TextView textViewErrore;
+    private Button bambini;
+    private DocumentReference bambiniRef;
+    private BambiniAdapter adapter;
+    private List<BambiniItem> bambiniItemList;
+    private RecyclerView recyclerView;
+    private String nomeBambino, cognomeBambino;
+    private AlertDialog.Builder builder;
+    private View view;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -124,12 +157,34 @@ public class SignUpFragment extends Fragment {
         }
     }
 
+    private void inserimentoGenitoreConBambino(String uID) {
+        // Aggiorna il documento con il nuovo campo
+        Map<String, Object> data = new HashMap<>();
+        data.put("id_genitore", uID); // Sostituisci con il tuo nuovo campo e valore
+        bambiniRef.update(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Aggiornamento riuscito
+                        Log.d("TAG", "Campo aggiunto con successo!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Errore durante l'aggiornamento
+                        Log.w("TAG", "Errore durante l'aggiornamento del campo", e);
+                    }
+                });
+    }
+
     private void controlloUtente(FirebaseUser firebaseUser, Users user) {
         if(firebaseUser != null && user != null)
         {
             String uID = firebaseUser.getUid();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+            inserimentoGenitoreConBambino(uID);
             // Crea un riferimento al documento dell'utente utilizzando l'UID
             DocumentReference userRef = db.collection("Utente").document(uID);
 
@@ -197,6 +252,104 @@ public class SignUpFragment extends Fragment {
                 });
     }
 
+    private void confermaSelezione() {
+        List<BambiniItem> elementiSelezionati = adapter.getSelectedItems();
+        List<String> identitàBambino = new ArrayList<>();
+
+        // Ora puoi fare qualcosa con gli elementi selezionati
+        for (BambiniItem bambino : elementiSelezionati) {
+            // Fai qualcosa con l'elemento selezionato
+            Log.d("Elemento selezionato", "Nome: " + bambino.getChildName() + ", Cognome: " + bambino.getChildSurname());
+            identitàBambino.add(bambino.getChildName());
+            identitàBambino.add(bambino.getChildSurname());
+            identitàBambino.add(bambino.getIdDocumento());
+        }
+
+        setBambiniPerGenitore(identitàBambino);
+    }
+
+    private void dialogPazienti() {
+        // Inizializza l'oggetto dialog
+        builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Seleziona tuo figlio");
+
+        view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_layout, null);
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+        getDati();
+    }
+
+    private void getDati() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference collectionReference = db.collection("Pazienti");
+
+        // Esegui una query filtrata per ottenere i documenti associati all'utente attualmente loggato
+        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@androidx.annotation.NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    bambiniItemList = new ArrayList<>();
+
+                    for (DocumentSnapshot document : task.getResult()) {
+                        nomeBambino = document.getString("nome");
+                        cognomeBambino = document.getString("cognome");
+                        String idDocumento = document.getId();
+                        bambiniItemList.add(new BambiniItem(nomeBambino, cognomeBambino, idDocumento));
+                    }
+                    adapter = new BambiniAdapter(bambiniItemList);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                    builder.setView(view);
+                    builder.setPositiveButton("OK", (dialog, which) -> {
+                        confermaSelezione();
+                        dialog.dismiss();
+                    });
+
+                    builder.show();
+                } else {
+                    Log.e(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+    }
+
+    private void setBambiniPerGenitore(List<String> informazioniBambini) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Creazione di un nuovo documento nella collezione "Bambini"
+        bambiniRef = db.collection("Bambino - Genitore").document();
+
+        // Creazione di un oggetto Map per i dati da scrivere
+        Map<String, Object> datiBambino = new HashMap<>();
+        int cont = 0;
+        // Aggiunta delle informazioni raccolte dalla lista all'oggetto Map
+        for (int i = 0; i < informazioniBambini.size(); i+=3) {
+            datiBambino.put("nome" + (cont + 1), informazioniBambini.get(i));
+            datiBambino.put("cognome" + (cont + 1), informazioniBambini.get(i+1));
+            datiBambino.put("id_bambino" + (cont + 1), informazioniBambini.get(i+2));
+            cont++;
+        }
+
+        // Scrittura dei dati nel documento
+        bambiniRef.set(datiBambino)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("TAG", "Dati scritti con successo su Firestore!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("TAG", "Errore durante la scrittura su Firestore", e);
+                    }
+                });
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -222,7 +375,7 @@ public class SignUpFragment extends Fragment {
         password = view.findViewById(R.id.password);
         progressBar = view.findViewById(R.id.caricamento);
         textViewErrore = view.findViewById(R.id.errore);
-
+        bambini = view.findViewById(R.id.bambini);
         registrazione = view.findViewById(R.id.registrazione);
 
         registrazione.setOnClickListener(new View.OnClickListener() {
@@ -239,6 +392,19 @@ public class SignUpFragment extends Fragment {
                 }
                 else
                     Toast.makeText(getContext(), "Riempi i campi lasciati vuoti", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Intent intent = getActivity().getIntent();
+        String tipoUtente = intent.getStringExtra("tipoUtente");
+
+        if (tipoUtente.equals("genitore"))
+            bambini.setVisibility(Button.VISIBLE);
+
+        bambini.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogPazienti();
             }
         });
 

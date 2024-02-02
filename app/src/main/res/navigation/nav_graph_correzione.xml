@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_correzione"
+    app:startDestination="@id/listaEserciziSvoltiFragment2">
+
+    <fragment
+        android:id="@+id/listaEserciziSvoltiFragment2"
+        android:name="it.uniba.dib.sms2324_16.ListaEserciziSvoltiFragment"
+        android:label="fragment_lista_esercizi_svolti"
+        tools:layout="@layout/fragment_lista_esercizi_svolti" >
+        <action
+            android:id="@+id/action_listaEserciziSvoltiFragment2_to_profilo_utente"
+            app:destination="@id/profilo_utente" />
+    </fragment>
+    <activity
+        android:id="@+id/profilo_utente"
+        android:name="it.uniba.dib.sms2324_16.profilo_utente"
+        android:label="profilo_utente"
+        tools:layout="@layout/profilo_utente" />
+</navigation>

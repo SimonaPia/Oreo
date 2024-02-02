@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,9 +51,10 @@ public class ListaEserciziSvoltiFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private String idBambino, tipoEsercizio, risposta, nomeBambino;
+    private String idBambino, tipoEsercizio, filePath, tipoUtente = "";
     private List<ExerciseItem> exerciseItemList;
     private RecyclerView recyclerView;
+    private boolean esercizioCorretto;
 
     public ListaEserciziSvoltiFragment() {
         // Required empty public constructor
@@ -90,14 +93,94 @@ public class ListaEserciziSvoltiFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_lista_esercizi_svolti, container, false);
 
-        getDati();
+        getTipoUtente();
 
         recyclerView = view.findViewById(R.id.recyclerView);
 
         return view;
     }
 
-    private void getDati() {
+    private void getTipoUtente() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference collectionReference = db.collection("Utente");
+
+            collectionReference.document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful())
+                    {
+                        DocumentSnapshot document = task.getResult();
+
+                        if (document.exists())
+                        {
+                            tipoUtente = document.getString("tipoUtente");
+
+                            if (tipoUtente.equals("genitore"))
+                                getDatiGenitore();
+                            else
+                                getDatiLogopedista();
+                        }
+                        else
+                            Log.d("TAG", "Il documento non esiste per userId: " + userId);
+                    }
+                    else {
+                        Log.e(TAG, "Errore durante la lettura del documento: ", task.getException());
+                    }
+                }
+            });
+        }
+    }
+
+    private void getDatiLogopedista() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference collectionReference = db.collection("EserciziSvolti");
+
+            // Esegui una query filtrata per ottenere i documenti associati all'utente attualmente loggato
+            collectionReference.whereEqualTo("id_logopedista", userId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                exerciseItemList = new ArrayList<>();
+
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    idBambino = document.getString("id_bambino");
+                                    tipoEsercizio = document.getString("tipoEsercizio");
+                                    filePath = document.getString("filePath");
+
+                                    if (document.contains("corretto"))
+                                        esercizioCorretto = true;
+                                    else
+                                        esercizioCorretto = false;
+
+                                    getNomeBambino(document, esercizioCorretto);
+                                }
+
+                                ExerciseAdapter adapter = new ExerciseAdapter(exerciseItemList);
+                                recyclerView.setAdapter(adapter);
+                                recyclerView.setHasFixedSize(true);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                            } else {
+                                Log.e(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+        }
+    }
+
+    private void getDatiGenitore() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -118,8 +201,15 @@ public class ListaEserciziSvoltiFragment extends Fragment {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     idBambino = document.getString("id_bambino");
                                     tipoEsercizio = document.getString("tipoEsercizio");
-                                    risposta = document.getString("risposta");
-                                    getNomeBambino(document);
+                                    Log.d("TAG", "tipoEsercizio: " + tipoEsercizio);
+                                    filePath = document.getString("filePath");
+
+                                    if (document.contains("corretto"))
+                                        esercizioCorretto = true;
+                                    else
+                                        esercizioCorretto = false;
+
+                                    getNomeBambino(document, esercizioCorretto);
                                 }
 
                                 ExerciseAdapter adapter = new ExerciseAdapter(exerciseItemList);
@@ -135,7 +225,7 @@ public class ListaEserciziSvoltiFragment extends Fragment {
         }
     }
 
-    private void getNomeBambino(DocumentSnapshot document) {
+    private void getNomeBambino(DocumentSnapshot document, boolean esercizioCorretto) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference documentReference = db.collection("Utente").document(idBambino);
 
@@ -147,13 +237,17 @@ public class ListaEserciziSvoltiFragment extends Fragment {
                     if (doc.exists()) {
                         String nomeBambino = doc.getString("nome");
                         boolean controllo;
-                        if (risposta.isEmpty())
+                        if (filePath.isEmpty())
                             controllo = false;
                         else
                             controllo = true;
 
-                        exerciseItemList.add(new ExerciseItem(nomeBambino, tipoEsercizio, controllo, risposta, idBambino));
+                        idBambino = document.getString("id_bambino");
+                        tipoEsercizio = document.getString("tipoEsercizio");
+                        filePath = document.getString("filePath");
 
+                        if (!esercizioCorretto)
+                            exerciseItemList.add(new ExerciseItem(nomeBambino, tipoEsercizio, controllo, filePath, idBambino, esercizioCorretto));
                         ExerciseAdapter adapter = new ExerciseAdapter(exerciseItemList);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setHasFixedSize(true);

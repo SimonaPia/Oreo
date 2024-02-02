@@ -6,13 +6,15 @@ public class ExerciseItem {
     private boolean exerciseCompleted;
     private String risposta;
     private String idBambino;
+    private boolean exerciseCorrected;
 
-    public ExerciseItem(String childName, String exerciseType, boolean exerciseCompleted, String risposta, String idBambino) {
+    public ExerciseItem(String childName, String exerciseType, boolean exerciseCompleted, String risposta, String idBambino, boolean exerciseCorrected) {
         this.childName = childName;
         this.exerciseType = exerciseType;
         this.exerciseCompleted = exerciseCompleted;
         this.risposta = risposta;
         this.idBambino = idBambino;
+        this.exerciseCorrected = exerciseCorrected;
     }
 
     public String getChildName() {
@@ -33,6 +35,12 @@ public class ExerciseItem {
 
     public String getIdBambino() {
         return idBambino;
+    }
+    public boolean isExerciseCorrected() {
+        return exerciseCorrected;
+    }
+    public void setCorrection(boolean exerciseCorrected) {
+        this.exerciseCorrected = exerciseCorrected;
     }
 }
 
