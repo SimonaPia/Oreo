@@ -64,7 +64,7 @@
             android:id="@+id/assegnaButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Assegna"
+            android:text="@string/assegna"
             app:layout_constraintTop_toBottomOf="@id/posizioneClassificaTextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

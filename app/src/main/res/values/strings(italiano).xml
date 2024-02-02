@@ -69,6 +69,12 @@
     <string name="dialog_message">PREMIO RITIRATO! TORNA LA PROSSIMA VOLTA PER RITIRARNE ALTRI!</string>
     <string name="switch_to_child_area_button" translatable="false">Passa all\'area bambino</string>
     <string name="switch_to_parent_area_button" translatable="false">Passa all\'area bambino</string>
+    <string name="ospite">Ospite</string>
+    <string name="posizione_classifica">Posizione in Classifica </string>
+    <string name="progressi_errori">Percentuale errori per attività </string>
+    <string name="giorni">Giorni Settimanali</string>
+    <string name="profilo_figlio">Il profilo di tuo figlio/a</string>
+    <string name="vedi_profilo">Vedi Profilo</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

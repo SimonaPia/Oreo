@@ -17,7 +17,7 @@
         android:id="@+id/toolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Il profilo di tuo figlio/a"
+        android:text="@string/profilo_figlio"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:layout_gravity="center"

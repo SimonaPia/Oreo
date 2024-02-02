@@ -1,5 +1,6 @@
 package it.uniba.dib.sms2324_16;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,22 @@ public class HomePageBambinoFragment extends Fragment {
         CardView cardPercorso = view.findViewById(R.id.cardPercorso);
         CardView cardScenario = view.findViewById(R.id.cardScenario);
         CardView cardClassifica = view.findViewById(R.id.cardClassifica);
+        cardScenario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Crea un Intent per avviare l'activity di destinazione
+
+                Intent intent = new Intent(requireContext(), VisualizzaScenario.class);
+
+                // Avvia l'activity
+                startActivity(intent);
+                // Puoi rimuovere la CardView se necessario
+
+                gridLayout.invalidate();
+                gridLayout.requestLayout();
+            }
+        });
+
 
 
         cardPercorso.setOnClickListener(new View.OnClickListener() {

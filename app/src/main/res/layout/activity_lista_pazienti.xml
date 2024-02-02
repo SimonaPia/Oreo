@@ -34,7 +34,7 @@
             android:id="@+id/buttonVediProfilo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vedi Profilo"/>
+            android:text="@string/vedi_profilo"/>
     </LinearLayout>
 
 

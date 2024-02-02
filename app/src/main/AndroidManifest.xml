@@ -73,7 +73,11 @@
         <activity android:name=".RecuperoPremio"/>
         <activity android:name=".ClassificaVistaLogopedista"/>
         <activity android:name=".ProfiloBambinoGenitore"/>
-
+        <activity android:name=".VisualizzaScenario"/>
+<activity android:name=".SceltaPersonaggioPiratesco"/>
+        <activity android:name=".SceltaPersonaggioMondoIncantato"/>
+        <activity android:name=".SceltaPersonaggioSavana"/>
+        <activity android:name=".SceltaPersonaggioFiabesco"/>
     </application>
 
 </manifest>

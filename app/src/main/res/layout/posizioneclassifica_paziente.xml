@@ -10,7 +10,7 @@
         android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Posizione in Classifica"/>
+        android:text="@string/posizione_classifica"/>
 
     <TextView
         android:id="@+id/textViewClassifica"

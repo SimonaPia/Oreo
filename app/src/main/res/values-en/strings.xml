@@ -68,7 +68,12 @@
     <string name="ritira">Collect</string>
     <string name="dialog_title">Prize withdrawn</string>
     <string name="dialog_message">PRIZE WITHDRAWN! COME BACK NEXT TIME TO WITHDRAW MORE!</string>
-
+    <string name="ospite">Guest</string>
+    <string name="posizione_classifica">Ranking position </string>
+    <string name="progressi_errori">Percentage of errors for activity </string>
+    <string name="giorni">days a week</string>
+    <string name="profilo_figlio">The profile of your child</string>
+    <string name="vedi_profilo">View Profile</string>
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
