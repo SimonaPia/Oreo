@@ -60,8 +60,8 @@ public class LeaderboardActivity extends AppCompatActivity {
     }
 
     private void loadLeaderboard() {
-        db.collection("Classifica")
-                .orderBy("valuta", Query.Direction.DESCENDING)
+        db.collection("Pazienti")
+                .orderBy("monete", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -71,7 +71,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                             for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
                                 String userId = snapshot.getId();
                                 String userName = snapshot.getString("nome");
-                                int userValuta = snapshot.getLong("valuta").intValue();
+                                int userValuta = snapshot.getLong("monete").intValue();
                                 bambinoList.add(new Bambino(userId, userName, userValuta));
                             }
                             leaderboardAdapter.notifyDataSetChanged();
