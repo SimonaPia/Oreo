@@ -1,6 +1,9 @@
 package it.uniba.dib.sms2324_16;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +21,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.ExerciseViewHolder> {
 
@@ -182,6 +192,51 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         dialog.show();
     }
 
+    private void showDateSelectionDialog(final Exercise exercise, final int exercisePosition, final Patient selectedPatient, Context activityContext) {
+        // Utilizza un DatePickerDialog per permettere all'utente di selezionare una data
+        DatePickerDialog datePickerDialog = new DatePickerDialog(activityContext);
+
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                // Qui puoi gestire la data selezionata dall'utente
+                // Esempio: puoi assegnare l'esercizio al paziente selezionato per la data scelta
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth);
+
+                // Assegna l'esercizio al paziente selezionato
+                selectedPatient.addAssignedExercise(exercise);
+
+                // Notifica l'activity dell'assegnazione e della necessità di aggiornare l'adapter
+                listener.onAssignClick(exercise, selectedPatient, exercisePosition);
+                showAssignConfirmationDialog(exercise, selectedPatient, exercisePosition);
+                saveAssignmentToFirestore(exercise, selectedPatient, calendar.getTime());
+
+            }
+        });
+
+        datePickerDialog.show();
+    }
+
+    private void saveAssignmentToFirestore(Exercise exercise, Patient selectedPatient, Date selectedDate) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> assignment = new HashMap<>();
+        assignment.put("exerciseId", exercise.getId());
+        assignment.put("patientId", selectedPatient.getId());
+        assignment.put("date", selectedDate); // Salva la data selezionata
+
+        db.collection("assignments")
+                .add(assignment)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "Assignment added with ID: " + documentReference.getId());
+                    // Gestisci l'aggiunta del documento con successo
+                })
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "Error adding assignment", e);
+                    // Gestisci eventuali errori
+                });
+    }
+
     private void showAssignExerciseDialog(final Exercise exercise, final int exercisePosition, Context activityContext) {
         // Verifica se ci sono pazienti disponibili
         List<Patient> patientList = getPatientList();
@@ -205,12 +260,10 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
                 // Assegna l'esercizio al paziente selezionato
                 Patient selectedPatient = patientList.get(which);
                 selectedPatient.addAssignedExercise(exercise);
-                // Notifica l'activity dell'assegnazione e della necessità di aggiornare l'adapter
-                listener.onAssignClick(exercise, selectedPatient, exercisePosition);
-                showAssignConfirmationDialog(exercise, selectedPatient, exercisePosition);
+                // Mostra il dialog della data dopo che l'utente ha selezionato un paziente
+                showDateSelectionDialog(exercise, exercisePosition, selectedPatient, activityContext);
             }
         });
-
 
         AlertDialog dialog = builder.create();
         Log.d("ExerciseListAdapter", "Showing assign exercise dialog");
