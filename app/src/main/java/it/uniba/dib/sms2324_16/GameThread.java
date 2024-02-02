@@ -178,6 +178,9 @@ public class GameThread extends Thread {
     }
 
     private void render(Canvas canvas) {
+        if(canvas == null){
+            return;
+        }
         if (sfondo != null)
         {
             // Ridimensiona l'immagine di sfondo alle dimensioni della SurfaceView

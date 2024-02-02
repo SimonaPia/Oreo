@@ -19,25 +19,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="#1C3144"/>
 
-    <!-- LinearLayout per l'icona "Turn Left" -->
-    <LinearLayout
-        android:id="@+id/topLeftLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp">
 
-        <ImageView
-            android:id="@+id/topLeftIcon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="Icona in alto a sinistra"
-            android:src="@mipmap/ic_turn_left" />
-    </LinearLayout>
 
     <!-- LinearLayout per il pulsante "Modifica" e l'icona "Add" -->
     <LinearLayout
@@ -45,8 +27,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@id/topLeftLayout"
-        android:layout_alignBottom="@id/topLeftLayout"
         android:layout_marginEnd="16dp">
 
         <Button
@@ -56,8 +36,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-
-            android:background="@color/magenta_sbiadito"
+            android:background="@color/blu_scuro_sbiadito"
             android:text="@string/modifica" />
 
         <ImageView

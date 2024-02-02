@@ -33,7 +33,8 @@ public class HomePageLogopedista extends AppCompatActivity {
         String titolo = intent.getStringExtra("nomeCognome");
 
         getSupportActionBar().setTitle(titolo);
-        getSupportActionBar().setSubtitle("Logopedista");
+        getSupportActionBar().setSubtitle(getString(R.string.logopedist));
+
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

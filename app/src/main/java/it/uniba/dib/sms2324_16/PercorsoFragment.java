@@ -10,6 +10,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.DragEvent;
@@ -28,7 +31,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -376,26 +385,110 @@ public class PercorsoFragment extends Fragment {
     }
 
     private void livelloAttivato(float x, float y) {
-        // Verifica se il tocco è avvenuto all'interno di uno degli ovali
+        // Confronta il nome dell'esercizio con le parole specifiche
+        String[] paroleDaConfrontare = {
+                "Riconoscimento coppie minime n.1",
+                "Riconoscimento coppie minime n.2",
+                "Riconoscimento coppie minime n.3",
+                "Riconoscimento coppie minime n.4",
+                "ripeti la sequenza di parole",
+                "riconosci la parola associata all'immagine"
+        };
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         for (int i = 0; i < gameThread.getZigzagPath().size(); i++) {
             Point ovalCenter = gameThread.getZigzagPath().get(i);
+            if (currentUser != null) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            // Calcola la distanza tra il punto di rilascio e il centro dell'ovale
-            float distance = calculateDistance(x, y, ovalCenter.x, ovalCenter.y);
+                // Ottieni l'ID dell'utente corrente
+                String userId = currentUser.getUid();
 
-            // Definisci un raggio di "vicinanza" consentito
-            float radius = 100; // Regola questo valore a seconda delle tue esigenze
+                // Ottieni il riferimento al documento utente utilizzando l'ID dell'utente
+                DocumentReference userRef = db.collection("Utente").document(userId);
 
-            // Verifica se l'immagine è caduta vicino all'ovale
-            if (distance < radius) {
-                // L'immagine è caduta vicino all'ovale, esegui le azioni desiderate
-                // ad esempio, puoi disegnare un contorno intorno all'ovale, ecc.
-                // Inoltre, puoi attivare o disattivare specifiche azioni o interazioni.
-                // Puoi anche resettare la posizione dell'ImageView se necessario.
-                Toast.makeText(requireContext(), "Si dovrebbe aprire l'esercizio corrispondente al livello " + (i + 1), Toast.LENGTH_SHORT).show();
+                // Ottieni il nome utente dal documento utente
+                userRef.get().addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String nomeUtente = documentSnapshot.getString("nome"); // Supponendo che il campo si chiami "nome"
+
+                        if (nomeUtente != null) {
+                            CollectionReference assignmentsRef = db.collection("assignments");
+
+                            Log.d(TAG, "Nome utente: " + nomeUtente);
+
+                            // Esegui un loop per confrontare ogni parola con le parole da confrontare
+                            for (String parolaDaConfrontare : paroleDaConfrontare) {
+                                Log.d(TAG, "Parola da confrontare: " + parolaDaConfrontare);
+
+                                // Esegui una query su "assignments" per trovare corrispondenze con il nome utente e la parola specifica
+                                assignmentsRef.whereEqualTo("patient_name", nomeUtente)
+                                        .whereEqualTo("exercise_name", parolaDaConfrontare)
+                                        .get()
+                                        .addOnCompleteListener(task -> {
+                                            if (task.isSuccessful()) {
+                                                // Se ci sono documenti che soddisfano i criteri di query
+                                                if (!task.getResult().isEmpty()) {
+                                                    Log.d(TAG, "Documento trovato. Apertura del fragment gioco1_fragment.");
+                                                    // Naviga verso il fragment gioco1_fragment corrispondente
+                                                    navigateToFragment(parolaDaConfrontare);
+                                                } else {
+                                                    // Nessun documento trovato con il nome dell'esercizio corrispondente
+                                                    // Puoi gestire questa situazione in base alle tue esigenze
+                                                    Log.d(TAG, "Nessun documento trovato con il nome dell'esercizio corrispondente.");
+                                                }
+                                            } else {
+                                                // Gestisci eventuali errori nella query
+                                                Log.e(TAG, "Error getting documents: ", task.getException());
+                                            }
+                                        });
+                            }
+                        } else {
+                            Log.d(TAG, "Nome utente non trovato nel documento utente.");
+                        }
+                    } else {
+                        Log.d(TAG, "Documento utente non trovato per l'utente corrente.");
+                    }
+                }).addOnFailureListener(e -> {
+                    // Gestisci eventuali errori nel recupero del documento utente
+                    Log.e(TAG, "Error getting user document: ", e);
+                });
             }
         }
     }
+
+    // Metodo per navigare verso il fragment corrispondente in base alla parola confrontata
+    private void navigateToFragment(String parolaDaConfrontare) {
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_bambino);
+
+        // Esegui un'azione diversa in base alla parola confrontata
+        switch (parolaDaConfrontare) {
+            case "Riconoscimento coppie minime n.1":
+                navController.navigate(R.id.action_percorsoFragment_to_gioco1_fragment2);
+                break;
+            case "Riconoscimento coppie minime n.2":
+                navController.navigate(R.id.action_percorsoFragment_to_gioco2_fragment2);
+                break;
+            case "Riconoscimento coppie minime n.3":
+                navController.navigate(R.id.action_percorsoFragment_to_gioco3_fragment2);
+                break;
+            case "Riconoscimento coppie minime n.4":
+                navController.navigate(R.id.action_percorsoFragment_to_gioco4_fragment2);
+                break;
+            case "ripeti la sequenza di parole":
+                navController.navigate(R.id.action_percorsoFragment_to_gioco1B_fragment2);
+                break;
+            case "riconosci la parola associata all'immagine":
+                navController.navigate(R.id.action_percorsoFragment_to_denominazione1_fragment);
+                break;
+            default:
+                // Azione predefinita se la parola confrontata non corrisponde a nessun caso
+                Log.d(TAG, "Parola non gestita.");
+                break;
+        }
+    }
+
 
     private float calculateDistance(float x1, float y1, float x2, float y2) {
         float dx = x2 - x1;

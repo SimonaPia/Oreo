@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Patient implements Serializable {
-    private long id;
+    private String id;
     private String name;
     private List<Exercise> assignedExercises;
     public Patient() {
@@ -14,13 +14,14 @@ public class Patient implements Serializable {
 
     public Patient(String name) {
         this.name = name;
+        this.id = id;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -33,6 +34,7 @@ public class Patient implements Serializable {
             assignedExercises.add(exercise);
         }
     }
+
 
     public List<Exercise> getAssignedExercises() {
         return assignedExercises;

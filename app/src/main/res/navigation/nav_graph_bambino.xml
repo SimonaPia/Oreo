@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homePageBambino"
         android:name="it.uniba.dib.sms2324_16.HomePageBambinoFragment"
-        android:label="Home Page Bambino"
+        android:label="@string/home_page_bambino"
         tools:layout="@layout/fragment_homepage_bambino" >
 
         <action
@@ -29,6 +29,24 @@
         <action
             android:id="@+id/action_percorsoFragment_to_homePageBambino"
             app:destination="@id/homePageBambino" />
+        <action
+            android:id="@+id/action_percorsoFragment_to_gioco1_fragment2"
+            app:destination="@id/gioco1_fragment2" />
+        <action
+            android:id="@+id/action_percorsoFragment_to_gioco1B_fragment2"
+            app:destination="@id/gioco1B_fragment2" />
+        <action
+            android:id="@+id/action_percorsoFragment_to_gioco2_fragment2"
+            app:destination="@id/gioco2_fragment2" />
+        <action
+            android:id="@+id/action_percorsoFragment_to_gioco3_fragment2"
+            app:destination="@id/gioco3_fragment2" />
+        <action
+            android:id="@+id/action_percorsoFragment_to_gioco4_fragment2"
+            app:destination="@id/gioco4_fragment2" />
+        <action
+            android:id="@+id/action_percorsoFragment_to_denominazione1_fragment"
+            app:destination="@id/denominazione1_fragment" />
     </fragment>
     <activity
         android:id="@+id/leaderboardActivity"
@@ -38,5 +56,35 @@
         android:id="@+id/recuperoPremio"
         android:name="it.uniba.dib.sms2324_16.RecuperoPremio"
         android:label="RecuperoPremio" />
+    <fragment
+        android:id="@+id/gioco1_fragment2"
+        android:name="it.uniba.dib.sms2324_16.gioco1_fragment"
+        android:label="fragment_gioco1_fragment"
+        tools:layout="@layout/fragment_gioco1_fragment" />
+    <fragment
+        android:id="@+id/gioco1B_fragment2"
+        android:name="it.uniba.dib.sms2324_16.gioco1B_fragment"
+        android:label="fragment_gioco1b_fragment"
+        tools:layout="@layout/fragment_gioco1b_fragment" />
+    <fragment
+        android:id="@+id/gioco2_fragment2"
+        android:name="it.uniba.dib.sms2324_16.gioco2_fragment"
+        android:label="fragment_gioco2_fragment"
+        tools:layout="@layout/fragment_gioco2_fragment" />
+    <fragment
+        android:id="@+id/gioco3_fragment2"
+        android:name="it.uniba.dib.sms2324_16.gioco3_fragment"
+        android:label="fragment_gioco3_fragment"
+        tools:layout="@layout/fragment_gioco3_fragment" />
+    <fragment
+        android:id="@+id/gioco4_fragment2"
+        android:name="it.uniba.dib.sms2324_16.gioco4_fragment"
+        android:label="fragment_gioco4_fragment"
+        tools:layout="@layout/fragment_gioco4_fragment" />
+    <fragment
+        android:id="@+id/denominazione1_fragment"
+        android:name="it.uniba.dib.sms2324_16.Denominazione1_fragment"
+        android:label="fragment_denominazione1_fragment"
+        tools:layout="@layout/fragment_denominazione1_fragment" />
 
 </navigation>

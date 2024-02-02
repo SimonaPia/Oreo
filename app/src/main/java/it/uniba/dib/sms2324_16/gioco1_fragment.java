@@ -31,7 +31,9 @@ public class gioco1_fragment extends Fragment {
     private DatabaseReference pazientiRef = FirebaseDatabase.getInstance().getReference().child("Pazienti");
 
     // Inizializza il MediaPlayer per gli applausi
-    MediaPlayer applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
+    // Inizializza il MediaPlayer per gli applausi
+    MediaPlayer applausiMediaPlayer; // spostato qui
+
 
     public gioco1_fragment() {
         // Required empty public constructor
@@ -46,7 +48,7 @@ public class gioco1_fragment extends Fragment {
         RadioButton radioButtonSordo = view.findViewById(R.id.radioButton_sordo);
         RadioButton radioButtonSoldo = view.findViewById(R.id.radioButton_soldo);
         Button buttonInvioRisposta = view.findViewById(R.id.buttonInvioRisposta);
-
+        MediaPlayer applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
         // Inizializza il TextToSpeech
         textToSpeech = new TextToSpeech(getActivity(), status -> {
             if (status == TextToSpeech.SUCCESS) {
@@ -169,9 +171,20 @@ public class gioco1_fragment extends Fragment {
                         moneteAttuali = 0; // Imposta il valore predefinito se è nullo
                     }
 
-                    // Incrementa le monete e salva nel database
+                    // Incrementa le monete
                     moneteAttuali += incremento;
-                    pazientiRef.child(userId).child("monete").setValue(moneteAttuali);
+
+                    // Salva nel database
+                    pazientiRef.child(userId).child("monete").setValue(moneteAttuali)
+                            .addOnCompleteListener(updateTask -> {
+                                if (updateTask.isSuccessful()) {
+                                    // Successfully updated the coins in the database
+                                    // You can perform additional actions if needed
+                                } else {
+                                    // Handle the error in updating coins
+                                    Toast.makeText(requireContext(), "Errore nell'aggiornamento delle monete.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 } else {
                     // Gestisci eventuali errori nella lettura dei dati dal database
                     Toast.makeText(requireContext(), "Errore nel recupero delle monete.", Toast.LENGTH_SHORT).show();

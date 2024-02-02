@@ -221,8 +221,8 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     private void saveAssignmentToFirestore(Exercise exercise, Patient selectedPatient, Date selectedDate) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> assignment = new HashMap<>();
-        assignment.put("exerciseId", exercise.getId());
-        assignment.put("patientId", selectedPatient.getId());
+        assignment.put("exercise_name", exercise.getName());
+        assignment.put("patient_id", selectedPatient.getId());
         assignment.put("date", selectedDate); // Salva la data selezionata
 
         db.collection("assignments")
@@ -305,6 +305,10 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         this.patientList.clear();
         this.patientList.addAll(patients);
         notifyDataSetChanged(); // Notifica l'adapter dei cambiamenti
+    }
+    public void setExerciseList(List<Exercise> exerciseList) {
+        this.exerciseList = exerciseList;
+        notifyDataSetChanged();
     }
 
 }

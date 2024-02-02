@@ -74,6 +74,9 @@
     <string name="giorni">days a week</string>
     <string name="profilo_figlio">The profile of your child</string>
     <string name="vedi_profilo">View Profile</string>
+    <string name="select_user_type">Select the user type</string>
+    <string name="home_page_bambino">Home Page Child</string>
+    <string name="home_page_genitore">Home Page Parent</string>
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus

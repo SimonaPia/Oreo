@@ -75,6 +75,9 @@
     <string name="giorni">Giorni Settimanali</string>
     <string name="profilo_figlio">Il profilo di tuo figlio/a</string>
     <string name="vedi_profilo">Vedi Profilo</string>
+    <string name="select_user_type">Seleziona il tipo di utente</string>
+    <string name="home_page_bambino">Home Page Bambino</string>
+    <string name="home_page_genitore">Home Page Genitore</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

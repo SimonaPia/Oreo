@@ -34,7 +34,7 @@ public class HomePageBambino extends AppCompatActivity {
         String titolo = intent.getStringExtra("nomeCognome");
 
         getSupportActionBar().setTitle(titolo);
-        getSupportActionBar().setSubtitle("Bambino");
+        getSupportActionBar().setSubtitle(getString(R.string.child));
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

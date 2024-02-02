@@ -33,7 +33,8 @@ public class HomePageGenitore extends AppCompatActivity {
         String titolo = intent.getStringExtra("nomeCognome");
 
         getSupportActionBar().setTitle(titolo);
-        getSupportActionBar().setSubtitle("Genitore");
+        getSupportActionBar().setSubtitle(getString(R.string.parent));
+
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

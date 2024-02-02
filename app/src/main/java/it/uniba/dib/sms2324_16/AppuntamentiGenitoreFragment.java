@@ -156,7 +156,7 @@ public class AppuntamentiGenitoreFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_appuntamenti_logopedista, container, false);
         Button bottoneModifica = rootView.findViewById(R.id.button3);
         ImageView buttonWithIcon = rootView.findViewById(R.id.buttonWithIcon);
-        ImageView topLeftIcon = rootView.findViewById(R.id.topLeftIcon);
+
 
         bottoneModifica.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,20 +174,10 @@ public class AppuntamentiGenitoreFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        topLeftIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
 
-
-                // Esegui la navigazione solo se non sei già nel fragment di destinazione
-                navController.navigate(R.id.homepage_logopedista_fragment);
-
-            }
-        });
 
         Log.d("FragmentLifecycle", "onCreateView called");
-        Toast.makeText(requireContext(), "onCreateView called", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(requireContext(), "onCreateView called", Toast.LENGTH_SHORT).show();
         return rootView;
     }
 

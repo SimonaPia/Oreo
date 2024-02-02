@@ -68,10 +68,10 @@ public class Welcome extends AppCompatActivity {
     }
 
     private void showUserTypeSelectionDialog() {
-        final String[] userTypes = {"Logopedista", "Genitore", "Bambino"};
+        final String[] userTypes = {getString(R.string.logopedist), getString(R.string.parent), getString(R.string.child)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Seleziona il tipo di utente");
+        builder.setTitle(getString(R.string.select_user_type));
 
         builder.setItems(userTypes, new DialogInterface.OnClickListener() {
             @Override
@@ -83,12 +83,15 @@ public class Welcome extends AppCompatActivity {
                 switch (selectedUserType) {
                     case "Logopedista":
                         intent = new Intent(Welcome.this, HomePageLogopedista.class);
+                        intent.putExtra("user_type", getString(R.string.logopedist));
                         break;
                     case "Genitore":
                         intent = new Intent(Welcome.this, HomePageGenitore.class);
+                        intent.putExtra("user_type", getString(R.string.parent));
                         break;
                     case "Bambino":
                         intent = new Intent(Welcome.this, HomePageBambino.class);
+                        intent.putExtra("user_type", getString(R.string.child));
                         break;
                     default:
                         intent = new Intent(Welcome.this, Welcome.class);  // Fall back su Welcome
@@ -102,6 +105,7 @@ public class Welcome extends AppCompatActivity {
 
         builder.show();
     }
+
 
     private void navigateToHomePage(String userType) {
         Intent intent = new Intent(Welcome.this, HomePage.class);

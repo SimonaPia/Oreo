@@ -65,6 +65,7 @@ public class ExerciseListActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         adapter = new ExerciseListAdapter(this, getExerciseList(), loadPatientsFromFirestore(), new ExerciseListAdapter.OnItemClickListener() {
             @Override
             public void onDetailsClick(Exercise exercise, String details, String exerciseDetails) {
@@ -130,13 +131,34 @@ public class ExerciseListActivity extends AppCompatActivity {
     }
 
     private List<Exercise> getExerciseList() {
-        // Simulazione di una lista di esercizi (puoi ottenere dati da un server o altro)
-        List<Exercise> exercises = new ArrayList<>();
-        exercises.add(new Exercise("Esercizio 1 - Denominazione immagini", "Data un'immagine, il bambino deve riconoscere la parola associata all’immagine. Per fornire la risposta il bambino registra un audio utilizzando il microfono del dispositivo. Al bambino saranno inoltre forniti fino a 3 aiuti audio per facilitargli il riconoscimento della parola."));
-        exercises.add(new Exercise("Esercizio 2 - Ripetizione di sequenze di parole", "Dato un audio che riproduce 3 parole in sequenza, il bambino dovrà registrare un audio ripetendo le parole nella sequenza corretta."));
-        exercises.add(new Exercise("Esercizio 3 - Riconoscimento di coppie minime", "Date due immagini e la riproduzione audio di una parola, il bambino deve riconoscere l’immagine giusta a cui la parola si riferisce."));
-        return exercises;
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference gamesRef = db.collection("Giochi");
+
+        final List<Exercise> exercises = new ArrayList<>(); // Inizializza la lista di esercizi
+
+        gamesRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Leggi il nome e la categoria dell'esercizio dal documento
+                        String exerciseName = document.getString("nome");
+                        String exerciseCategory = document.getString("categoria");
+                        // Crea un oggetto Exercise con nome e categoria
+                        Exercise exercise = new Exercise(exerciseName, exerciseCategory);
+                        // Aggiungi l'esercizio alla lista
+                        exercises.add(exercise);
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+        return exercises; // Restituisci la lista di esercizi
     }
+
+
 
     private void showDetailsPopup(String details, String exerciseDetails) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -154,5 +176,3 @@ public class ExerciseListActivity extends AppCompatActivity {
         dialog.show();
     }
 }
-
-
