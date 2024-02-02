@@ -81,6 +81,10 @@ public class gioco1B_fragment extends Fragment {
             }
         });
 
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+        }
+
         // Imposta il listener per il pulsante Ascolta Vocale
         buttonAudio.setOnClickListener(v -> {
             playAudio(textToRead);
@@ -174,9 +178,39 @@ public class gioco1B_fragment extends Fragment {
         textToSpeech.speak(textToRead, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 
+    private String getOutputFile() {
+        // Sostituisci con il percorso desiderato. le registrazioni ATTUALMENTE vengono salvate nella directory di cache esterna dell'applicazione
+        File audioFile = new File(requireContext().getExternalCacheDir(), "audio_record.3gp");
+        return audioFile.getAbsolutePath();
+    }
+
     private void inviaRisposta() {
-        // Aggiungi qui la logica per inviare la risposta, se necessario
-        Toast.makeText(requireContext(), "Funzionalità di invio risposta non implementata.", Toast.LENGTH_SHORT).show();
+        // Simula l'invio della registrazione al logopedista
+        Toast.makeText(requireContext(), "Invio registrazione al tuo logopedista", Toast.LENGTH_SHORT).show();
+
+
+        String filePath = getOutputFile();
+
+        // Invia il file audio a Firebase Firestore
+        inviaFileAudioAFirestore(filePath);
+    }
+
+    private void inviaFileAudioAFirestore(String filePath) {
+        // Ottieni l'istanza di FirebaseFirestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Creare una nuova raccolta chiamata "registrazioni" (puoi cambiarla a seconda delle tue esigenze)
+        // con un documento univoco per ogni registrazione
+        db.collection("registrazioni")
+                .add(new Registrazione(filePath))
+                .addOnSuccessListener(documentReference -> {
+                    // Operazione di invio riuscita
+                    Toast.makeText(requireContext(), "Registrazione inviata con successo a Firestore", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    // Gestisci l'errore se l'invio fallisce
+                    Toast.makeText(requireContext(), "Errore durante l'invio della registrazione a Firestore", Toast.LENGTH_SHORT).show();
+                });
     }
 
     @Override

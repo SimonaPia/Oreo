@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import android.media.MediaPlayer;
 
 import java.util.Locale;
 public class gioco4_fragment extends Fragment {
@@ -27,6 +28,8 @@ public class gioco4_fragment extends Fragment {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseUser currentUser = auth.getCurrentUser();
     private DatabaseReference pazientiRef = FirebaseDatabase.getInstance().getReference().child("Pazienti");
+
+    MediaPlayer applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
 
     public gioco4_fragment() {
         // Required empty public constructor
@@ -109,12 +112,54 @@ public class gioco4_fragment extends Fragment {
     private void inviaRisposta(String messaggio) {
         // Implementa la logica per inviare la risposta al logopedista
         // Esempio: ApiService.inviaRisposta(messaggio);
+        // Implementa la logica per verificare la correttezza della risposta
+        boolean isRispostaCorretta = verificaCorrettezzaRisposta(messaggio);
+
+        // Invia il feedback vocale e gestisci gli applausi se la risposta è corretta
+        inviaFeedback(isRispostaCorretta);
 
         // Mostra un messaggio all'utente
-        Toast.makeText(getActivity(), "Abbiamo inviato la tua risposta al tuo logopedista", Toast.LENGTH_SHORT).show();
         mostraDialog("Complimenti!", "Hai guadagnato 2 monkeys monete. Continua a giocare per guadagnare altri monkeys!");
-         aggiornaMonete(2);
+        aggiornaMonete(2);
+        if (isRispostaCorretta) {
+            Toast.makeText(getActivity(), "Ben fatto! Risposta corretta.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "Riceverai la correzione dal Logopedista.", Toast.LENGTH_SHORT).show();
+        }
     }
+
+    private boolean verificaCorrettezzaRisposta(String rispostaUtente) {
+        // Implementa la tua logica per verificare se la risposta dell'utente è corretta
+        // Restituisce true se la risposta è corretta, altrimenti false
+        // Esempio: return rispostaUtente.equalsIgnoreCase("risposta_corretta");
+        return rispostaUtente.equalsIgnoreCase("Hai scelto l'immagine con la mano soldo");
+    }
+
+    private void inviaFeedback(boolean isRispostaCorretta) {
+        // Output vocale in base alla correttezza della risposta
+        String feedbackVocale;
+        if (isRispostaCorretta) {
+            feedbackVocale = "Ben fatto! Risposta corretta.";
+            // Riproduci gli applausi quando la risposta è corretta
+            playApplausi();
+        } else {
+            feedbackVocale = "Riceverai la correzione dal Logopedista.";
+        }
+
+        // Converti la stringa in output vocale utilizzando TextToSpeech
+        textToSpeech.speak(feedbackVocale, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+
+    private void playApplausi() {
+        if (applausiMediaPlayer != null) {
+            applausiMediaPlayer.start();
+        } else {
+            // Inizializza il MediaPlayer per gli applausi solo se è null
+            applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
+            applausiMediaPlayer.start();
+        }
+    }
+
     private void aggiornaMonete(int incremento) {
         if (currentUser != null) {
             String userId = currentUser.getUid();
