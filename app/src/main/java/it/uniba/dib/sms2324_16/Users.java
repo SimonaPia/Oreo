@@ -17,11 +17,9 @@ public class Users {
         this.cognome = cognome;
         this.tipoUtente = tipoUtente;
     }
-    public Users(String nome, String cognome, String tipoUtente, ArrayList<String> bambini) {
+    public Users(String nome, String cognome) {
         this.nome = nome;
         this.cognome = cognome;
-        this.tipoUtente = tipoUtente;
-        this.bambini=bambini;
     }
 
     public String getCognome() {

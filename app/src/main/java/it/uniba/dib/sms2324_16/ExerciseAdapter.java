@@ -68,7 +68,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
         ExerciseItem item = exerciseItemList.get(position);
         int posizione = position;
 
-        holder.childNameTextView.setText("Bambino: " + item.getChildName());
+        holder.childNameTextView.setText("Nome: " + item.getChildName());
         holder.exerciseTypeTextView.setText("Tipo di esercizio: " + item.getExerciseType());
 
         String completedStatus = item.isExerciseCompleted() ? "Fatto" : "Non fatto";
@@ -121,6 +121,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 setMonete(3, exerciseItem.getIdBambino());
+                setDecrementoErrori(5, exerciseItem.getIdBambino());
                 inserimentoCorrezione("Corretto", exerciseItem.getIdBambino(), exerciseItem.getRisposta());
                 exerciseItem.setCorrection(true);
                 exerciseItemList.remove(position);
@@ -134,6 +135,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
         builder.setNegativeButton("Sbagliato", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                setIncrementoErrori(5, exerciseItem.getIdBambino());
                 inserimentoCorrezione("Sbagliato", exerciseItem.getIdBambino(), exerciseItem.getRisposta());
                 exerciseItem.setCorrection(true);
                 exerciseItemList.remove(position);
@@ -146,6 +148,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
         // Mostra il dialog
         builder.show();
     }
+
+
 
     private void getFileAudio(@NonNull ExerciseViewHolder holder) {
         // Inizializza FirebaseStorage
@@ -249,6 +253,104 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
     private void aggiornaMonete(DocumentReference documentReference, int nuovoValore) {
         Map<String, Object> data = new HashMap<>();
         data.put("monete", nuovoValore); // Sostituisci con il tuo nuovo campo e valore
+        documentReference.update(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Aggiornamento riuscito
+                        Log.d("TAG", "Campo aggiunto con successo!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@org.checkerframework.checker.nullness.qual.NonNull Exception e) {
+                        // Errore durante l'aggiornamento
+                        Log.w("TAG", "Errore durante l'aggiornamento del campo", e);
+                    }
+                });
+    }
+
+    private void setDecrementoErrori(int incremento, String idBambino) {
+        // Inizializza Firebase
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Ottieni un riferimento al documento che vuoi aggiornare
+        CollectionReference collectionReference = db.collection("Pazienti");
+
+        final int[] valore = new int[1];
+        // Recupera i dati del documento
+        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@androidx.annotation.NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        String idDocumento = document.getId();
+                        idDocumento = idDocumento.replaceAll("\\s", "");
+
+                        if (idDocumento.equals(idBambino))
+                        {
+                            if (document.contains("percentualeerrori"))
+                            {
+                                valore[0] = Math.toIntExact(document.getLong("percentualeerrori"));
+                                valore[0] -= incremento;
+                                aggiornaPercentualeErrori(document.getReference(), valore[0]);
+                            }
+                            else
+                            {
+                                aggiornaPercentualeErrori(document.getReference(), 0);
+                            }
+
+                        }
+                    }
+                } else {
+                    Log.e(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+
+    private void setIncrementoErrori(int incremento, String idBambino) {
+        // Inizializza Firebase
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Ottieni un riferimento al documento che vuoi aggiornare
+        CollectionReference collectionReference = db.collection("Pazienti");
+
+        final int[] valore = new int[1];
+        // Recupera i dati del documento
+        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@androidx.annotation.NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        String idDocumento = document.getId();
+                        idDocumento = idDocumento.replaceAll("\\s", "");
+
+                        if (idDocumento.equals(idBambino))
+                        {
+                            if (document.contains("percentualeerrori"))
+                            {
+                                valore[0] = Math.toIntExact(document.getLong("percentualeerrori"));
+                                valore[0] += incremento;
+                                aggiornaPercentualeErrori(document.getReference(), valore[0]);
+                            }
+                            else
+                            {
+                                aggiornaPercentualeErrori(document.getReference(), incremento);
+                            }
+                        }
+                    }
+                } else {
+                    Log.e(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+    private void aggiornaPercentualeErrori(DocumentReference documentReference, int nuovoValore) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("percentualeerrori", nuovoValore); // Sostituisci con il tuo nuovo campo e valore
         documentReference.update(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

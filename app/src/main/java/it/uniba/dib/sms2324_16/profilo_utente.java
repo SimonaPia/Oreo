@@ -52,7 +52,10 @@ public class profilo_utente extends AppCompatActivity {
         bottoneCorrezione.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(profilo_utente.this, Correzione.class));
+                Intent intent = new Intent(profilo_utente.this, Correzione.class);
+                intent.putExtra("nomePaziente", nome);
+                intent.putExtra("cognomePaziente", cognome);
+                startActivity(intent);
             }
         });
 

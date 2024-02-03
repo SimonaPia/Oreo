@@ -96,6 +96,7 @@ public class SignUpFragment extends Fragment {
     private View view;
     private List<LogopedistiItem> logopedistiItemList;
     private LogopedistiAdapter adapterLogo;
+    private Users bambino;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -217,6 +218,33 @@ public class SignUpFragment extends Fragment {
             inserimentoBambinoConLogopedista(uID);
             // Crea un riferimento al documento dell'utente utilizzando l'UID
             DocumentReference userRef = db.collection("Utente").document(uID);
+            DocumentReference pazienteRef = db.collection("Pazienti").document(uID);
+
+            db.collection("Utente")
+                    .whereEqualTo("tipoUtente", "bambino")
+                    .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@androidx.annotation.NonNull Task<QuerySnapshot> task) {
+                                    if (bambino != null)
+                                    {
+                                        // Salva le informazioni aggiuntive nel documento
+                                        pazienteRef.set(bambino)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w(TAG, "Error writing document", e);
+                                                    }
+                                                });
+                                    }
+                                }
+                            });
 
             // Salva le informazioni aggiuntive nel documento
             userRef.set(user)
@@ -264,6 +292,7 @@ public class SignUpFragment extends Fragment {
                                 } else if (tipoUtente.equals("genitore")) {
                                     user = new Users(nomeString, cognomeString, tipoUtente);
                                 } else if ("bambino".equals(tipoUtente)) {
+                                    bambino = new Users(nomeString, cognomeString);
                                     user = new Users(nomeString, cognomeString, tipoUtente);
                                 }
 
@@ -448,11 +477,8 @@ public class SignUpFragment extends Fragment {
         Map<String, Object> datiLogopedista = new HashMap<>();
         int cont = 0;
         // Aggiunta delle informazioni raccolte dalla lista all'oggetto Map
-        for (int i = 0; i < informazioniLogopedista.size(); i+=2) {
-            datiLogopedista.put("nome" + (cont + 1), informazioniLogopedista.get(i));
-            datiLogopedista.put("id_logopedista" + (cont + 1), informazioniLogopedista.get(i+1));
-            cont++;
-        }
+        datiLogopedista.put("nome", informazioniLogopedista.get(0));
+        datiLogopedista.put("id_logopedista", informazioniLogopedista.get(1));
 
         // Scrittura dei dati nel documento
         logopedistaRef.set(datiLogopedista)

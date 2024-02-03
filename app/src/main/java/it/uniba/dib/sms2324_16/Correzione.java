@@ -27,6 +27,9 @@ public class Correzione extends AppCompatActivity {
 
         setContentView(R.layout.correzione);
 
+        Intent intent = getIntent();
+        String nome = intent.getStringExtra("nomePaziente");
+        String cognome = intent.getStringExtra("cognomePaziente");
 
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
@@ -49,6 +52,8 @@ public class Correzione extends AppCompatActivity {
             public void onClick(View v) {
                 // Avvia l'intent per navigare alla HomePageBambinoFragment
                 Intent intent = new Intent(Correzione.this, profilo_utente.class);
+                intent.putExtra("nomePaziente", nome);
+                intent.putExtra("cognomePaziente", cognome);
                 startActivity(intent);
             }
         });

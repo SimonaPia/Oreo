@@ -2,6 +2,7 @@ package it.uniba.dib.sms2324_16;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -28,6 +29,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProfiloBambinoGenitore extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,59 +44,8 @@ public class ProfiloBambinoGenitore extends AppCompatActivity {
         String genitoreId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // Ottieni i dati del paziente e i progressi dalla collezione "ProfiloUtente" in Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        if (genitoreId != null) {
-            Log.d(TAG, "ID Genitore: " + genitoreId);
-
-            db.collection("ProfiloGenitore")
-                    .document(genitoreId)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    Log.d(TAG, "Documento trovato.");
-
-                                    // Recupera i dati del profilo utente dal documento
-                                    String cognome = document.getString("cognome");
-                                    int giorniGiochi = document.getLong("giornigiochi").intValue();
-                                    int monete = document.getLong("monete").intValue();
-                                    String nome = document.getString("nome");
-                                    int percentualeErrori = document.getLong("percentualeerrori").intValue();
-                                    int posizioneClassifica = document.getLong("posizioneclassifica").intValue();
-
-                                    // Popola la vista del profilo utente con i dati ottenuti
-                                    TextView profiloTitle = findViewById(R.id.textTitle);
-                                    profiloTitle.setText(nome + " " + cognome);
-
-                                    RatingBar ratingBar = findViewById(R.id.ratingBarGiornigiochi);
-                                    ratingBar.setRating(giorniGiochi);
-
-                                    LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-                                    stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
-
-                                    TextView textView = findViewById(R.id.textViewpercentualeerrori);
-                                    textView.setText(String.valueOf(percentualeErrori));
-
-                                    TextView posizioneText = findViewById(R.id.textViewClassifica);
-                                    posizioneText.setText("Posizione: " + posizioneClassifica);
-
-                                } else {
-                                    Log.d(TAG, "Documento non trovato.");
-                                }
-                            } else {
-                                Log.e(TAG, "Errore durante il recupero dei dati da Firestore.", task.getException());
-                                Toast.makeText(ProfiloBambinoGenitore.this, "Errore: Impossibile recuperare i dati", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        } else {
-            Log.e(TAG, "ID del genitore nullo.");
-            // Gestisci l'errore, ad esempio mostrando un messaggio all'utente o ritornando indietro.
-        }
+        getDatiGenitore();
 
         ImageView imageView = findViewById(R.id.topLeftIcon);
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -103,5 +56,92 @@ public class ProfiloBambinoGenitore extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void getDatiFigli(List<String> idBambino) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("Pazienti")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                // Itera su tutti i documenti trovati
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    // Ottieni l'elemento di esercizio per questo documento
+                                    /*String exerciseName = document.getString("exercise_name");
+                                    if (exerciseName != null) {
+                                        Log.d(ContentValues.TAG, "Esercizio trovato: " + exerciseName);
+                                    }*/
+
+                                    for (int i = 0; i < idBambino.size(); i++)
+                                    {
+                                        if (document.exists() && document.getId().equals(idBambino.get(i))) {
+                                            Log.d(TAG, "Documento trovato.");
+
+                                            // Recupera i dati del profilo utente dal documento
+                                            String cognome = document.getString("cognome");
+                                            int giorniGiochi = document.getLong("giornigiochi").intValue();
+                                            int monete = document.getLong("monete").intValue();
+                                            String nome = document.getString("nome");
+                                            int percentualeErrori = document.getLong("percentualeerrori").intValue();
+
+                                            // Popola la vista del profilo utente con i dati ottenuti
+                                            TextView profiloTitle = findViewById(R.id.textTitle);
+                                            profiloTitle.setText(nome + " " + cognome);
+
+                                            RatingBar ratingBar = findViewById(R.id.ratingBarGiornigiochi);
+                                            ratingBar.setRating(giorniGiochi);
+
+                                            LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+                                            stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
+
+                                            TextView textView = findViewById(R.id.textViewpercentualeerrori);
+                                            textView.setText(String.valueOf(percentualeErrori));
+
+                                            TextView posizioneText = findViewById(R.id.textViewClassifica);
+                                            posizioneText.setText("Monete: " + monete);
+
+                                        } else {
+                                            Log.d(TAG, "Documento non trovato.");
+                                        }
+                                    }
+
+                                }
+                            } else {
+                                Log.e(TAG, "Errore durante il recupero dei dati da Firestore.", task.getException());
+                                Toast.makeText(ProfiloBambinoGenitore.this, "Errore: Impossibile recuperare i dati", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+    }
+
+    private void getDatiGenitore() {
+        String genitoreId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Ottieni i dati del paziente e i progressi dalla collezione "ProfiloUtente" in Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        List<String> idBambini = new ArrayList<>();
+
+        if (genitoreId != null)
+        {
+            db.collection("Bambino - Genitore").whereEqualTo("id_genitore", genitoreId)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful())
+                            {
+                                for (QueryDocumentSnapshot document : task.getResult())
+                                {
+                                    idBambini.add(document.getString("id_bambino1"));
+                                }
+                                getDatiFigli(idBambini);
+                            }
+                            else
+                                Log.d("TAG", "ERRORE!");
+                        }
+                    });
+        }
     }
 }

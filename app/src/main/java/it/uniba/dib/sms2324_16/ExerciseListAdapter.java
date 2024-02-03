@@ -25,7 +25,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Transaction;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -218,23 +228,51 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         datePickerDialog.show();
     }
 
-    private void saveAssignmentToFirestore(Exercise exercise, Patient selectedPatient, Date selectedDate) {
+    private void inserisciMonetePazienti(String idBambino) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> assignment = new HashMap<>();
-        assignment.put("exercise_name", exercise.getName());
-        assignment.put("patient_id", selectedPatient.getId());
-        assignment.put("date", selectedDate); // Salva la data selezionata
+        Map<String, Object> monete = new HashMap<>();
+        monete.put("monete", 0);
 
-        db.collection("assignments")
-                .add(assignment)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d(TAG, "Assignment added with ID: " + documentReference.getId());
-                    // Gestisci l'aggiunta del documento con successo
+        // Ottieni il riferimento al documento
+        DocumentReference docRef = db.collection("Pazienti").document(idBambino);
+
+        docRef.update(monete)
+                .addOnSuccessListener(aVoid -> {
+                    // Aggiornamento riuscito
+                    Log.d("TAG", "Campo aggiunto o aggiornato con successo!");
                 })
                 .addOnFailureListener(e -> {
-                    Log.w(TAG, "Error adding assignment", e);
-                    // Gestisci eventuali errori
+                    // Errore durante l'aggiornamento
+                    Log.e("TAG", "Errore durante l'aggiornamento del campo", e);
                 });
+    }
+
+    private void saveAssignmentToFirestore(Exercise exercise, Patient selectedPatient, Date selectedDate) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null)
+        {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            Map<String, Object> assignment = new HashMap<>();
+            assignment.put("id_logopedista", currentUser.getUid());
+            assignment.put("exercise_name", exercise.getName());
+            assignment.put("patient_id", selectedPatient.getId());
+            assignment.put("date", selectedDate); // Salva la data selezionata
+
+            db.collection("assignments")
+                    .add(assignment)
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d(TAG, "Assignment added with ID: " + documentReference.getId());
+                        // Gestisci l'aggiunta del documento con successo
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.w(TAG, "Error adding assignment", e);
+                        // Gestisci eventuali errori
+                    });
+
+            inserisciMonetePazienti(selectedPatient.getId());
+        }
     }
 
     private void showAssignExerciseDialog(final Exercise exercise, final int exercisePosition, Context activityContext) {

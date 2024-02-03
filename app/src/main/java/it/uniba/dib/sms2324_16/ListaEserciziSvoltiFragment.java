@@ -201,7 +201,6 @@ public class ListaEserciziSvoltiFragment extends Fragment {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     idBambino = document.getString("id_bambino");
                                     tipoEsercizio = document.getString("tipoEsercizio");
-                                    Log.d("TAG", "tipoEsercizio: " + tipoEsercizio);
                                     filePath = document.getString("filePath");
 
                                     if (document.contains("corretto"))

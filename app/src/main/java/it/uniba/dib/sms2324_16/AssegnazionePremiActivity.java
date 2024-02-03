@@ -53,7 +53,7 @@ public class AssegnazionePremiActivity extends AppCompatActivity {
         CardView card1 = findViewById(R.id.card1);
         CardView card2 = findViewById(R.id.card2);
         CardView card3 = findViewById(R.id.card3);
-       CardView card4 = findViewById(R.id.card4);
+        CardView card4 = findViewById(R.id.card4);
 
         // Aggiungi un listener per il click alle CardView
         radio_button1.setOnClickListener(new View.OnClickListener() {

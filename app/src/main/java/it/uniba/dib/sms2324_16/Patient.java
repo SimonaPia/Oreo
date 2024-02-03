@@ -3,6 +3,7 @@ package it.uniba.dib.sms2324_16;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Patient implements Serializable {
     private String id;
@@ -12,7 +13,7 @@ public class Patient implements Serializable {
         // Vuoto per compatibilità con Firestore
     }
 
-    public Patient(String name) {
+    public Patient(String name, String id) {
         this.name = name;
         this.id = id;
     }
@@ -47,4 +48,22 @@ public class Patient implements Serializable {
     public String getName() {
         return name;
     }
+
+    public boolean hasSameName(Patient other) {
+        return (this.id.equals(other.id) && this.name.equals(other.name));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Patient patient = (Patient) obj;
+        return id.equals(patient.id) && name.equals(patient.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 }
