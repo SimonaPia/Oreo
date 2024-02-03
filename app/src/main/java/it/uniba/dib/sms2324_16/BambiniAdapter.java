@@ -34,10 +34,21 @@ public class BambiniAdapter extends RecyclerView.Adapter<BambiniViewHolder> {
         holder.childNameTextView.setText("Nome: " + item.getChildName());
         holder.childSurnameTextView.setText("Cognome: " + item.getChildSurname());
 
-        holder.checkBox.setChecked(item.isChecked());
+        holder.radioButton.setChecked(item.isSelected());
 
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            item.setChecked(isChecked);
+        holder.radioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Resetta lo stato di selezione per tutti gli elementi
+                for (BambiniItem bambino : bambiniItemList) {
+                    bambino.setSelected(false);
+                }
+
+                // Imposta lo stato di selezione solo per l'elemento corrente
+                item.setSelected(true);
+
+                notifyDataSetChanged(); // Aggiorna la visualizzazione
+            }
         });
     }
 
@@ -50,7 +61,7 @@ public class BambiniAdapter extends RecyclerView.Adapter<BambiniViewHolder> {
         List<BambiniItem> selectedItems = new ArrayList<>();
 
         for (BambiniItem bambino : bambiniItemList) {
-            if (bambino.isChecked()) {
+            if (bambino.isSelected()) {
                 selectedItems.add(bambino);
             }
         }

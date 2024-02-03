@@ -3,13 +3,13 @@ package it.uniba.dib.sms2324_16;
 public class BambiniItem {
     private String childName;
     private String childSurname;
-    private boolean isChecked;
+    private boolean isSelected;
     private String idDocumento;
 
     public BambiniItem(String childName, String childSurname, String idDocumento) {
         this.childName = childName;
         this.childSurname = childSurname;
-        isChecked = false;
+        isSelected = false;
         this.idDocumento = idDocumento;
     }
 
@@ -21,12 +21,12 @@ public class BambiniItem {
         return childSurname;
     }
 
-    public boolean isChecked() {
-        return isChecked;
+    public boolean isSelected() {
+        return isSelected;
     }
 
-    public void setChecked(boolean checked) {
-        isChecked = checked;
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
     public String getIdDocumento() {
