@@ -171,23 +171,23 @@ public class gioco1_fragment extends Fragment {
                         moneteAttuali = 0; // Imposta il valore predefinito se è nullo
                     }
 
-                    // Incrementa le monete
+                    // Incrementa le monete di 2
                     moneteAttuali += incremento;
 
-                    // Salva nel database
+                    // Aggiorna il campo "monete" nel database
                     pazientiRef.child(userId).child("monete").setValue(moneteAttuali)
-                            .addOnCompleteListener(updateTask -> {
-                                if (updateTask.isSuccessful()) {
-                                    // Successfully updated the coins in the database
-                                    // You can perform additional actions if needed
+                            .addOnCompleteListener(writeTask -> {
+                                if (writeTask.isSuccessful()) {
+                                    // Operazione completata con successo
+                                    Toast.makeText(requireContext(), "Monete aggiornate con successo", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    // Handle the error in updating coins
-                                    Toast.makeText(requireContext(), "Errore nell'aggiornamento delle monete.", Toast.LENGTH_SHORT).show();
+                                    // Gestisci eventuali errori nella scrittura dei dati nel database
+                                    Toast.makeText(requireContext(), "Errore nell'aggiornamento delle monete: " + writeTask.getException(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                 } else {
                     // Gestisci eventuali errori nella lettura dei dati dal database
-                    Toast.makeText(requireContext(), "Errore nel recupero delle monete.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Errore nel recupero delle monete: " + task.getException(), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {

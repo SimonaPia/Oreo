@@ -2,14 +2,10 @@ package it.uniba.dib.sms2324_16;
 
 import static android.content.ContentValues.TAG;
 
-import android.app.AlertDialog;
 import android.content.ClipData;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -48,6 +44,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,6 +56,14 @@ public class PercorsoFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String[] paroleDaConfrontare = {
+            "Riconoscimento coppie minime n.1",
+            "Riconoscimento coppie minime n.2",
+            "Riconoscimento coppie minime n.3",
+            "Riconoscimento coppie minime n.4",
+            "ripeti la sequenza di parole",
+            "riconosci la parola associata all'immagine"
+    };
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -72,8 +78,6 @@ public class PercorsoFragment extends Fragment {
     private ImageView personaggio3;
     private ImageView personaggio4;
     private TextView numeroMonete;
-    private String personaggioScelto = "";
-    private boolean personaggioAttivo1 = false, personaggioAttivo2 = false, personaggioAttivo3 = false, personaggioAttivo4 = false;
 
     public PercorsoFragment() {
         // Required empty public constructor
@@ -119,6 +123,8 @@ public class PercorsoFragment extends Fragment {
         personaggio4 = view.findViewById(R.id.personaggio4);
 
         surfaceHolder = surfaceView.getHolder();
+        gameThread = new GameThread(surfaceHolder, requireContext());
+        //surfaceView.setOnTouchListener(this);
 
         setPersonaggi();
         movimentoPersonaggi();
@@ -155,7 +161,32 @@ public class PercorsoFragment extends Fragment {
         return view;
     }
 
-    //prende il numero di monete dal db e le fa visualizzare in questa schermata
+    /*@Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        float touchX = motionEvent.getX();
+        float touchY = motionEvent.getY();
+
+        // Verifica se il tocco è avvenuto all'interno di uno degli ovali
+        for (int i = 0; i < gameThread.getZigzagPath().size(); i++) {
+            Point ovalCenter = gameThread.getZigzagPath().get(i);
+            float ovalLeft = ovalCenter.x - 60;
+            float ovalTop = ovalCenter.y - 50;
+            float ovalRight = ovalCenter.x + 60;
+            float ovalBottom = ovalCenter.y + 50;
+
+            if (touchX >= ovalLeft && touchX <= ovalRight && touchY >= ovalTop && touchY <= ovalBottom) {
+                // Il tocco è avvenuto all'interno dell'ovale, esegui l'azione desiderata
+                // Ad esempio, visualizza un messaggio o avvia un'attività
+                Toast.makeText(requireContext(), "Hai toccato l'ovale " + (i + 1), Toast.LENGTH_SHORT).show();
+                return true; // Consuma l'evento di tocco
+            }
+        }
+
+        // Il tocco non è avvenuto all'interno di nessun ovale
+        return false;
+    }*/
+
+    //prende il numero di monete dal db e le fa visualizzae in questa schermata
     private void caricaNumeroMonete() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -199,197 +230,10 @@ public class PercorsoFragment extends Fragment {
         }
     }
 
-    private void showDialog(String titolo, String messaggio) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle(titolo);
-        builder.setMessage(messaggio);
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Chiudi il dialog
-                dialog.dismiss();
-            }
-        });
-    }
-
-    private void setMonete() {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-            // Inizializza Firebase
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-            // Ottieni un riferimento al documento che vuoi aggiornare
-            CollectionReference collectionReference = db.collection("Pazienti");
-
-            final int[] valore = new int[1];
-            // Recupera i dati del documento
-            collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@androidx.annotation.NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (DocumentSnapshot document : task.getResult()) {
-                            String idDocumento = document.getId();
-                            idDocumento = idDocumento.replaceAll("\\s", "");
-
-                            if (idDocumento.equals(userId)) {
-                                valore[0] = Math.toIntExact(document.getLong("monete"));
-
-                                if ((valore[0] > 5 && valore[0] <= 10) || (valore[0] > 10 && valore[0] <= 20) || (valore[0] > 20 && valore[0] <= 30))
-                                {
-                                    if (personaggioAttivo1)
-                                    {
-                                        if (personaggioAttivo2)
-                                        {
-                                            if (personaggioAttivo3)
-                                            {
-                                                if (personaggioAttivo4)
-                                                {
-                                                    showDialog("Personaggi completati!", "Hai sbloccato tutti i personaggi!\nControlla la sezione RISCUOTI PREMI per collezionare altre ricompense!");
-                                                }
-                                                else
-                                                {
-                                                    showDialog("Complimenti!", "Hai sbloccato un altro personaggio!");
-                                                    personaggio4.setColorFilter(null);
-                                                    personaggioAttivo4 = true;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                showDialog("Complimenti!", "Hai sbloccato un altro personaggio!");
-                                                personaggio3.setColorFilter(null);
-                                                personaggioAttivo3 = true;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            showDialog("Complimenti!", "Hai sbloccato un altro personaggio!");
-                                            personaggio2.setColorFilter(null);
-                                            personaggioAttivo2 = true;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        showDialog("Complimenti!", "Hai sbloccato un altro personaggio!");
-                                        personaggio1.setColorFilter(null);
-                                        personaggioAttivo1 = true;
-                                    }
-                                }
-                                else
-                                {
-                                    personaggio1.setColorFilter(null);
-                                    personaggioAttivo1 = true;
-                                    personaggio2.setColorFilter(null);
-                                    personaggioAttivo2 = true;
-                                    personaggio3.setColorFilter(null);
-                                    personaggioAttivo3 = true;
-                                    personaggio4.setColorFilter(null);
-                                    personaggioAttivo4 = true;
-                                }
-                            }
-                        }
-                    } else {
-                        Log.e(TAG, "Error getting documents: ", task.getException());
-                    }
-                }
-            });
-        }
-    }
-
-    private void disattivaPersonaggi() {
-        Log.d("TAG", personaggioScelto);
-
-        switch (personaggioScelto)
-        {
-            case "Leone":
-            case "Principessa":
-            case "PappagalloPirata":
-            case "Principessa Ginevra":
-                personaggio1.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggio3.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggio4.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggioAttivo2 = true;
-                break;
-            case "Ghepardo":
-            case "Draghetto":
-            case "BarbaNera":
-            case "Cavaliere Lancillotto":
-                personaggio1.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggio2.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggio4.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggioAttivo3 = true;
-                break;
-            case "Scimmia":
-            case "Elfo":
-            case "PiratessaElizabeth":
-            case "Cavaliere Artù":
-                personaggio1.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggio3.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggio2.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggioAttivo4 = true;
-                break;
-            case "Elefante":
-            case "Fatina":
-            case "PirataJack":
-            case "Fatina Lilla":
-                personaggio2.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggio3.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggio4.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggioAttivo1 = true;
-                break;
-            default:
-                personaggio1.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggio2.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggio3.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                personaggio4.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-                break;
-        }
-
-        setMonete();
-    }
-
-    private void personaggioScelto() {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if (currentUser != null)
-        {
-            String userId = currentUser.getUid();
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            CollectionReference collectionReference = db.collection("SceltaPersonaggio");
-
-            collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@androidx.annotation.NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        Log.d("TAG", "Query successful. Result: " + task.getResult().size());
-                        for (DocumentSnapshot document : task.getResult()) {
-                            String idDocumento = document.getId();
-                            idDocumento = idDocumento.replaceAll("\\s", "");
-                            Log.d("TAG", "idDocumento: " + idDocumento + " userId: " + userId);
-                            Log.d("TAG", "condizione: " + idDocumento.equals(userId));
-
-                            if (idDocumento.equals(userId))
-                            {
-                                personaggioScelto = document.getString("nome_personaggio");
-                                Log.d("TAG", "Personaggio scelto: " + personaggioScelto);
-                                disattivaPersonaggi();
-                            }
-                        }
-                    } else {
-                        Log.e(TAG, "Error getting documents: ", task.getException());
-                    }
-                }
-            });
-        }
-    }
-
     private void setPersonaggi() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
 
         if (currentUser != null) {
             String userId = currentUser.getUid();
@@ -409,6 +253,7 @@ public class PercorsoFragment extends Fragment {
                                     if (scenario.equals("Savana"))
                                     {
                                         personaggio1.setImageResource(R.drawable.personaggio_savana_elefante);
+                                        personaggio1.setTag(R.drawable.personaggio_savana_elefante);
                                         personaggio2.setImageResource(R.drawable.personaggio_savana_leone);
                                         personaggio3.setImageResource(R.drawable.personaggio_savana_leopardo);
                                         personaggio4.setImageResource(R.drawable.personaggio_savana_scimmia);
@@ -437,8 +282,6 @@ public class PercorsoFragment extends Fragment {
                                         personaggio3.setImageResource(R.drawable.personaggio_fiabesco_3);
                                         personaggio4.setImageResource(R.drawable.personaggio_fiabesco_4);
                                     }
-
-                                    personaggioScelto();
                                 }
                             } else {
                                 Log.e(TAG, "Error getting documents: ", task.getException());
@@ -453,7 +296,10 @@ public class PercorsoFragment extends Fragment {
         personaggio1.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (personaggioAttivo1)
+                //da cambiare in base alla logica di sblocco dei personaggi
+                boolean personaggioAttivo = true;
+
+                if (personaggioAttivo)
                 {
                     ClipData clipData = ClipData.newPlainText("", "");
                     View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
@@ -472,7 +318,7 @@ public class PercorsoFragment extends Fragment {
                 //da cambiare in base alla logica di sblocco dei personaggi
                 boolean personaggioAttivo = true;
 
-                if (personaggioAttivo2)
+                if (personaggioAttivo)
                 {
                     ClipData clipData = ClipData.newPlainText("", "");
                     View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
@@ -491,7 +337,7 @@ public class PercorsoFragment extends Fragment {
                 //da cambiare in base alla logica di sblocco dei personaggi
                 boolean personaggioAttivo = true;
 
-                if (personaggioAttivo3)
+                if (personaggioAttivo)
                 {
                     ClipData clipData = ClipData.newPlainText("", "");
                     View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
@@ -510,7 +356,7 @@ public class PercorsoFragment extends Fragment {
                 //da cambiare in base alla logica di sblocco dei personaggi
                 boolean personaggioAttivo = true;
 
-                if (personaggioAttivo4)
+                if (personaggioAttivo)
                 {
                     ClipData clipData = ClipData.newPlainText("", "");
                     View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
@@ -540,7 +386,22 @@ public class PercorsoFragment extends Fragment {
                         // Passa l'ImageView e le coordinate a GameThread per il disegno
                         gameThread.setDraggedImage(draggedImageView, x, y);
 
-                        livelloAttivato(x, y);
+                        // Supponendo che tu abbia un'istanza di GameThread chiamata gameThread
+                        int ovalIndex = gameThread.getCurrentOvalIndex(x, y); // Ottenere l'indice ovale corrente
+
+// Verifica se l'indice ovale è valido
+                        if (ovalIndex >= 0) {
+                            // Ottieni l'esercizio corrispondente all'ovale corrente
+                            String esercizioDaAssegnare = paroleDaConfrontare[ovalIndex]; // Supponendo che paroleDaConfrontare sia un array contenente i nomi degli esercizi
+
+                            // Chiamata a livelloAttivato con l'ovale corrente e l'esercizio da assegnare
+                            livelloAttivato(x, y, esercizioDaAssegnare);
+                        } else {
+                            // Gestisci il caso in cui l'indice ovale non sia valido
+                            // Ad esempio, mostra un messaggio di errore o gestisci il flusso del programma di conseguenza
+                            // ...
+                        }
+
 
                         // Rendi nuovamente visibile l'ImageView
                         draggedImageView.setVisibility(View.VISIBLE);
@@ -551,8 +412,8 @@ public class PercorsoFragment extends Fragment {
             }
         });
     }
-
-    private void livelloAttivato(float x, float y) {
+    private int ovaleCorrente = 0;
+    private void livelloAttivato(float x, float y, String esercizioDaAssegnare) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
@@ -568,25 +429,32 @@ public class PercorsoFragment extends Fragment {
             userRef.get().addOnSuccessListener(documentSnapshot -> {
                 if (documentSnapshot.exists()) {
                     String nomeUtente = documentSnapshot.getString("nome"); // Supponendo che il campo si chiami "nome"
-
+// Ottieni l'ID del bambino corrente
+                    String bambinoId = currentUser.getUid();
                     if (nomeUtente != null) {
                         CollectionReference assignmentsRef = db.collection("assignments");
 
                         Log.d(TAG, "Nome utente: " + nomeUtente);
 
-                        // Esegui una query su "assignments" per trovare tutte le assegnazioni per il nome utente
-                        assignmentsRef.whereEqualTo("patient_name", nomeUtente)
+                        // Esegui una query su "assignments" per trovare l'assegnazione corrispondente all'ovale corrente
+                        assignmentsRef.whereEqualTo("patient_id", bambinoId)
+                                .whereEqualTo("exercise_name", esercizioDaAssegnare)
                                 .get()
                                 .addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
-                                        // Itera su tutti i documenti trovati
                                         for (QueryDocumentSnapshot document : task.getResult()) {
-                                            // Ottieni l'elemento di esercizio per questo documento
                                             String exerciseName = document.getString("exercise_name");
                                             if (exerciseName != null) {
                                                 Log.d(TAG, "Esercizio trovato: " + exerciseName);
-                                                // Confronta l'esercizio con le parole specifiche e esegui le azioni di conseguenza
-                                                confrontaParolaConDatabase(assignmentsRef, nomeUtente, exerciseName);
+
+                                                // Assegna l'esercizio all'ovale corrente
+                                                if (ovaleCorrente < gameThread.getZigzagPath().size()) {
+                                                    gameThread.assignExerciseToOval(ovaleCorrente, esercizioDaAssegnare);
+                                                    ovaleCorrente++; // Passa all'ovale successivo
+
+                                                    // Confronta l'esercizio con il database per navigare al fragment corrispondente
+                                                    confrontaParolaConDatabase(assignmentsRef, nomeUtente, esercizioDaAssegnare);
+                                                }
                                             }
                                         }
                                     } else {
@@ -655,48 +523,45 @@ public class PercorsoFragment extends Fragment {
     }
 
 
-
     private boolean navigated = false;
-
     // Metodo per navigare verso il fragment corrispondente in base alla parola confrontata
     private void navigateToFragment(String parolaDaConfrontare) {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_bambino);
-        if (!navigated) {
+
             // Esegui un'azione diversa in base alla parola confrontata
             switch (parolaDaConfrontare) {
                 case "Riconoscimento coppie minime n.1":
 
-                    navController.navigate(R.id.action_percorsoFragment_to_gioco1_fragment2);
+                    navController.navigate(R.id.gioco1_fragment2);
                     break;
                 case "Riconoscimento coppie minime n.2":
 
-                    navController.navigate(R.id.action_percorsoFragment_to_gioco2_fragment2);
+                    navController.navigate(R.id.gioco2_fragment2);
                     break;
                 case "Riconoscimento coppie minime n.3":
 
-                    navController.navigate(R.id.action_percorsoFragment_to_gioco3_fragment2);
+                    navController.navigate(R.id.gioco3_fragment2);
                     break;
                 case "Riconoscimento coppie minime n.4":
 
-                    navController.navigate(R.id.action_percorsoFragment_to_gioco4_fragment2);
+                    navController.navigate(R.id.gioco4_fragment2);
                     break;
                 case "ripeti la sequenza di parole":
 
-                    navController.navigate(R.id.action_percorsoFragment_to_gioco1B_fragment2);
+                    navController.navigate(R.id.gioco1B_fragment2);
                     break;
                 case "riconosci la parola associata all'immagine":
 
-                    navController.navigate(R.id.action_percorsoFragment_to_denominazione1_fragment);
+                    navController.navigate(R.id.denominazione1_fragment);
                     break;
                 default:
                     // Azione predefinita se la parola confrontata non corrisponde a nessun caso
                     Log.d(TAG, "Parola non gestita.");
                     break;
             }
-            navigated = true;
-        }
-    }
 
+
+    }
 
     private float calculateDistance(float x1, float y1, float x2, float y2) {
         float dx = x2 - x1;

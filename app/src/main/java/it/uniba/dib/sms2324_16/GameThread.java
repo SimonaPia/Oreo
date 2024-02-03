@@ -48,9 +48,13 @@ public class GameThread extends Thread {
     private boolean movimento;
     private int eserciziAssegnati;
 
+
+
+
     public GameThread(SurfaceHolder holder, Context context) {
         surfaceHolder = holder;
         this.context = context;
+        exerciseAssignments = new ArrayList<>();
 
         // Carica le immagini o inizializza gli oggetti dei livelli
         sfondo = BitmapFactory.decodeResource(context.getResources(), R.drawable.sfondo_input);
@@ -120,9 +124,9 @@ public class GameThread extends Thread {
         if (currentUser != null) {
             String userId = currentUser.getUid();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            CollectionReference collectionReference = db.collection("EserciziAssegnati");
+            CollectionReference collectionReference = db.collection("assignments");
 
-            collectionReference.whereEqualTo("id_bambino", userId)
+            collectionReference.whereEqualTo("patient_id", userId)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -305,5 +309,35 @@ public class GameThread extends Thread {
             return null;
         }
     }
+    private List<String> exerciseAssignments; // Lista per tenere traccia degli esercizi assegnati agli ovali
+
+    // Costruttore e altri metodi della classe
+
+    // Metodo per assegnare un esercizio a un ovale
+    public void assignExerciseToOval(int ovalIndex, String exerciseName) {
+        if (ovalIndex >= 0 && ovalIndex < exerciseAssignments.size()) {
+            exerciseAssignments.set(ovalIndex, exerciseName);
+        }
+    }
+    public int getCurrentOvalIndex(float x, float y) {
+        // Itera attraverso la lista di punti dello zigzag per trovare l'ovale corrispondente
+        for (int i = 0; i < zigzagPath.size(); i++) {
+            Point ovalCenter = zigzagPath.get(i);
+            // Calcola i limiti dell'ovale
+            float ovalLeft = ovalCenter.x - 60;
+            float ovalRight = ovalCenter.x + 60;
+            float ovalTop = ovalCenter.y - 50;
+            float ovalBottom = ovalCenter.y + 50;
+            // Controlla se le coordinate (x, y) si trovano all'interno dell'ovale
+            if (x >= ovalLeft && x <= ovalRight && y >= ovalTop && y <= ovalBottom) {
+                // Restituisci l'indice dell'ovale corrente
+                return i;
+            }
+        }
+        // Se nessun ovale contiene le coordinate fornite, restituisci un valore indicativo di assenza (-1)
+        return -1;
+    }
+
+
 }
 

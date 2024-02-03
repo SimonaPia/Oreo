@@ -29,7 +29,7 @@ public class gioco2_fragment extends Fragment {
     private FirebaseUser currentUser = auth.getCurrentUser();
     private DatabaseReference pazientiRef = FirebaseDatabase.getInstance().getReference().child("Pazienti");
 
-    MediaPlayer applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
+    private MediaPlayer applausiMediaPlayer;
 
     public gioco2_fragment() {
         // Required empty public constructor
@@ -39,7 +39,7 @@ public class gioco2_fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_gioco2_fragment, container, false);
-
+        applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
         Button buttonAudio = view.findViewById(R.id.buttonAudio);
         RadioButton radioButtonosso = view.findViewById(R.id.radioButton_osso);
         RadioButton radioButtonorso = view.findViewById(R.id.radioButton_orso);

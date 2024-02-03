@@ -29,12 +29,13 @@
         <action
             android:id="@+id/action_percorsoFragment_to_homePageBambino"
             app:destination="@id/homePageBambino" />
+
+        <action
+            android:id="@+id/action_percorsoFragment_to_denominazione1_fragment"
+            app:destination="@id/denominazione1_fragment" />
         <action
             android:id="@+id/action_percorsoFragment_to_gioco1_fragment2"
             app:destination="@id/gioco1_fragment2" />
-        <action
-            android:id="@+id/action_percorsoFragment_to_gioco1B_fragment2"
-            app:destination="@id/gioco1B_fragment2" />
         <action
             android:id="@+id/action_percorsoFragment_to_gioco2_fragment2"
             app:destination="@id/gioco2_fragment2" />
@@ -45,8 +46,8 @@
             android:id="@+id/action_percorsoFragment_to_gioco4_fragment2"
             app:destination="@id/gioco4_fragment2" />
         <action
-            android:id="@+id/action_percorsoFragment_to_denominazione1_fragment"
-            app:destination="@id/denominazione1_fragment" />
+            android:id="@+id/action_percorsoFragment_to_gioco1B_fragment2"
+            app:destination="@id/gioco1B_fragment2" />
     </fragment>
     <activity
         android:id="@+id/leaderboardActivity"

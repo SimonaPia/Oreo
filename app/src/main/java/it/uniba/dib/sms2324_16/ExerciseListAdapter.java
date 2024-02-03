@@ -25,8 +25,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
@@ -221,28 +219,22 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     }
 
     private void saveAssignmentToFirestore(Exercise exercise, Patient selectedPatient, Date selectedDate) {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> assignment = new HashMap<>();
+        assignment.put("exercise_name", exercise.getName());
+        assignment.put("patient_id", selectedPatient.getId());
+        assignment.put("date", selectedDate); // Salva la data selezionata
 
-        if (currentUser != null)
-        {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            Map<String, Object> assignment = new HashMap<>();
-            assignment.put("exercise_name", exercise.getName());
-            assignment.put("patient_id", selectedPatient.getId());
-            assignment.put("date", selectedDate); // Salva la data selezionata
-
-            db.collection("assignments")
-                    .add(assignment)
-                    .addOnSuccessListener(documentReference -> {
-                        Log.d(TAG, "Assignment added with ID: " + documentReference.getId());
-                        // Gestisci l'aggiunta del documento con successo
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.w(TAG, "Error adding assignment", e);
-                        // Gestisci eventuali errori
-                    });
-        }
+        db.collection("assignments")
+                .add(assignment)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "Assignment added with ID: " + documentReference.getId());
+                    // Gestisci l'aggiunta del documento con successo
+                })
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "Error adding assignment", e);
+                    // Gestisci eventuali errori
+                });
     }
 
     private void showAssignExerciseDialog(final Exercise exercise, final int exercisePosition, Context activityContext) {
