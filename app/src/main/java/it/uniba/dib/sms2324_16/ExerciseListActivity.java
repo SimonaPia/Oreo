@@ -42,6 +42,7 @@ public class ExerciseListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ExerciseListAdapter adapter;
     private List<String> nomePaziente = new ArrayList<>();
+    private List<String> idPaziente = new ArrayList<>();
 
     private void creazioneAdapter(List<Patient> pazienti) {
         adapter = new ExerciseListAdapter(this, getExerciseList(), pazienti, new ExerciseListAdapter.OnItemClickListener() {
@@ -121,7 +122,8 @@ public class ExerciseListActivity extends AppCompatActivity {
                     if (document.exists())
                     {
                         nomePaziente.add(document.getString("nome"));
-                        loadExercisesAndPatients(nomePaziente);
+                        idPaziente.add(document.getId());
+                        loadExercisesAndPatients(nomePaziente, idPaziente);
                     }
                 }
                 else
@@ -130,9 +132,9 @@ public class ExerciseListActivity extends AppCompatActivity {
         });
     }
 
-    private void loadExercisesAndPatients(List<String> nomePaziente) {
+    private void loadExercisesAndPatients(List<String> nomePaziente, List<String> idPaziente) {
         // Carica la lista di esercizi e pazienti da Firestore
-        creazioneAdapter(loadPatientsFromFirestore(nomePaziente));
+        creazioneAdapter(loadPatientsFromFirestore(nomePaziente, idPaziente));
     }
 
     private void getIdBambino() {
@@ -165,7 +167,7 @@ public class ExerciseListActivity extends AppCompatActivity {
         }
     }
 
-    private List<Patient> loadPatientsFromFirestore(List<String> nomePaziente) {
+    private List<Patient> loadPatientsFromFirestore(List<String> nomePaziente, List<String> idPaziente) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -186,17 +188,15 @@ public class ExerciseListActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d("TAG", "numero documenti: " + document.getString("id_bambino") + " numero risultati " + document.getId());
                             String idBambino = document.getString("id_bambino");
-                            Log.d("TAG", "idBambino pre if: " + idBambino);
                             // Leggi il nome del paziente dal documento e aggiungilo alla lista
                             if (nomePaziente != null) {
                                 int siza = nomePaziente.size();
                                 Patient paziente = new Patient();
                                 if (cont[0] <= siza)
                                 {
-                                    paziente = new Patient(nomePaziente.get(cont[0]), idBambino);
-                                    Log.d("TAG", "idBambino: " + idBambino);
+                                    paziente = new Patient(nomePaziente.get(cont[0]), idPaziente.get(cont[0]));
+                                    Log.d("TAG", "idBambino: " + idPaziente.get(cont[0]));
                                     if (!patients.equals(paziente))
                                         patients.add(paziente);
                                     cont[0]++;

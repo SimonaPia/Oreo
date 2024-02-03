@@ -4,9 +4,11 @@ import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +19,32 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class Denominazione1_fragment extends Fragment implements TextToSpeech.OnInitListener {
 
@@ -159,7 +175,10 @@ public class Denominazione1_fragment extends Fragment implements TextToSpeech.On
 
     private String getOutputFile() {
         // Sostituisci con il percorso desiderato. le registrazioni ATTUALMENTE vengono salvate nella directory di cache esterna dell'applicazione
-        File audioFile = new File(requireContext().getExternalCacheDir(), "audio_record.3gp");
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String uID = user.getUid();
+        File audioFile = new File(requireContext().getExternalCacheDir(), (uID + ".mp3"));
         return audioFile.getAbsolutePath();
     }
 
@@ -172,17 +191,117 @@ public class Denominazione1_fragment extends Fragment implements TextToSpeech.On
 
         // Invia il file audio a Firebase Firestore
         inviaFileAudioAFirestore(filePath);
-        inviaFileAudio(filePath);
+        uploadFileAudio();
     }
 
-    private void inviaFileAudio(String filePath) {
+    private File getRecordingFile(){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String uID = user.getUid();
+        ContextWrapper contextWrapper = new ContextWrapper(requireContext());
+        File musicDirectory = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+        String filePath = uID + ".mp3";
+        Log.d("TAG", "filePath: " + filePath);
+        File file = new File(musicDirectory, filePath);
+        return file;
+    }
+
+    private void uploadFileAudio() {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        Uri file = Uri.fromFile(getRecordingFile());
+        StorageReference riversRef = storageRef.child(file.getLastPathSegment());
+        UploadTask uploadTask = riversRef.putFile(file);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                getIdGenitore();
+            }
+        });
+    }
+
+    private void getIdGenitore() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null)
+        {
+            String uID = user.getUid();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("Bambino - Genitore").whereEqualTo("id_bambino1", uID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@androidx.annotation.NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful())
+                    {
+                        for (QueryDocumentSnapshot document : task.getResult())
+                        {
+                            Log.d("TAG", "risultato query " + task.getResult().size());
+                            String idGenitore = document.getString("id_genitore");
+                            getIdLogopedista(idGenitore);
+                        }
+
+                    }
+                }
+            });
+        }
+    }
+
+    private void getIdLogopedista(String idGenitore) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null)
+        {
+            String uID = user.getUid();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("Bambino - Logopedista").whereEqualTo("id_bambino", uID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@androidx.annotation.NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful())
+                    {
+                        for (QueryDocumentSnapshot document : task.getResult())
+                        {
+                            Log.d("TAG", "risultato query " + task.getResult().size());
+                            String idLogopedista = document.getString("id_logopedista");
+                            inviaFileAudio(idGenitore, idLogopedista);
+                        }
+
+                    }
+                }
+            });
+        }
+    }
+
+    private void inviaFileAudio(String idGenitore, String idLogopedista) {
         // Ottieni l'istanza di FirebaseFirestore
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Crea un oggetto Map con i dati da salvare nel database
+        Map<String, Object> data = new HashMap<>();
+        data.put("id_bambino", currentUser.getUid()); // Aggiungi l'ID dell'utente
+        data.put("id_genitore", idGenitore);
+        data.put("id_logopedista", idLogopedista);
+        data.put("tipoEsercizio", "Audio");
+        data.put("risposta", getRecordingFilePath());
+
 
         // Creare una nuova raccolta chiamata "registrazioni" (puoi cambiarla a seconda delle tue esigenze)
         // con un documento univoco per ogni registrazione
         db.collection("EserciziSvolti")
-                .add(new Registrazione(filePath))
+                .add(new Registrazione(currentUser.getUid(), idGenitore, idLogopedista, "Audio", getRecordingFilePath()))
                 .addOnSuccessListener(documentReference -> {
                     // Operazione di invio riuscita
                     Toast.makeText(requireContext(), "Registrazione inviata con successo a Firestore", Toast.LENGTH_SHORT).show();
@@ -304,9 +423,12 @@ public class Denominazione1_fragment extends Fragment implements TextToSpeech.On
     }
 
     private String getRecordingFilePath(){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String uID = user.getUid();
         ContextWrapper contextWrapper = new ContextWrapper(requireContext());
         File musicDirectory = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
-        File file = new File(musicDirectory, "testRecordingFile" + ".mp3");
+        File file = new File(musicDirectory, uID + ".mp3");
         return file.getPath();
     }
 }

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="guest_user" />
-    <string name="guest_navigate" translatable="false">Ospite </string>
-
-</resources>

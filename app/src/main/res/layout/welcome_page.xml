@@ -21,19 +21,6 @@
 
     <!-- Aggiunta della sezione per l'utente guest -->
 
-    <TextView
-        android:id="@+id/textViewGuest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/guest_user"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/buttonGuestNavigate"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.card.MaterialCardView
         android:layout_width="300dp"
         android:layout_height="400dp"

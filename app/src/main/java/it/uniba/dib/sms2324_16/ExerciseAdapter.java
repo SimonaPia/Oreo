@@ -156,7 +156,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
         // Sostituisci "il_tuo_file_path" con il percorso del tuo file su Firebase Storage
-        String filePath = "Natasha Bedingfield - Unwritten (Lyrics).mp3";
+        String filePath = "z6bM9bqoEXTMQC3C3EPnvD8VbLb2.mp3";
 
         // Ottieni un riferimento al tuo file
         StorageReference storageRef = storage.getReference().child(filePath);

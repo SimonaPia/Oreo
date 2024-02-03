@@ -117,7 +117,7 @@ public class Lista_Pazienti extends AppCompatActivity implements Adapter_Pazient
             @Override
             public void onClick(View v) {
                 // Avvia l'intent per navigare alla HomePageBambinoFragment
-                Intent intent = new Intent(Lista_Pazienti.this, HomePageBambino.class);
+                Intent intent = new Intent(Lista_Pazienti.this, HomePageLogopedista.class);
                 startActivity(intent);
             }
         });

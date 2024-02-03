@@ -29,26 +29,18 @@
         android:id="@+id/titolo_scenario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Seleziona l'ambientazione di gioco"
+        android:text="@string/seleziona_ambientazione"
         android:textSize="18sp"
         android:layout_below="@id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp" />
-
-    <Spinner
-        android:id="@+id/spinner_ambientazione"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/titolo_scenario"
-        android:layout_marginTop="52dp"
-        android:entries="@array/opzioni_scenario" />
 
     <LinearLayout
         android:id="@+id/linearlayout_scelte_alto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/spinner_ambientazione"
+        android:layout_below="@id/titolo_scenario"
         android:layout_marginTop="16dp">
 
         <Button

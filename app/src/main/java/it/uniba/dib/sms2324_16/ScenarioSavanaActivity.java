@@ -7,13 +7,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -96,7 +101,23 @@ public class ScenarioSavanaActivity extends AppCompatActivity {
 
         if (currentUser != null) {
             String idGenitore = currentUser.getUid();
-            saveScenarioChoice(idGenitore, "", sceltaScenario);
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("Bambino - Genitore").whereEqualTo("id_genitore", idGenitore)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful())
+                            {
+                                for (QueryDocumentSnapshot document : task.getResult())
+                                {
+                                    String idBambino = document.getString("id_bambino1");
+                                    saveScenarioChoice(idGenitore, idBambino, sceltaScenario);
+                                }
+                            }
+
+
+                        }
+                    });
             Toast.makeText(this, "Scenario salvato: " + sceltaScenario, Toast.LENGTH_SHORT).show();
         }
     }
