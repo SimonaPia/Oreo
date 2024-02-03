@@ -86,14 +86,16 @@ public class SignUpFragment extends Fragment {
     private NavController navController;
     private ProgressBar progressBar;
     private TextView textViewErrore;
-    private Button bambini;
-    private DocumentReference bambiniRef;
+    private Button bambini, logopedista;
+    private DocumentReference bambiniRef, logopedistaRef;
     private BambiniAdapter adapter;
     private List<BambiniItem> bambiniItemList;
     private RecyclerView recyclerView;
-    private String nomeBambino, cognomeBambino;
+    private String nomeBambino, cognomeBambino, idLogopedista, nomeLogopedista;
     private AlertDialog.Builder builder;
     private View view;
+    private List<LogopedistiItem> logopedistiItemList;
+    private LogopedistiAdapter adapterLogo;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -158,24 +160,51 @@ public class SignUpFragment extends Fragment {
     }
 
     private void inserimentoGenitoreConBambino(String uID) {
-        // Aggiorna il documento con il nuovo campo
-        Map<String, Object> data = new HashMap<>();
-        data.put("id_genitore", uID); // Sostituisci con il tuo nuovo campo e valore
-        bambiniRef.update(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Aggiornamento riuscito
-                        Log.d("TAG", "Campo aggiunto con successo!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Errore durante l'aggiornamento
-                        Log.w("TAG", "Errore durante l'aggiornamento del campo", e);
-                    }
-                });
+        if (bambiniRef != null)
+        {
+            // Aggiorna il documento con il nuovo campo
+            Map<String, Object> data = new HashMap<>();
+            data.put("id_genitore", uID); // Sostituisci con il tuo nuovo campo e valore
+            bambiniRef.update(data)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // Aggiornamento riuscito
+                            Log.d("TAG", "Campo aggiunto con successo!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Errore durante l'aggiornamento
+                            Log.w("TAG", "Errore durante l'aggiornamento del campo", e);
+                        }
+                    });
+        }
+    }
+
+    private void inserimentoBambinoConLogopedista(String uID) {
+        if (logopedistaRef != null)
+        {
+            // Aggiorna il documento con il nuovo campo
+            Map<String, Object> data = new HashMap<>();
+            data.put("id_bambino", uID); // Sostituisci con il tuo nuovo campo e valore
+            logopedistaRef.update(data)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // Aggiornamento riuscito
+                            Log.d("TAG", "Campo aggiunto con successo!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Errore durante l'aggiornamento
+                            Log.w("TAG", "Errore durante l'aggiornamento del campo", e);
+                        }
+                    });
+        }
     }
 
     private void controlloUtente(FirebaseUser firebaseUser, Users user) {
@@ -185,6 +214,7 @@ public class SignUpFragment extends Fragment {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
             inserimentoGenitoreConBambino(uID);
+            inserimentoBambinoConLogopedista(uID);
             // Crea un riferimento al documento dell'utente utilizzando l'UID
             DocumentReference userRef = db.collection("Utente").document(uID);
 
@@ -252,20 +282,33 @@ public class SignUpFragment extends Fragment {
                 });
     }
 
-    private void confermaSelezione() {
+    private void confermaSelezioneBambini() {
         List<BambiniItem> elementiSelezionati = adapter.getSelectedItems();
         List<String> identitàBambino = new ArrayList<>();
 
         // Ora puoi fare qualcosa con gli elementi selezionati
         for (BambiniItem bambino : elementiSelezionati) {
             // Fai qualcosa con l'elemento selezionato
-            Log.d("Elemento selezionato", "Nome: " + bambino.getChildName() + ", Cognome: " + bambino.getChildSurname());
             identitàBambino.add(bambino.getChildName());
             identitàBambino.add(bambino.getChildSurname());
             identitàBambino.add(bambino.getIdDocumento());
         }
 
         setBambiniPerGenitore(identitàBambino);
+    }
+
+    private void confermaSelezioneLogopedista() {
+        List<LogopedistiItem> elementiSelezionati = adapterLogo.getSelectedItems();
+        List<String> identitàLogopedista = new ArrayList<>();
+
+        // Ora puoi fare qualcosa con gli elementi selezionati
+        for (LogopedistiItem logopedista : elementiSelezionati) {
+            // Fai qualcosa con l'elemento selezionato
+            identitàLogopedista.add(logopedista.getLogopedistaName());
+            identitàLogopedista.add(logopedista.getIdLogopedista());
+        }
+
+        setLogopedistaPerBambino(identitàLogopedista);
     }
 
     private void dialogPazienti() {
@@ -276,10 +319,56 @@ public class SignUpFragment extends Fragment {
         view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_layout, null);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-        getDati();
+        getDatiPazienti();
     }
 
-    private void getDati() {
+    private void dialogLogopedisti() {
+        // Inizializza l'oggetto dialog
+        builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Seleziona il tuo logopedista");
+
+        view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_logopedisti, null);
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+        getDatiLogopedisti();
+    }
+
+    private void getDatiLogopedisti() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference collectionReference = db.collection("Utente");
+
+        // Esegui una query filtrata per ottenere i documenti associati all'utente attualmente loggato
+        collectionReference.whereEqualTo("tipoUtente", "logopedista").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@androidx.annotation.NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    logopedistiItemList = new ArrayList<>();
+
+                    for (DocumentSnapshot document : task.getResult()) {
+                        idLogopedista = document.getId();
+                        nomeLogopedista = document.getString("nome");
+                        logopedistiItemList.add(new LogopedistiItem(nomeLogopedista, idLogopedista));
+                    }
+                    adapterLogo = new LogopedistiAdapter(logopedistiItemList);
+                    recyclerView.setAdapter(adapterLogo);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                    builder.setView(view);
+                    builder.setPositiveButton("OK", (dialog, which) -> {
+                        confermaSelezioneLogopedista();
+                        dialog.dismiss();
+                    });
+
+                    builder.show();
+                } else {
+                    Log.e(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+    private void getDatiPazienti() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("Pazienti");
 
@@ -303,7 +392,7 @@ public class SignUpFragment extends Fragment {
 
                     builder.setView(view);
                     builder.setPositiveButton("OK", (dialog, which) -> {
-                        confermaSelezione();
+                        confermaSelezioneBambini();
                         dialog.dismiss();
                     });
 
@@ -349,6 +438,37 @@ public class SignUpFragment extends Fragment {
                 });
     }
 
+    private void setLogopedistaPerBambino(List<String> informazioniLogopedista) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Creazione di un nuovo documento nella collezione "Bambini"
+        logopedistaRef = db.collection("Bambino - Logopedista").document();
+
+        // Creazione di un oggetto Map per i dati da scrivere
+        Map<String, Object> datiLogopedista = new HashMap<>();
+        int cont = 0;
+        // Aggiunta delle informazioni raccolte dalla lista all'oggetto Map
+        for (int i = 0; i < informazioniLogopedista.size(); i+=2) {
+            datiLogopedista.put("nome" + (cont + 1), informazioniLogopedista.get(i));
+            datiLogopedista.put("id_logopedista" + (cont + 1), informazioniLogopedista.get(i+1));
+            cont++;
+        }
+
+        // Scrittura dei dati nel documento
+        logopedistaRef.set(datiLogopedista)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("TAG", "Dati scritti con successo su Firestore!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("TAG", "Errore durante la scrittura su Firestore", e);
+                    }
+                });
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -376,6 +496,7 @@ public class SignUpFragment extends Fragment {
         progressBar = view.findViewById(R.id.caricamento);
         textViewErrore = view.findViewById(R.id.errore);
         bambini = view.findViewById(R.id.bambini);
+        logopedista = view.findViewById(R.id.logopedista);
         registrazione = view.findViewById(R.id.registrazione);
 
         registrazione.setOnClickListener(new View.OnClickListener() {
@@ -405,6 +526,16 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 dialogPazienti();
+            }
+        });
+
+        if (tipoUtente.equals("bambino"))
+            logopedista.setVisibility(Button.VISIBLE);
+
+        logopedista.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogLogopedisti();
             }
         });
 

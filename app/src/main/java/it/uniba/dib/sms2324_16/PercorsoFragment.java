@@ -44,7 +44,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -550,107 +553,147 @@ public class PercorsoFragment extends Fragment {
     }
 
     private void livelloAttivato(float x, float y) {
-        // Confronta il nome dell'esercizio con le parole specifiche
-        String[] paroleDaConfrontare = {
-                "Riconoscimento coppie minime n.1",
-                "Riconoscimento coppie minime n.2",
-                "Riconoscimento coppie minime n.3",
-                "Riconoscimento coppie minime n.4",
-                "ripeti la sequenza di parole",
-                "riconosci la parola associata all'immagine"
-        };
-
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        for (int i = 0; i < gameThread.getZigzagPath().size(); i++) {
-            Point ovalCenter = gameThread.getZigzagPath().get(i);
-            if (currentUser != null) {
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
+        if (currentUser != null) {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                // Ottieni l'ID dell'utente corrente
-                String userId = currentUser.getUid();
+            // Ottieni l'ID dell'utente corrente
+            String userId = currentUser.getUid();
 
-                // Ottieni il riferimento al documento utente utilizzando l'ID dell'utente
-                DocumentReference userRef = db.collection("Utente").document(userId);
+            // Ottieni il riferimento al documento utente utilizzando l'ID dell'utente
+            DocumentReference userRef = db.collection("Utente").document(userId);
 
-                // Ottieni il nome utente dal documento utente
-                userRef.get().addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        String nomeUtente = documentSnapshot.getString("nome"); // Supponendo che il campo si chiami "nome"
+            // Ottieni il nome utente dal documento utente
+            userRef.get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    String nomeUtente = documentSnapshot.getString("nome"); // Supponendo che il campo si chiami "nome"
 
-                        if (nomeUtente != null) {
-                            CollectionReference assignmentsRef = db.collection("assignments");
+                    if (nomeUtente != null) {
+                        CollectionReference assignmentsRef = db.collection("assignments");
 
-                            Log.d(TAG, "Nome utente: " + nomeUtente);
+                        Log.d(TAG, "Nome utente: " + nomeUtente);
 
-                            // Esegui un loop per confrontare ogni parola con le parole da confrontare
-                            for (String parolaDaConfrontare : paroleDaConfrontare) {
-                                Log.d(TAG, "Parola da confrontare: " + parolaDaConfrontare);
-
-                                // Esegui una query su "assignments" per trovare corrispondenze con il nome utente e la parola specifica
-                                assignmentsRef.whereEqualTo("patient_name", nomeUtente)
-                                        .whereEqualTo("exercise_name", parolaDaConfrontare)
-                                        .get()
-                                        .addOnCompleteListener(task -> {
-                                            if (task.isSuccessful()) {
-                                                // Se ci sono documenti che soddisfano i criteri di query
-                                                if (!task.getResult().isEmpty()) {
-                                                    Log.d(TAG, "Documento trovato. Apertura del fragment gioco1_fragment.");
-                                                    // Naviga verso il fragment gioco1_fragment corrispondente
-                                                    navigateToFragment(parolaDaConfrontare);
-                                                } else {
-                                                    // Nessun documento trovato con il nome dell'esercizio corrispondente
-                                                    // Puoi gestire questa situazione in base alle tue esigenze
-                                                    Log.d(TAG, "Nessun documento trovato con il nome dell'esercizio corrispondente.");
-                                                }
-                                            } else {
-                                                // Gestisci eventuali errori nella query
-                                                Log.e(TAG, "Error getting documents: ", task.getException());
+                        // Esegui una query su "assignments" per trovare tutte le assegnazioni per il nome utente
+                        assignmentsRef.whereEqualTo("patient_name", nomeUtente)
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        // Itera su tutti i documenti trovati
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            // Ottieni l'elemento di esercizio per questo documento
+                                            String exerciseName = document.getString("exercise_name");
+                                            if (exerciseName != null) {
+                                                Log.d(TAG, "Esercizio trovato: " + exerciseName);
+                                                // Confronta l'esercizio con le parole specifiche e esegui le azioni di conseguenza
+                                                confrontaParolaConDatabase(assignmentsRef, nomeUtente, exerciseName);
                                             }
-                                        });
-                            }
-                        } else {
-                            Log.d(TAG, "Nome utente non trovato nel documento utente.");
-                        }
+                                        }
+                                    } else {
+                                        // Gestisci eventuali errori nella query
+                                        Log.e(TAG, "Error getting documents: ", task.getException());
+                                    }
+                                });
                     } else {
-                        Log.d(TAG, "Documento utente non trovato per l'utente corrente.");
+                        Log.d(TAG, "Nome utente non trovato nel documento utente.");
                     }
-                }).addOnFailureListener(e -> {
-                    // Gestisci eventuali errori nel recupero del documento utente
-                    Log.e(TAG, "Error getting user document: ", e);
-                });
-            }
+                } else {
+                    Log.d(TAG, "Documento utente non trovato per l'utente corrente.");
+                }
+            }).addOnFailureListener(e -> {
+                // Gestisci eventuali errori nel recupero del documento utente
+                Log.e(TAG, "Error getting user document: ", e);
+            });
         }
     }
+
+
+    // Metodo per confrontare ogni parola con il database
+    private void confrontaParolaConDatabase(CollectionReference assignmentsRef, String nomeUtente, String parolaDaConfrontare) {
+        boolean[] esercizioTrovatoPerOvale = new boolean[gameThread.getZigzagPath().size()]; // Array per tenere traccia degli esercizi trovati per ogni ovale
+
+        // Inizializza l'array a false
+        Arrays.fill(esercizioTrovatoPerOvale, false);
+
+        // Reimposta la variabile navigated a false
+        navigated = false;
+
+        // Esegui una query su "assignments" per trovare corrispondenze con il nome utente e la parola specifica
+        assignmentsRef.whereEqualTo("patient_name", nomeUtente)
+                .whereEqualTo("exercise_name", parolaDaConfrontare)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String exerciseName = document.getString("exercise_name");
+                            if (exerciseName != null) {
+                                Log.d(TAG, "Esercizio trovato: " + exerciseName);
+
+                                // Confronta l'esercizio con i nomi degli ovali
+                                for (int i = 0; i < gameThread.getZigzagPath().size(); i++) {
+
+                                    if (exerciseName.equals("Riconoscimento coppie minime n." + (i + 1))) {
+                                        // Se l'esercizio corrisponde all'ovale corrente, apri il fragment solo se non è già stato aperto per quell'ovale
+                                        if (!esercizioTrovatoPerOvale[i]) {
+                                            Log.d(TAG, "Documento trovato. Apertura del fragment corrispondente per l'ovale " + (i + 1));
+                                            Point ovalCenter = gameThread.getZigzagPath().get(i);
+                                            navigateToFragment(exerciseName);
+                                            esercizioTrovatoPerOvale[i] = true; // Imposta il flag per indicare che l'esercizio è stato trovato per questo ovale
+                                        }
+                                        break; // Esci dal ciclo per questo esercizio
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // Gestisci eventuali errori nella query
+                        Log.e(TAG, "Error getting documents: ", task.getException());
+                    }
+
+
+                });
+    }
+
+
+
+    private boolean navigated = false;
 
     // Metodo per navigare verso il fragment corrispondente in base alla parola confrontata
     private void navigateToFragment(String parolaDaConfrontare) {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_bambino);
+        if (!navigated) {
+            // Esegui un'azione diversa in base alla parola confrontata
+            switch (parolaDaConfrontare) {
+                case "Riconoscimento coppie minime n.1":
 
-        // Esegui un'azione diversa in base alla parola confrontata
-        switch (parolaDaConfrontare) {
-            case "Riconoscimento coppie minime n.1":
-                navController.navigate(R.id.action_percorsoFragment_to_gioco1_fragment2);
-                break;
-            case "Riconoscimento coppie minime n.2":
-                navController.navigate(R.id.action_percorsoFragment_to_gioco2_fragment2);
-                break;
-            case "Riconoscimento coppie minime n.3":
-                navController.navigate(R.id.action_percorsoFragment_to_gioco3_fragment2);
-                break;
-            case "Riconoscimento coppie minime n.4":
-                navController.navigate(R.id.action_percorsoFragment_to_gioco4_fragment2);
-                break;
-            case "ripeti la sequenza di parole":
-                navController.navigate(R.id.action_percorsoFragment_to_gioco1B_fragment2);
-                break;
-            case "riconosci la parola associata all'immagine":
-                navController.navigate(R.id.action_percorsoFragment_to_denominazione1_fragment);
-                break;
-            default:
-                // Azione predefinita se la parola confrontata non corrisponde a nessun caso
-                Log.d(TAG, "Parola non gestita.");
-                break;
+                    navController.navigate(R.id.action_percorsoFragment_to_gioco1_fragment2);
+                    break;
+                case "Riconoscimento coppie minime n.2":
+
+                    navController.navigate(R.id.action_percorsoFragment_to_gioco2_fragment2);
+                    break;
+                case "Riconoscimento coppie minime n.3":
+
+                    navController.navigate(R.id.action_percorsoFragment_to_gioco3_fragment2);
+                    break;
+                case "Riconoscimento coppie minime n.4":
+
+                    navController.navigate(R.id.action_percorsoFragment_to_gioco4_fragment2);
+                    break;
+                case "ripeti la sequenza di parole":
+
+                    navController.navigate(R.id.action_percorsoFragment_to_gioco1B_fragment2);
+                    break;
+                case "riconosci la parola associata all'immagine":
+
+                    navController.navigate(R.id.action_percorsoFragment_to_denominazione1_fragment);
+                    break;
+                default:
+                    // Azione predefinita se la parola confrontata non corrisponde a nessun caso
+                    Log.d(TAG, "Parola non gestita.");
+                    break;
+            }
+            navigated = true;
         }
     }
 

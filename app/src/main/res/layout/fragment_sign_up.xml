@@ -126,9 +126,20 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="370dp"
                 android:backgroundTint="@color/celeste"
-                android:text="Inserimento bambini"
+                android:text="Selezione bambini"
                 android:textColor="@color/white"
-                android:visibility="invisible"/>
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/logopedista"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="370dp"
+                android:backgroundTint="@color/celeste"
+                android:text="Selezione id logopedista"
+                android:textColor="@color/white"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/registrazione"
