@@ -3,6 +3,7 @@ package it.uniba.dib.sms2324_16;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -66,6 +67,10 @@ public class HomePageLogopedistaFragment extends Fragment {
         CardView cardEsercizi = view.findViewById(R.id.cardEsercizi);
         CardView cardPazienti = view.findViewById(R.id.cardPazienti);
         CardView cardProva = view.findViewById(R.id.cardProva);
+
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Homepage Logopedista");
+        }
 
         // Imposta il click listener
         cardEsercizi.setOnClickListener(new View.OnClickListener() {

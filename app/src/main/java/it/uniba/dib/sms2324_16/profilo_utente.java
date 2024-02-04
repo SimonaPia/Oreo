@@ -101,7 +101,7 @@ public class profilo_utente extends AppCompatActivity {
                                             Log.d(TAG, "Percentuale Errori: " + paziente.getPercentualeerrori());
 
                                             TextView posizioneText = findViewById(R.id.textViewClassifica);
-                                            posizioneText.setText("Posizione: " + paziente.getPosizioneclassifica());
+                                            posizioneText.setText("Monete: " + paziente.getMonete());
                                         } else {
                                             Log.e(TAG, "Oggetto Paziente nullo.");
                                             // Gestisci l'errore, ad esempio mostrando un messaggio all'utente o ritornando indietro.
@@ -182,7 +182,7 @@ public class profilo_utente extends AppCompatActivity {
                                         textView.setText(String.valueOf(paziente.getPercentualeerrori()));
 
                                         TextView posizioneText = findViewById(R.id.textViewClassifica);
-                                        posizioneText.setText("Posizione: " + paziente.getPosizioneclassifica());
+                                        posizioneText.setText("Monete: " + paziente.getMonete());
                                     } else {
                                         Log.e(TAG, "Oggetto Paziente nullo.");
                                         // Gestisci l'errore, ad esempio mostrando un messaggio all'utente o ritornando indietro.

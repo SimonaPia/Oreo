@@ -62,7 +62,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/paziente"
+                android:src="@mipmap/icona_round"
                 android:background="@color/black"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -29,6 +30,11 @@ public class HomePageBambinoFragment extends Fragment {
         CardView cardPercorso = view.findViewById(R.id.cardPercorso);
         CardView cardScenario = view.findViewById(R.id.cardScenario);
         CardView cardClassifica = view.findViewById(R.id.cardClassifica);
+
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Homepage Bambino");
+        }
+
         cardScenario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

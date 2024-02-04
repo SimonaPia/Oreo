@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -84,6 +85,10 @@ public class gioco1B_fragment extends Fragment {
         Button buttonStopAudio = rootView.findViewById(R.id.buttonStopAudio);
         Button buttonPlayAudio = rootView.findViewById(R.id.buttonPlayAudio);
         Button buttonInvioRisposta = rootView.findViewById(R.id.buttonInvioRisposta);
+
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Ripeti sequenza");
+        }
 
         // Inizializza il TextToSpeech
         textToSpeech = new TextToSpeech(requireContext(), status -> {

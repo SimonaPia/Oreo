@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,6 +50,9 @@ public class gioco1_fragment extends Fragment {
         RadioButton radioButtonSoldo = view.findViewById(R.id.radioButton_soldo);
         Button buttonInvioRisposta = view.findViewById(R.id.buttonInvioRisposta);
         MediaPlayer applausiMediaPlayer = MediaPlayer.create(getActivity(), R.raw.applausi);
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Gioco 1");
+        }
         // Inizializza il TextToSpeech
         textToSpeech = new TextToSpeech(getActivity(), status -> {
             if (status == TextToSpeech.SUCCESS) {

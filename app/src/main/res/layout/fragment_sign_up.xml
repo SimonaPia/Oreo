@@ -126,7 +126,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="370dp"
                 android:backgroundTint="@color/celeste"
-                android:text="Selezione bambini"
+                android:text="@string/selezione_bambino"
                 android:textColor="@color/white"
                 android:visibility="gone"/>
 
@@ -137,7 +137,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="370dp"
                 android:backgroundTint="@color/celeste"
-                android:text="Selezione id logopedista"
+                android:text="@string/selezione_id_logopedista"
                 android:textColor="@color/white"
                 android:visibility="gone"/>
 

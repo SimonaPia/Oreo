@@ -78,6 +78,9 @@
     <string name="select_user_type">Seleziona il tipo di utente</string>
     <string name="home_page_bambino">Home Page Bambino</string>
     <string name="home_page_genitore">Home Page Genitore</string>
+    <string name="selezione_id_logopedista">Selezione id logopedista</string>
+    <string name="selezione_bambino">Selezione bambino</string>
+    <string name="correzione_esercizi">Correzione esercizi</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

@@ -5,7 +5,7 @@ public class Paziente {
     private int giornigiochi;
     private String nome;
     private int percentualeerrori;
-    private int posizioneclassifica;
+    private int posizioneclassifica, monete;
     private String id;
 
 
@@ -60,11 +60,15 @@ public class Paziente {
         this.percentualeerrori = percentualeerrori;
     }
 
-    public int getPosizioneclassifica() {
-        return posizioneclassifica;
+    public int getMonete() {
+        return monete;
     }
 
     public void setPosizioneclassifica(int posizioneclassifica) {
         this.posizioneclassifica = posizioneclassifica;
+    }
+
+    public void setMonete(int monete) {
+        this.monete = monete;
     }
 }

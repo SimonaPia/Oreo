@@ -13,6 +13,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
@@ -128,6 +129,10 @@ public class PercorsoFragment extends Fragment {
         personaggio2 = view.findViewById(R.id.personaggio2);
         personaggio3 = view.findViewById(R.id.personaggio3);
         personaggio4 = view.findViewById(R.id.personaggio4);
+
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Percorso bambino");
+        }
 
         surfaceHolder = surfaceView.getHolder();
         gameThread = new GameThread(surfaceHolder, requireContext());

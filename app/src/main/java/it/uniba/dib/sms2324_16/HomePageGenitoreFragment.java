@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -30,6 +31,11 @@ public class HomePageGenitoreFragment extends Fragment {
         CardView cardEsercizi = view.findViewById(R.id.cardEsercizi);
         CardView cardScenario = view.findViewById(R.id.cardScenario);
         CardView cardProfilo = view.findViewById(R.id.cardProfilo);
+
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Homepage Genitore");
+        }
+
         cardProfilo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

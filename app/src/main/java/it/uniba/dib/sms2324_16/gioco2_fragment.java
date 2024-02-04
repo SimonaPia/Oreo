@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -44,6 +45,10 @@ public class gioco2_fragment extends Fragment {
         RadioButton radioButtonosso = view.findViewById(R.id.radioButton_osso);
         RadioButton radioButtonorso = view.findViewById(R.id.radioButton_orso);
         Button buttonInvioRisposta = view.findViewById(R.id.buttonInvioRisposta);
+
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Gioco 2");
+        }
 
         // Inizializza il TextToSpeech
         textToSpeech = new TextToSpeech(getActivity(), status -> {
